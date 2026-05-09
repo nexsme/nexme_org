@@ -26,17 +26,18 @@ ALLOWED_HOSTS = ['nexsme.com']
 PLACES_MAPS_API_KEY = 'AIzaSyBlZedPGDv2kGpzevN9Q43ZyXHAXUby67w'
 
 INSTALLED_APPS = [
-    'registration',
     'dal',
-    'dal_select2',
+    'mailqueue',
+    'xhtml2pdf',
     'fcm_django',
-    'versatileimagefield',
-    'rest_framework',
+    'dal_select2',
+    'registration',
     'el_pagination',
+    'rest_framework',
+    'keyboard_shortcuts',
+    'versatileimagefield',
     'django_template_maths',
     # 'pwa',
-    'keyboard_shortcuts',
-    'xhtml2pdf',
 
     'django.contrib.admin',
     'django.contrib.auth',
