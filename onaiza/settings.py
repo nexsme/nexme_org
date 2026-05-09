@@ -27,7 +27,6 @@ PLACES_MAPS_API_KEY = 'AIzaSyBlZedPGDv2kGpzevN9Q43ZyXHAXUby67w'
 
 INSTALLED_APPS = [
     'dal',
-    'mailqueue',
     'xhtml2pdf',
     'fcm_django',
     'dal_select2',
