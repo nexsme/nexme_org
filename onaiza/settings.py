@@ -325,5 +325,9 @@ RZP_SECRET_KEY= config('RZP_SECRET_KEY')
 cred = credentials.Certificate(BASE_DIR / 'ServiceAccount.json')
 default_app = firebase_admin.initialize_app(cred)
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600
 
 FAST2SMS_API_KEY = 'vn6DOCyoxQwPbKWFV4GLXeH3Y2Z1SgBkTpm7iIUh5r0Asj8uaMegIWO9P3J65lfMw2AEahrxLdp0VHoZ'
