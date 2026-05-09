@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">Zone - {{instance.pk}}</h3>
+
+                <ul class="personal-info row">
+                    {% comment %} <li class="col">
+                        <a title="Create new stock locations" href="{% url 'warehouses:create_location' %}"
+                            class=" text-white edit-icon">
+                            <i style="color: #000000;" class="las la-plus"></i>
+                        </a>
+                    </li> {% endcomment %}
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Basic Info <small></small></h2>
+                </div>
+
+                <div class="card-body row">
+                    <div class="list-group-item media col-sm-6">
+                        <div class="media-body">
+                            <div class="lgi-heading">Zone</div>
+                            <small class="lgi-text"> Zone -{{instance.pk}}</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item media col-sm-6">
+                        <div class="media-body">
+                            <div class="lgi-heading">Name</div>
+                            <small class="lgi-text"> {{instance.municipality}}</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item media col-sm-12">
+                        <div class="media-body">
+                            <div class="lgi-heading">Places</div>
+                            <small class="lgi-text"> {{instance.name}}</small>
+                        </div>
+                    </div>
+
+                    <!-- <div class="list-group-item media col-sm-12">
+                        <div class="media-body">
+                            <div class="lgi-heading">اسم عربي </div>
+                            <small class="lgi-text">{{instance.arabic_name}}</small>
+                        </div>
+                    </div> -->
+
+                    <div class="list-group-item media col-sm-6">
+                        <div class="media-body">
+                            <div class="lgi-heading">Latitude </div>
+                            <small class="lgi-text">{{instance.latitude}}</small>
+                        </div>
+                    </div>
+
+                    <div class="list-group-item media col-sm-6">
+                        <div class="media-body">
+                            <div class="lgi-heading">Longitude </div>
+                            <small class="lgi-text">{{instance.longitude}}</small>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

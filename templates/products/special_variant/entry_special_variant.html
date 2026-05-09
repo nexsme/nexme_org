@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<!-- <div class="page-wrapper"> -->
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{url}}" method="post" class="ajax redirect">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.name.id_for_label }}">
+                                                    Name (To be given after '{{product.get_product_name}}')
+
+                                                    {% if form.name.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.name }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.product_code.id_for_label }}">
+                                                    {{ form.product_code.label }}
+
+                                                    {% if form.product_code.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.product_code }}
+                                            </div>
+                                        </div>
+
+                                        {% comment %}
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.colour_variation.id_for_label }}">
+                                                    {{ form.colour_variation.label }}
+
+                                                    {% if form.colour_variation.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.colour_variation }}
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.size_variation.id_for_label }}">
+                                                    {{ form.size_variation.label }}
+
+                                                    {% if form.size_variation.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.size_variation }}
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.other_variation.id_for_label }}">
+                                                    {{ form.other_variation.label }}
+
+                                                    {% if form.other_variation.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.other_variation }}
+                                            </div>
+                                        </div>
+                                        {% endcomment %}
+
+                                        <div class="col-6">
+                                            <div class="form-group custom-control custom-switch switch-primary " style="margin-bottom: 0;margin-top: 30px;">
+                                                <input class="custom-control-input" type="checkbox" {% if form.is_default.value %}checked{% endif %} id="id_is_default" name="is_default" />
+                                                <label class="ts-helper" for="ts1">&nbsp;</label>
+                                                <label for="id_is_default" class="custom-control-label ts-label mb-3">
+                                                    <span>Is Default Variant</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.quantity.id_for_label }}">
+                                                    {{ form.quantity.label }}
+
+                                                    {% if form.quantity.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.quantity }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.actual_price.id_for_label }}">
+                                                    {{ form.actual_price.label }}
+
+                                                    {% if form.actual_price.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.actual_price }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.amount.id_for_label }}">
+                                                    {{ form.amount.label }}
+
+                                                    {% if form.amount.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.amount }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.cost.id_for_label }}">
+                                                    {{ form.cost.label }}
+
+                                                    {% if form.cost.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.cost }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.wholesale_price.id_for_label }}">
+                                                    {{ form.wholesale_price.label }}
+
+                                                    {% if form.wholesale_price.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.wholesale_price }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.wholesale_quantity.id_for_label }}">
+                                                    {{ form.wholesale_quantity.label }}
+
+                                                    {% if form.wholesale_quantity.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.wholesale_quantity }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.warranty.id_for_label }}">
+                                                    {{ form.warranty.label }}
+
+                                                    {% if form.warranty.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.warranty }}
+                                            </div>
+                                        </div>
+
+                                        {% if is_edit %}
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="id_change_image">Change images</label>
+                                                <input type="checkbox" id="id_change_image" name="change_image" >
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+
+                                        <div class="col-6 {% if is_edit %}d-none{% endif %}">
+                                            <div class="form-group">
+                                                <label for="{{ form.image_type.id_for_label }}">
+                                                    {{ form.image_type.label }}
+
+                                                    {% if form.image_type.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.image_type }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 product-image">
+                                            <div class="form-group">
+                                                <label for="id_variant">Variant for image</label>
+                                                <select name="variant" class="form-control" id="id_variant">
+                                                    <option value="">--select variant--</option>
+                                                    {% for item in product_variants %}
+                                                    <option value="{{ item.pk }}">{{item}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 has-image">
+                                            <div class="form-group">
+                                                <label for="id_image">Variant default image</label>
+                                                <input type="file" id="id_image" name="image" value="" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 has-image">
+                                            <div class="form-group">
+                                                <label for="id_images">Variant images (Multiple)</label>
+                                                <input type="file" multiple name="images" class="form-control">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="card-body">
+
+                                {% if product_variants %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="product_variants" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="product_variants" class="custom-control-label ts-label mb-3">
+                                        <strong>Select All Variants</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap mb-4" style="padding-left: 45px;">
+                                        {% for item in product_variants %}
+                                        <div class="col-12 mb-2 form-check1">
+
+                                            {% if is_edit %}
+                                            {% if item.pk in array_p %}
+                                            <input type="checkbox" data-mrp="{{ item.mrp }}" class="custom-control-input" checked id="product_variant-{{item.pk}}" name="product_variant"
+                                                value="{{item.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" data-mrp="{{ item.mrp }}" id="product_variant-{{item.pk}}" class="custom-control-input ok"
+                                                name="product_variant" value="{{item.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" data-mrp="{{ item.mrp }}" id="product_variant-{{item.pk}}" name="product_variant"
+                                                value="{{item.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="product_variant-{{item.pk}}" class="custom-control-label ts-label mb-3">
+                                                <img src="{{item.image.url}}" alt="{{item}}" style="width: 50px; height: 50px;">
+                                                <span>{{item}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.description.id_for_label }}">
+                                                    {{ form.description.label }}
+
+                                                    {% if form.description.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.description }}
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="{{ form.arabic_description.id_for_label }}">
+                                                    {{ form.arabic_description.label }}
+
+                                                    {% if form.arabic_description.field.required %}
+                                                    <small class="star text-danger">*</small>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.arabic_description }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+<!-- </div> -->
+<!-- /Page Wrapper -->
+
+{% endblock %}
+{% block static %}
+    {{ form.media }}
+
+<script>
+    $(document).ready(function () {
+        $('div.check_all_box').each(function () {
+            inputs = $(this).find('input[type="checkbox"]')
+            inputs_len = inputs.length;
+            i = 0;
+            inputs.each(function () {
+                value = $(this).attr('checked');
+                if (value) {
+                    i += 1;
+                }
+            });
+            if (inputs_len - 1 == i) {
+                $(this).find('input.list1').click();
+            }
+        });
+    });
+
+    $('.list1').click(function(){
+
+        if ($(this).hasClass('checked-all')){
+            $(`.form-check1`).find('input[type=checkbox]').prop('checked',false);
+            $(this).removeClass('checked-all');
+            $('input[name="product_variant"]').change();
+        } else {
+            $(`.form-check1`).find('input[type=checkbox]').prop('checked',true);
+            $(this).addClass('checked-all');
+            $('input[name="product_variant"]').change();
+        }
+    })
+</script>
+
+<script>
+    $("#id_change_image").change(function(){
+        if ($(this).is(":checked")){
+            $('.has-image').show();
+        }else{
+            $('.has-image').hide();
+        }
+    })
+
+    $("#id_image_type").change(function(){
+        let has_own_img = $(this).val();
+        if (has_own_img == 'own'){
+            $('.product-image').hide();
+            $('.has-image').show();
+        }else{
+            $('.product-image').show();
+            $('.has-image').hide();
+        }
+    })
+
+    $(document).ready(function(){
+        $('.product-image').hide();
+        $('.has-image').hide();
+
+        // {% if not is_edit %}
+        $("#id_image_type").change();
+        // {% endif %}
+        $('input[name="product_variant"]').change();
+    })
+
+    $('input[name="product_variant"]').change(function(){
+        let total = 0, $selected = $('input[name="product_variant"]:checked');
+        let count = $selected.length
+
+        if (count > 1){
+            $('#id_quantity').attr('readonly','').val(1);
+        }else{
+            $('#id_quantity').removeAttr('readonly','');
+        }
+
+        $selected.each(function(){
+            total += parseFloat($(this).attr('data-mrp'))
+        })
+        $("#id_actual_price").val(total)
+        // let values = $selected.map((index, element) => $(element).val()).get().join(',');
+    })
+
+</script>
+{% endblock %}

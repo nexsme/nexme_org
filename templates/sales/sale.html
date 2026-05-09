@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load django_template_maths %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text" >ID - {{instance.auto_id}}</h3>
+
+                <ul class="personal-info row">
+                    <li class="mr-2 ">
+                        <a title="Invoice" href="{% url 'sales:print_invoice' pk=instance.pk %}"
+                            class="btn btn-sm btn-soft-success">
+                            <i class="fa  fa-print"></i> Invoice
+                        </a>
+                    </li>
+
+                    {% if not instance.receipt_voucher %}
+                    <li class="mr-2 ">
+                        <a title="Print Sale in A4" href="{% url 'sales:print_credit_invoice' pk=instance.pk %}"
+                            class=" btn btn-sm btn-soft-success">
+                            <i class="fa  fa-print"></i> Credit Invoice
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="mr-2 align-self-center">
+                        <a class="btn btn-sm btn-soft-primary" title="Create new sale" href="{% url 'sales:create' %}" role="button">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </li>
+
+                    {% if not instance.is_deleted %}
+                    <li class="mr-2 align-self-center">
+                        <a title="Edit Sale" href="{% url 'sales:edit' pk=instance.pk %}"
+                        class="edit-icon btn btn-sm btn-soft-warning">
+                            <i class="fa fa-pen"></i>
+                        </a>
+                    </li>
+
+                    <li class="mr-2 align-self-center">
+                        <a title="Cancel Sale" data-id="{{instance.pk}}"
+                            data-text="Are you sure you want to cancel this Sale?" data-title="Are you sure?"
+                            href="{% url 'sales:delete' pk=instance.pk %}"
+                            class="action-button redirect delete-icon edit-icon btn btn-sm btn-soft-danger">
+                            <i class="las la-trash"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="mr-2">
+                        <a title="Print Sale" href="{% url 'sales:print_sale' pk=instance.pk %}"
+                            class="print-icon btn btn-sm btn-soft-success edit-icon">
+                            <i class="fa  fa-print"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-content">
+        <!-- Profile Info Tab -->
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Sale Info <small></small></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="list-group lg-alt c-overflow col-sm-6">
+                                <div class="list-group-item media ">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Customer</div>
+                                        <a href="{% url 'customers:customer' instance.customer_id %}" class=" text-primary lgi-text">{{instance.customer|title}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Date </div>
+                                        <small class="lgi-text">{{instance.sale_date|date:"d/m/Y"}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Sale Type </div>
+                                        <small class="lgi-text">{{instance.get_sale_type_display}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Tracking No </div>
+                                        <small class="lgi-text">{{instance.tracking_id}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Shipment Date </div>
+                                        <small class="lgi-text">{{instance.shipment_date|date:"d/m/Y"}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Shipping Address </div>
+                                        <small class="lgi-text">{{instance.customer_address|default:"-"}}</small>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="list-group lg-alt c-overflow col-sm-6">
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Subtotal</div>
+                                        <small class="lgi-text">{{instance.subtotal}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Discount Amount</div>
+                                        <small class="lgi-text">{{instance.discount}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Round Off</div>
+                                        <small class="lgi-text">{{instance.round_off}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Total</div>
+                                        <small class="lgi-text">{{instance.total}}</small>
+                                    </div>
+                                </div>
+
+                                <!-- {% if instance.use_privilege_point %}
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Privilege Points used</div>
+                                        <small class="lgi-text">{{ instance.privilege_point_used }}</small>
+                                    </div>
+                                </div>
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Privilege Points in Amount</div>
+                                        <small class="lgi-text">{{ instance.privilege_point_amnt }}</small>
+                                    </div>
+                                </div>
+                                {% endif %} -->
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Paid</div>
+                                        <small class="lgi-text">{{instance.paid}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Payment Type</div>
+                                        <small class="lgi-text">{{ instance.payment_method|title }}</small>
+                                    </div>
+                                </div>
+
+                                {% if instance.receipt_voucher %}
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Receipt</div>
+                                        <a href="{% url 'finance:receipt_voucher' pk=instance.receipt_voucher_id %}" class="lgi-text text-primary">ID - {{instance.receipt_voucher.voucher_number}}</a>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Credit Due Date</div>
+                                        <small class="lgi-text">{{instance.credit_date}}</small>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Page Content -->
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Basic Info <small></small></h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="list-group lg-alt c-overflow">
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Creator </div>
+                                <small class="lgi-text">{{instance.creator}}</small>
+                            </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Added </div>
+                                <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                            </div>
+                            </div>
+
+                            {% if instance.is_deleted %}
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Deleted By </div>
+                                <small class="lgi-text">{{instance.updater}}</small>
+                            </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Deleted Date </div>
+                                <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                            </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Deleted Reason </div>
+                                <small class="lgi-text">{{instance.deleted_reason}}</small>
+                            </div>
+                            </div>
+
+                            {% else %}
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Updater </div>
+                                <small class="lgi-text">{{instance.updater}}</small>
+                            </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Updated </div>
+                                <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                            </div>
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- /Profile Info Tab -->
+        {% if sale_items %}
+        <div class="card">
+            <div class="card-header">
+                <h2>Sale Items</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline">
+                        <thead>
+                            <tr>
+                                <th>Sl.No</th>
+                                <th>Product Variant</th>
+                                <th>Batch Number</th>
+                                <th>Quantity</th>
+                                <th>MRP</th>
+                                <th>Rate</th>
+                                <th>Net Rate</th>
+                                <th>Unit Price</th>
+                                <!-- <th>Tax (%)</th> -->
+                                <th>IGST (%)</th>
+                                <th>CGST (%)</th>
+                                <th>SGST (%)</th>
+                                <th>IGST Amount</th>
+                                <th>CGST Amount</th>
+                                <th>SGST Amount</th>
+                                <th>Gross Amount</th>
+                                <th>Discount Amount</th>
+                                <th>total</th>
+
+                                <th>Sale Taxable Amount</th>
+                                <th>Purchase Taxable Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in sale_items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a class="text-primary" href="{% url 'products:view_variant' i.product_variant.pk %}">{{i.product_variant}}</a></td>
+                                <td>{{ i.batch }}</td>
+                                <td>{{ i.quantity }}</td>
+
+                                <td class="text-right">{{ i.mrp }}</td>
+                                <td class="text-right">{{ i.net_rate|div:i.quantity|add_decimal:2 }}</td>
+                                <td class="text-right">{{ i.net_rate }}</td>
+                                <th class="text-right">{{ i.unit_price }}</th>
+                                <!-- <td class="text-right">{{ i.tax_percent }}%</td> -->
+                                <td class="text-right">{{ i.igst_rate }}%</td>
+                                <td class="text-right">{{ i.cgst_rate }}%</td>
+                                <td class="text-right">{{ i.sgst_rate }}%</td>
+                                <!-- <td class="text-right">{{ i.tax_amount }}</td> -->
+                                <td class="text-right">{{ i.igst_amount }}</td>
+                                <td class="text-right">{{ i.cgst_amount }}</td>
+                                <td class="text-right">{{ i.sgst_amount }}</td>
+
+                                <th class="text-right">{{ i.mrp|mul:i.quantity|floatformat:2 }}</th>
+                                <th class="text-right">{{ i.discount }}</th>
+
+                                <th class="text-right">{{ i.total }}</th>
+                                <th class="text-right">{{ i.s_taxable|floatformat:2 }}</th>
+                                <th class="text-right">{{ i.p_taxable|floatformat:2 }}</th>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <style>
+            #data-table-basic tr th,
+            #data-table-basic tr td{
+                white-space: nowrap;
+            }
+        </style>
+    </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

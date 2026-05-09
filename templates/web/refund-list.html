@@ -1,0 +1,106 @@
+{% extends "web/web_base.html" %}
+
+{% load i18n %} {% load tz %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% load static %}
+{% load i18n %}
+
+{% load web_template_tags %}
+{% block content %}
+
+    <div id="refund">
+        <div class="wrapper container">
+            {% if refund_products %}
+                <div class="refund-main">
+                    <div class="re-head">
+                        <a href="#">
+                            <img src="{% static 'web/images/icons/left-arrow.svg' %}" alt="Icon">
+                        </a>
+                        <h5>Returned Orders</h5>
+                    </div>
+                    <div class="re-body">
+                        {% for refund_obj in refund_products %}
+                            <a class="re-product" href="{% url 'web:refund_product' refund_obj.pk %}">
+                                <div class="left-box">
+                                    {% if refund_obj.order_item.product_variant.image %}
+                                    <img src="{{refund_obj.order_item.product_variant.image.url}}" alt="Images" />
+                                    {% else %}
+                                    <img src="{{refund_obj.order_item.product_variant.product.image.url}}" alt="Images" />
+                                    {% endif %}
+                                </div>
+                                <div class="right-box">
+                                    <div class="top-card">
+                                        <h6>{{refund_obj.order_item.product_variant.product.name}} {{refund_obj.order_item.product_variant.title}}</h6>
+                                        <small>{{refund_obj.order_item.product_variant.product.category}}</small>
+                                    </div>
+                                    <div class="price-p">
+                                        <p>₹ {{refund_obj.order_item.product_variant.mrp}}</p>
+                                    </div>
+                                    {% if refund_obj.payment_status == '10' %}
+                                        <div class="refund-status process">
+                                            <h5 class="process">Refund process</h5>
+                                        </div>
+                                        {% else %}
+                                        <div class="refund-status">
+                                            <h5>Refund Successfull</h5>
+                                        </div>
+                                        {% endif%}
+                                </div>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            {% else %}
+                <section id="order-spotlight">
+                    <section class="wrapper ">
+                        <div class="container">
+                            <div class="img-container">
+                                <img src="{% static 'web/images/icons/no-return.png' %}" alt="Image" />
+                            </div>
+                            <p>{% trans "No Return Products" %}</p>
+                            
+                        </div>
+                    </section>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <style>
+        #menu{
+            display: none;
+        }
+
+        .whatsappContainer {
+        display: none;
+        }
+        .wrapper {
+            margin: 40px auto 0;
+        }
+        #sign-ip {
+            margin-top: 40px;
+        }
+        @media all and (max-width: 768px) {
+            header {
+                height: 100px;
+            }
+            #refund .wrapper .refund-main {
+                padding-top: 0 !important;
+            }
+            #sign-ip {
+                margin-top: 60px;
+            }
+            .wrapper .container{
+                margin: 62px auto 0;
+            }
+        }
+    </style>
+
+
+{% endblock content %}
+
+{% block static %}
+{% endblock static %}

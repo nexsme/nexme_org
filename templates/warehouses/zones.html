@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        {% comment %} <a class=" btn btn-sm btn-soft-primary" href="{% url 'warehouses:create_location' %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>New Location</a>
+                    </div> {% endcomment %}
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <form class="search-filter" method="get" action="{% url 'warehouses:zones' %}">
+        <input  type="text" name="q" id="q">
+        <button class="btn btn-sm btn-soft-primary" type="submit">Search Zones</button>
+    </form>
+    <!-- /Page Header -->
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Pincode</th>
+                    <th>Places</th>
+                    <th>Taluk</th>
+                    <th>District</th>
+                    <!-- <th class="text-right">Action</th> -->
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% load el_pagination_tags %}
+                {% paginate 20 instances %}
+
+                {% for i in instances %}
+                <tr>
+                    <td>{{ i.pincode }} </td>
+                    <td>{{ i.name|default:"-"}}</td>
+                    <td>{{ i.taluk|default:"-"}}</td>
+                    <td>{{ i.district|default:"-"}}</td>
+                    <td class="text-right">
+                        <a href="{% url 'warehouses:zone' pk=i.pk %}"><i
+                                class="las la-eye text-info font-18"></i></a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--end /table-->
+
+        <div class="clearfix"></div>
+        <div class="row pagi my-3">
+            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                <div class="m-t-10">
+                    Showing {{title}}
+                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                    class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                    class="total_count">{{ pages.total_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end /tableresponsive-->
+</div>
+<!-- /Page Content -->
+<style>
+    input#q {
+    height: 95%;
+    margin-right: 6px;
+    border-radius: 6px;
+    width: 200px;
+    border: 1px solid #9e9e9e;
+}
+form.search-filter {
+    margin-bottom: 16px;
+}
+</style>
+
+{% endblock %}

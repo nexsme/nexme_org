@@ -1,0 +1,74 @@
+[
+	{
+		"model": "users.NotificationSubject",
+		"pk": 1,
+		"fields": {
+			"name": "Order out for delivery",
+			"code": "order_out_for_delivery"
+		}
+	},
+	{
+		"model": "users.NotificationSubject",
+		"pk": 2,
+		"fields": {
+			"name": "Order Shipped",
+			"code": "order_shipped"
+		}
+	},
+	{
+		"model": "users.NotificationSubject",
+		"pk": 3,
+		"fields": {
+			"name": "Order Delivered",
+			"code": "order_delivered"
+		}
+	},
+	{
+		"model": "users.NotificationSubject",
+		"pk": 4,
+		"fields": {
+			"name": "Order Cancelled",
+			"code": "order_cancelled"
+		}
+	},
+    {
+		"model": "users.NotificationSubject",
+		"pk": 5,
+		"fields": {
+			"name": "You have an new order",
+			"code": "order_placed"
+		}
+	},
+    {
+		"model": "users.NotificationSubject",
+		"pk": 6,
+		"fields": {
+			"name": "Ticket status updated",
+			"code": "ticket_status_updated"
+		}
+	},
+    {
+		"model": "users.NotificationSubject",
+		"pk": 7,
+		"fields": {
+			"name": "Batch expired",
+			"code": "batch_expiry_date_reached"
+		}
+	},
+    {
+		"model": "users.NotificationSubject",
+		"pk": 8,
+		"fields": {
+			"name": "Low stock",
+			"code": "product_low_stock"
+		}
+	},
+    {
+		"model": "users.NotificationSubject",
+		"pk": 9,
+		"fields": {
+			"name": "You have a New Order",
+			"code": "you_have_a_new_order"
+		}
+	}	
+]

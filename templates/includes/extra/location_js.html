@@ -1,0 +1,118 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('input[type=text]').focus(function() {
+          $(this).select();
+      });
+  });
+
+  function initAutocomplete() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: -33.8688, lng: 151.2195 },
+      zoom: 13,
+      mapTypeId: "roadmap",
+    });
+
+    // Create the search box and link it to the UI element.
+    // const input2 = document.getElementsB("id_location");
+    const input = $("#AddNewAddress input[name='location']")[0];
+    const searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener("bounds_changed", () => {
+      searchBox.setBounds(map.getBounds());
+    });
+    let markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+      if (places.length == 0) {
+        return;
+      }
+      // Clear out the old markers.
+      markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      markers = [];
+      // For each place, get the icon, name and location.
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach((place) => {
+        if (!place.geometry) {
+          return;
+        }
+
+        var location = place.geometry.location;
+          var lat = location.lat();
+          var lng = location.lng();
+          // $('#pac-input').change(function(){
+          $('#AddNewAddress input[name="latitude"]').val(lat);
+          $('#AddNewAddress input[name="longitude"]').val(lng);
+          // });
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      // map.fitBounds(bounds);
+    });
+  }
+
+  function initAutocomplete2() {
+    const map = new google.maps.Map(document.getElementById("map2"), {
+      center: { lat: -33.8688, lng: 151.2195 },
+      zoom: 13,
+      mapTypeId: "roadmap",
+    });
+
+    // Create the search box and link it to the UI element.
+    // const input2 = document.getElementsB("id_location");
+    const input = $("#EditAddress input[name='location']")[0];
+    const searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener("bounds_changed", () => {
+      searchBox.setBounds(map.getBounds());
+    });
+    let markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+      if (places.length == 0) {
+        return;
+      }
+      // Clear out the old markers.
+      markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      markers = [];
+      // For each place, get the icon, name and location.
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach((place) => {
+        if (!place.geometry) {
+          return;
+        }
+
+        var location = place.geometry.location;
+          var lat = location.lat();
+          var lng = location.lng();
+          // $('#pac-input').change(function(){
+          $('#EditAddress input[name="latitude"]').val(lat);
+          $('#EditAddress input[name="longitude"]').val(lng);
+          // });
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      // map.fitBounds(bounds);
+    });
+  }
+
+  </script>

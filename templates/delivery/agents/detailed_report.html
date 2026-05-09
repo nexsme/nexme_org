@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load order_details_template_tags %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:create_delivery_agent' %}"
+                           role="button"><i class="fas fa-plus mr-2"></i>New Agent</a>
+                    </div>
+                    <!--end col-->
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:delivery_agent_export'  %}"
+                           role="button"><i class="fas fa-plus mr-2"></i>Export To Excel</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Travelled Distance</th>
+                        <th>Trip Completed</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% load el_pagination_tags %}
+                    {% paginate 20 instances %}
+                    {% for i in instances %}
+                    <tr>
+                        <td>{{i.title}}</td>
+                        <td>{{i.start_time}}</td>
+                        <td>{{i.end_time|default:"-"}}</td>
+                        <td>{% get_kilometers i.distance_covered %} Kms</td>
+                        <td>{{i.is_active}}</td>
+                        <td>
+                            <a href="{% url 'delivery_agent:view_trip_report' pk=i.delivery_agent.pk trip_pk=i.pk %}"><i class="las la-eye text-info font-18"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+
+{% endblock %}

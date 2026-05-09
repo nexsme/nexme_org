@@ -1,0 +1,487 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+<!-- editprofilr start -->
+        <div id="EditProfile" class="OverLay specialWidth">
+                <div class="main-container-side">
+                        <div class="proRate-name-div">
+                                <span class="side-popup-close" data-dismiss="modal">×</span>
+                                <span class="mycart-name">
+                                  Edit Profile
+                                </span>
+                        </div>
+                        <form action="{{url}}" class="web-ajax reload close-modal" enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                                  <div class="UserProfileImage-Center">
+                                    <div class="profileImageArea">
+                                        {% if instance.image %}
+                                        <img id="profileImagePreview" src="{{ instance.image.url }}" style="border-radius: 50%; overflow: hidden; object-fit: cover;" alt="Profile">
+                                        {% else %}
+                                        <img id="profileImagePreview" src="{% static 'web/images/profile-image.png' %}" alt="Profile">
+                                        {% endif %}
+
+                                        <a 
+                                          href="web:delete_profile_image" 
+                                          id="deleteProfileImage" 
+                                          onclick="deleteProfilePicture()" 
+                                          class="delete-profile-image">
+                                          <img 
+                                            alt="delete" 
+                                            src="{% static 'web/images/icons/delete-icon.svg' %}"
+                                            >
+                                        </a>
+                                        <a href="#" class="editPrf">
+                                          <input type="file" id="myFile" name="image" accept=".png, .jpg, .jpeg" onchange="validateAndPreviewImage(this)">
+                                            <img src="{% static 'web/images/icons/Icon material-edit.svg' %}" alt="Icon"/>
+                                        </a>
+                                        
+                                    </div>
+                                    
+                                    
+
+                                </div>
+
+                                <div class="ContactDetails-Row UserName">
+                                        <Label>Name</Label>
+                                        {{form.name}}
+                                </div>
+
+                                <div class="ContactDetails-Row">
+                                        <Label>Phone</Label>
+                                     {{form.phone}}
+                                </div>
+
+                                <div class="ContactDetails-Row lastInput">
+                                        <Label>Email</Label>
+                                        {{form.email}}
+                                </div>
+                                <a href="" class="updateButton"><!-- input added nov 8 --><input type="submit">Update</a>
+                        </form>
+                </div>
+        </div>
+<div class="main-container" id="profileSinglePage">
+
+    <div class="profile-Main-Container">
+        <div class="profileTittleMainRow">
+            <div class="profileTittleMainSubRow">
+                Profile
+            </div>
+        </div>
+
+        <div class="profileDetailsMainRow">
+            <div class="profileDetailsMainSubRow">
+
+
+                <div class="UserDetailsRow-Left">
+                    <div class="UserDetailsSubRow-Left">
+
+                        <tbody>
+                        <table>
+                            <tr>
+                                <th class="main">Name</th>
+                                <th class="colon">:</th>
+                                <td>{{instance.name}}</td>
+                            </tr>
+                            <tr>
+                                <th class="main">Phone</th>
+                                <th class="colon">:</th>
+                                <td>{{instance.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th class="main">Email</th>
+                                <th class="colon">:</th>
+                                <td>{{instance.email|default:"Please Update Your Profile"}}</td>
+                            </tr>
+                            {% comment %} <tr>
+                                <!-- <th class="main">Privilege Point</th>
+                                <th class="colon">:</th>
+                                <td>{{instance.current_privilege_points}} P</td> -->
+                            </tr> {% endcomment %}
+                           <!-- <tr>-->
+                               <!-- <th class="main">Birthday</th>-->
+                               <!-- <th class="colon">:</th>-->
+                               <!-- <td>12 may 1985</td>-->
+                           <!-- </tr>-->
+                        </table>
+                        </tbody>
+                    </div>
+
+                </div>
+                <div class="rightprofile">
+                    <div class="UserProfileImage-Right">
+                            {% if instance.image %}
+                            <img src="{{ instance.image.thumbnail.100x100 }}" alt="Profile">
+                            {% else %}
+                            <img alt="Profile" src="{% static 'web/images/profile-image.png' %}">
+                            {% endif %}
+                    </div>
+                    <a href="#">
+                        Edit Profile <i class="zmdi zmdi-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttonAreaRow">
+        </div>
+    </div>
+    <div class="UserAddress-Main-Container">
+
+            <!-- edit-address -->
+            <div class="OverLay" id="EditAddress">
+                <div class="main-container-side">
+
+                    <div class="proRate-name-div">
+                        <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+                        <span class="mycart-name">Edit Address</span>
+                    </div>
+
+                    <form action="" class="web-ajax reload" method="post">
+                    </form>
+                </div>
+            </div>
+            <!-- header end -->
+
+<!-- add-new-address -->
+<div class="OverLay" id="AddNewAddress">
+    <div class="main-container-side">
+
+      <div class="proRate-name-div">
+        <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+        <span class="mycart-name">Add New Address</span>
+      </div>
+      <form action="{% url 'web:payment' %}" class="web-ajax reload" method="post">
+        {% csrf_token %}
+        <div class="AddressMainContainer">
+          <div class="title-Row">Contact Details</div>
+
+          <div class="ContactDetails-Row">
+            <Label>{{address_form.name.label}}</Label>
+            {{address_form.name}}
+          </div>
+
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.phone.label}}</Label>
+            {{address_form.phone}}
+          </div>
+
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.email.label}}</Label>
+            {{address_form.email}}
+          </div>
+
+          <div class="title-Row Details">Address Details</div>
+
+          <div class="ContactDetails-Row">
+            <Label>{{address_form.zone.label}}</Label>
+            {{address_form.zone}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.house_name.label}}</Label>
+            {{address_form.house_name}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.landmark.label}}</Label>
+            {{address_form.landmark}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.street.label}}</Label>
+            {{address_form.street}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{location_form.location.label}}</Label>
+            {{location_form.location}}
+            <div id="map"></div>
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{location_form.latitude.label}}</Label>
+            {{location_form.latitude}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{location_form.longitude.label}}</Label>
+            {{location_form.longitude}}
+          </div>
+          <div class="ContactDetails-Row fifty-fifty">
+            <Label>{{address_form.state.label}}</Label>
+            {{address_form.state}}
+          </div>
+          <h6 href="#" class="text-primary" style="color:#9f0529" id="location_manual">Fetch Current Location</h6>
+          <div class="title-Row">
+            Save Address As
+          </div>
+          <div class="ContactDetails-Row saveAddressAs">
+            <div class="homeSection">
+              <input class="input-hidden" id="home" name="homeoroffice" value="home" type="radio" checked="checked">
+              <label for="home">
+                <img alt="home" src="{% static 'web/images/icons/home.svg' %}" />
+                <span>Home</span>
+              </label>
+            </div>
+            <div class="officeSection">
+              <input class="input-hidden" id="office" name="homeoroffice" value="office" type="radio"/>
+              <label for="office">
+                <img alt="office" src="{% static 'web/images/icons/office.svg' %}"/>
+                <span>Office</span>
+              </label>
+            </div>
+          </div>
+          <div class="commonCheckBox">
+            <label class="container">
+              <input name="default" type="checkbox">
+              <span class="checkmark"><span class="zmdi zmdi-check"></span></span>
+              Use this as my default address
+            </label>
+          </div>
+          <div class="buttonAreaSub">
+            <button type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- header end -->
+
+        </div>
+
+    <div id="address">
+        <div class="bottom" style="width: 100%;">
+            <div class="header-box">
+              <div class="left">
+                <span class="no">{{address_count}}</span>
+                <h1>{% trans "Saved Address" %}</h1>
+              </div>
+              <div class="right">
+                <a class="add-button" href="#">Add Address</a>
+              </div>
+            </div>
+            <div class="container default">
+              <ul id="customerAddress">
+                {% for i in addresses %}
+                <li style="margin-bottom:15px"class="{% if i.is_default %} address-active {% endif %}" data-pk="{{i.pk}}"
+                    data-url="{% url 'web:set_default_address' %}" style="cursor:pointer;">
+                  <div class="item address-section">
+                    <div class="one">
+                      <div class="new-sec">
+                        <h1>{{i.name}}</h1>
+                        <p>
+                          {% if i.address_type == 10 %}
+                          Home
+                          {% else %}
+                          Office
+                          {% endif %}
+                        </p>
+                        <span class="num">{{i.phone}}</span>
+                      </div>
+                      <div class="new-sec">
+                        <div class="option">
+                          <a 
+                            data-get_url="{% url 'web:get_address_edit_form' i.pk %}" 
+                            data-post_url="{% url 'web:edit_address' i.pk %}" class="edit" href="#">
+                            <img alt="edit" src="{% static 'web/images/icons/edit.svg' %}"/>
+                          </a>
+                          <a class="delete" data-id="{{ i.pk }}" data-text="{{ confirm_delete_message }}"
+                            data-title="Are you sure?" href="{% url 'web:delete_address' pk=i.pk %}?source=profile">
+                            <img alt="edit" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                          </a>
+  
+                        </div>
+                      </div>
+                    </div>
+                    <div class="two">
+                      <p>{{i}}</p>
+                    </div>
+                    <div class="three">
+
+                      {% if i.is_default %}
+                      <h1>Default Address</h1>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+
+                {% endfor %}
+              </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #address .item{
+        margin-bottom: 10px;
+        background-color: #9999990f;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #f3f3f30f
+    }
+</style>
+
+{% endblock content %}
+{% block static %}
+{% include 'includes/extra/location_js.html' %}
+<script>
+    (() => {
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          };
+
+        // check if the Geolocation API is supported
+        if (!navigator.geolocation) {
+            message.textContent = `Your browser doesn't support Geolocation`;
+            alert(`Your browser doesn't support Geolocation`);
+            return;
+        }
+
+        // handle click event
+        const btn = document.querySelector('#location_manual');
+        btn.addEventListener('click', function () {
+            // get the current position
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+        });
+
+
+        // handle success case
+        function onSuccess(position) {
+            const {
+                latitude,
+                longitude
+            } = position.coords;
+
+            document.getElementById("id_latitude").value = (position.coords.latitude);
+            document.getElementById("id_longitude").value = (position.coords.longitude);
+        }
+
+        // handle error case
+        function onError() {
+            alert(`Failed to get your location!`);
+        }
+    })();
+
+
+    $("#location_manual").click(function(){
+        $('.manual_location').css('display','block');
+    });
+
+    function ShowHideDiv() {
+      var express = document.getElementById("express");
+      var DateSection = document.getElementById("DateSection");
+      DateSection.style.display = express.checked ? "none" : "block";
+  }
+  
+  function validateAndPreviewImage(input) {
+        var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+        var fileInput = input.files[0];
+
+        if (!allowedExtensions.exec(fileInput.name)) {
+            alert('Invalid file type. Please upload a PNG, JPG, or JPEG file.');
+            // Reset the file input to clear the selected file
+            input.value = '';
+            return false;
+        }
+
+        previewImage(input);
+    }
+
+    function previewImage(input) {
+        var preview = document.getElementById('profileImagePreview');
+        var file = input.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // If no file is selected, show the default image
+            preview.src = "{% static 'web/images/profile-image.png' %}";
+        }
+    }
+    $(document).on('input','#id_name', function () {
+        var inputValue = $(this).val();
+        var sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
+        $(this).val(sanitizedValue);
+    });
+
+    $(document).on('input', '#id_phone', function () {
+    var inputValue = $(this).val();
+    var sanitizedValue = inputValue.replace(/[^0-9]/g, '');
+    $(this).val(sanitizedValue);
+});
+
+function deleteProfilePicture() {
+    var preview = document.getElementById('profileImagePreview');
+    preview.src = "{% static 'web/images/profile-image.png' %}";
+
+    var fileInput = document.getElementById('myFile');
+    fileInput.value = '';
+}
+
+$(document).ready(function () {
+    
+    var profileImageExists = $('#profileImagePreview').attr('src') !== '{% static "web/images/profile-image.png" %}';
+    
+    if (profileImageExists) {
+        $('#deleteProfileImage').click(function (e) {
+            e.preventDefault();  
+            
+            var csrftoken = getCookie('csrftoken');
+            
+            $.ajax({
+                type: 'POST',
+                url: '{% url "web:delete_profile_image" %}',  
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                success: function (data) {
+                    if (data.status === 'success') {
+                    } else {
+                    }
+                },
+                error: function () {
+                    // Handle AJAX request errors
+                    alert('Error sending request to delete profile image.');
+                }
+            });
+        });
+    } else {
+        // If the profile image doesn't exist, hide the delete button
+        $('#deleteProfileImage').hide();
+    }
+
+    // Function to get the CSRF token from the cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Check if the cookie name matches the expected format
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+
+
+</script>
+<style>
+  .saveAddressAs input[type="radio"] + label{
+      border: 2px solid #F9F9F9;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load stock %}
+
+<!-- Page Wrapper -->
+<div class="">
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body card-padding">
+                        <form action="" method="get">
+                            <div class="row m-b-20" style="align-items: center;">
+
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        {% for item in form %}
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="{{ item.id_for_label }}">
+                                                  {{ item.label }}
+
+                                                  {% if item.field.required %}
+                                                  <small class="star text-danger">*</small>
+                                                  {% endif %}
+                                                </label>
+                                                {{ item }}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1 mt-4 flex-end">
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card p-20">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <div class="d-flex justify-content-between">
+                                    <h4>{{ heading }}</h4>
+                                    {% if is_excel_export %}
+                                    <div class="export_button">
+                                        <button class="exportToExcel btn btn-success" title="Export to XLS">Export To Excel</button>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <table class="table table-bordered table2excel">
+                                    <thead>
+                                        <tr>
+                                            <th class="" style="font-weight: bold">Product</th>
+                                            <th class="text-center" style="font-weight: bold">Unit Price</th>
+                                            <th class="text-center" style="font-weight: bold">Unit Cost</th>
+                                            <th class="text-center" style="font-weight: bold">Total Quantity Sold</th>
+                                            <th class="text-center" style="font-weight: bold">Total Sales Amount</th>
+                                            <th class="text-center" style="font-weight: bold">Total Purchase Cost</th>
+                                            <th class="text-center" style="font-weight: bold">Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for instance in product_variants %}
+
+                                        <tr class="product-row">
+                                            {% product_variant_data instance request as variant_data %}
+                                            <td>
+                                                <a class="text-primary" href="{% url 'products:view_variant' pk=instance.pk %}">{{instance}}</a>
+                                            </td>
+                                            <td class="text-right">{{variant_data.price|floatformat:3}}</td>
+                                            <td class="text-right">{{variant_data.cost|floatformat:3}}</td>
+                                            <td class="text-right">{{variant_data.quantity|floatformat:0}}</td>
+                                            <td class="text-right amount">{{variant_data.total_amount|floatformat:3}}</td>
+                                            <td class="text-right cost">{{variant_data.total_cost|floatformat:3}}</td>
+                                            <td class="text-right profit">{{variant_data.profit|floatformat:3}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-center" colspan="4">Total</th>
+                                            <th class="text-right total_amount"></th>
+                                            <th class="text-right total_cost"></th>
+                                            <th class="text-right total_profit"></th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Wrapper -->
+{{ form.media }}
+{% endblock %}
+
+{% block static %}
+<script>
+    var total_amount = 0;
+    var total_cost = 0;
+    var total_profit = 0;
+    $(".product-row").each(function() {
+        total_amount += parseFloat($(this).find('.amount').html());
+        total_cost += parseFloat($(this).find('.cost').html());
+        total_profit += parseFloat($(this).find('.profit').html());
+    });
+
+    $(".total_amount").html(total_amount.toFixed(3));
+    $(".total_cost").html(total_cost.toFixed(3));
+    $(".total_profit").html(total_profit.toFixed(3));
+</script>
+
+{% endblock %}

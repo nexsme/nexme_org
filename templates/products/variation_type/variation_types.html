@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'products:create_variation_type' %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>New Variation Type</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills nav-justified">
+                <li class="nav-item">
+                    <h4 class="m-0"><a href="{% url 'products:variation_types' %}?type=all" class="nav-link {% if type == 'all' %}active{% endif %}">All</a></h4>
+                </li>
+                <li class="nav-item">
+                    <h4 class="m-0"><a href="{% url 'products:variation_types' %}?type=colour" class="nav-link {% if type == 'colour' %}active{% endif %}">Colours</a></h4>
+                </li>
+                <li class="nav-item">
+                    <h4 class="m-0"><a href="{% url 'products:variation_types' %}?type=size" class="nav-link {% if type == 'size' %}active{% endif %}">Sizes</a></h4>
+                </li>
+                <li class="nav-item">
+                    <h4 class="m-0"><a href="{% url 'products:variation_types' %}?type=other" class="nav-link {% if type == 'other' %}active{% endif %}">Others</a></h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Variation Type</th>
+                            {% if type == 'other' or type == 'all' %}<th>Other Variation</th>{% endif %}
+                            <th>Variation Name</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for instance in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ instance.get_variation_type_display }}</td>
+                            {% if type == 'other' or type == 'all' %}<td>{{ instance.other_type|default:'' }}</td>{% endif %}
+                            <td>{{ instance.name }}</td>
+                            <td class="text-right">
+                                <a href="{% url 'products:edit_variation_type' pk=instance.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ instance.pk }}" class="reload action-button remove"
+                                    href="{% url 'products:delete_variation_type' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+{% endblock %}

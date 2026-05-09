@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    
+                    
+                    <form action="{{url}}" class="ajax redirect skip_empty_row" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8">
+
+                                <div class="table-responsive card-body add_item_container ">
+                                    <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                        <thead>
+                                            <tr>
+                                                <th>Zone</th>
+                                                <th>Delivery Charge</th>
+                                                <th class="one"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for form_item in delivery_charge_formset.forms %}
+                                            <tr class="form_set_row">
+                                                <td class="">{{ form_item.to_zone }}</td>
+                                                <td>{{ form_item.normal_charge }}</td>
+                                                <td class="one"></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {{ delivery_charge_formset.management_form }}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+<style>
+    .radio-container{
+        display: flex;
+        justify-content:flex-start;
+    }
+    .homeSection{
+        margin-left: 20px;
+    }
+    .dynamic-formset1-add{
+        text-align: center;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+    $('.delivery_charge_formset table tr.form_set_row').formset({
+        prefix: '{{ delivery_charge_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+
+        'added' : function (row) {
+            row.find('select.selectpicker').each(function(){
+                $(this).selectpicker('refresh');
+            })
+        }
+    });
+});
+
+
+
+</script>
+{{ delivery_charge_formset.media }}
+{% endblock %}

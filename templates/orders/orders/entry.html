@@ -1,0 +1,1950 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+<div class="content container-fluid">
+    <!-- Page Header -->
+
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h3>{{title}}</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{url}}" id="id_form" method="post" class="ajax skip_empty_row redirect">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="form-group col-md-3 col-sm-6" style="display: block;">
+                                <label for="{{ form.prefix.id_for_label }}">
+                                    {{ form.prefix.label }}
+                                    {% if form.prefix.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.prefix }}
+                            </div>
+
+                            <div class="form-group col-md-3 col-sm-6" style="display: block;">
+                                <label for="{{ form.order_id.id_for_label }}">
+                                    {{ form.order_id.label }}
+                                    {% if form.order_id.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.order_id }}
+                            </div>
+
+                            <div class="form-group col-md-3 col-sm-6">
+                                <label for="{{ form.warehouse.id_for_label }}">
+                                    {{ form.warehouse.label }}
+                                    {% if form.warehouse.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.warehouse }}
+                            </div>
+
+                            <div class="form-group customer col-md-3 col-sm-6">
+                                <div class="d-flex justify-content-between">
+                                    <label for="{{ form.customer.id_for_label }}">
+                                        {{ form.customer.label }}
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;"
+                                        data-target="#exampleModalScrollable">Create new customer</p>
+                                </div>
+                                {{ form.customer }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group address col-sm">
+                                <div class="d-flex justify-content-between">
+                                    <label for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;"
+                                        data-target="#AddressModal">Create new address</p>
+                                </div>
+                                {{ form.address }}
+                            </div>
+
+                            <div class="form-group col-sm custom-control custom-switch switch-primary pt-4 pl-5">
+                                <label class="ts-helper" for="ts1">&nbsp;</label>
+                                <input class="custom-control-input" type="checkbox" id="id_is_express_delivery" name="is_express_delivery" />
+                                <label for="id_is_express_delivery" class="custom-control-label ts-label mb-3">
+                                    <span>{{ form.is_express_delivery.label }}</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group col-sm">
+                                <label for="{{ form.delivery_note.id_for_label }}">
+                                    {{ form.delivery_note.label }}
+                                    {% if form.delivery_note.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.delivery_note }}
+                                {% if form.delivery_note.errors %}
+                                <label class="error">{{ form.delivery_note.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group col-sm">
+                                <label for="{{ form.delivery_date.id_for_label }}">
+                                    {{ form.delivery_date.label }}
+                                    {% if form.delivery_date.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.delivery_date }}
+                                {% if form.delivery_date.errors %}
+                                <label class="error">{{ form.delivery_date.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group col-sm">
+                                <label for="{{ form.time_slot.id_for_label }}">
+                                    {{ form.time_slot.label }}
+                                    {% if form.time_slot.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.time_slot }}
+                            </div>
+
+                        </div>
+
+                        <div class="card sale-item-card">
+                            <div class="table-responsive card-body add_item_container order_item_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;">Sl.No</th>
+                                            <th style="min-width: 140px;">Product code</th>
+                                            <th>Product Variant</th>
+                                            <th>Batch</th>
+                                            <th>Available Stock</th>
+                                            <th>Quantity</th>
+                                            <th style="min-width: 100px;">MRP</th>
+                                            <th style="min-width: 160px;">Selling Price</th>
+                                            <th style="min-width: 100px;">Gross Amount</th>
+                                            <th style="min-width: 100px;">Discount</th>
+                                            <!-- <th style="min-width: 100px;">Tax(%) </th>
+                                            <th style="min-width: 100px;">Tax </th> -->
+                                            <th style="min-width: 100px;">IGST %</th>
+                                            <th style="min-width: 100px;">CGST %</th>
+                                            <th style="min-width: 100px;">SGST %</th>
+                                            <th style="min-width: 100px;">IGST Amount</th>
+                                            <th style="min-width: 100px;">CGST Amount</th>
+                                            <th style="min-width: 100px;">SGST Amount</th>
+                                            <th style="min-width: 100px;">Total</th>
+                                            <th class="one"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in order_item_formset.forms %}
+                                        <tr class="form_set_row coloured-row">
+                                            <td class="rowIndex">
+                                                {{ item.id }}
+                                                <input type="text" class="form-control" disabled value="{{ forloop.counter }}">
+                                            </td>
+
+                                            <td>
+                                                <span class="sale_item_barcode p-relative">
+                                                    <input type="text" name="barcode" class="form-control">
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span
+                                                    data-value="{% if is_edit %}{{ item.product_variant.value }}{% endif %}"
+                                                    class="sale_item  product_variant p-relative">
+                                                    {{ item.product_variant }}
+                                                </span>
+                                            </td>
+
+                                            <td class="batch">
+                                                <span data-value="{% if is_edit %}{{ item.batch.value }}{% endif %}"
+                                                    class="batch">
+                                                    {{ item.batch }}
+                                                </span>
+                                            </td>
+
+                                            <td class="current_stock" style="width:2.5cm">
+                                                <span class="current_stock check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="purchase_quantity"
+                                                data-value="{% if is_edit %}{{ item.qty.value }}{% endif %}">
+                                                <span class="order_request_qty">
+                                                    {{ item.qty }}
+                                                </span>
+                                            </td>
+
+                                            <td class="maximum_amount_price"
+                                                data-value="{% if is_edit %}{{ item.mrp.value }}{% endif %}">
+                                                <span class=" check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="minimum_amount" style="display: none;">
+                                                <span class="minimum_amount check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="purchase_amount value"
+                                                data-value="{% if is_edit %}{{ item.price.value }}{% endif %}">
+                                                <span class="">
+                                                    {{ item.price }}
+                                                </span>
+                                            </td>
+
+                                            <td class="simple_total">
+                                                <span class="discount_limit check_empty p-relative">
+                                                    <input type="hidden" class="form-control" readonly value="" />
+                                                </span>
+                                                <span class="simple_total check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" />
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="discount_sale_rate">
+                                                    {{ item.discount_rate }}
+                                                </span>
+                                                <span class="mrp-price"
+                                                    data-value="{% if is_edit %}{{ item.discount.value }}{% endif %}">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="igst">
+                                                    <span data-value="{% if is_edit %}{{ item.igst.value }}{% endif %}"
+                                                    class="igst">
+                                                    {{ item.igst_rate }}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="cgst">
+                                                    <span data-value="{% if is_edit %}{{ item.cgst.value }}{% endif %}"
+                                                    class="cgst">
+                                                    {{ item.cgst_rate }}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="sgst">
+                                                    <span data-value="{% if is_edit %}{{ item.sgst.value }}{% endif %}"
+                                                    class="sgst">
+                                                    {{ item.sgst_rate }}
+                                            </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="igst-amount">
+                                                    {{ item.igst_amount }}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="cgst-amount">
+                                                    {{ item.cgst_amount }}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="sgst-amount">
+                                                    {{ item.sgst_amount }}
+                                                </span>
+                                            </td>
+                                            <input type="hidden" id="customer_state" name="customer_state" value="">
+                                            <!-- <td class="tax_percent">
+                                                <span class="tax_percent check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="tax_amount">
+                                                <span class="tax_amount check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td> -->
+                                            
+                                            <td class="purchase_item_total">
+                                                {% if is_edit != true %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled
+                                                        value="{{item.instance.total}}" style="width:3cm" />
+                                                </span>
+                                                {% else %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="0"
+                                                        style="width:3cm" />
+                                                </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="delete">{% if item.instance.pk %}{{ item.DELETE }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {{ order_item_formset.management_form }}
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-3">
+                                <label for="id_subtotal">
+                                    Subtotal
+                                </label>
+                                <input type="text" readonly id="id_subtotal" class="form-control" placeholder="Subtotal" />
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.delivery_charge.id_for_label }}">
+                                    {{ form.delivery_charge.label }}
+                                    {% if form.delivery_charge.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.delivery_charge }}
+                                <p style="display: none" class="delivery-msg">Delivery charge will not be charged against invoices with total above ₹ <span></span> </p>
+                                <input type="hidden" name="applicable_limit">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.total_amt.id_for_label }}">
+                                    {{ form.total_amt.label }}
+                                    {% if form.total_amt.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.total_amt }}
+                            </div>
+
+                            <div class="form-group col-md-3 ">
+                                <label for="id_payment_type">
+                                    Payment Method
+                                </label>
+                                <input type="text" readonly class="form-control" value="Cash on Delivery">
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+                            <input type="hidden" class="form-control" name='referer_url' value="{{ referer_url }}" />
+
+                            <button type="submit" class="submit-button btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- customer modal start -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Create Customer</h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="address-form ajax reset form" method="post" action="{% url 'sales:customer_from_create' %}">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="{{ customer_form.name.id_for_label }}">
+                                        {{ customer_form.name.label }}
+
+                                        {% if customer_form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.name }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.phone.id_for_label }}">
+                                        {{ customer_form.phone.label }}
+
+                                        {% if customer_form.phone.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.phone }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ customer_form.email.id_for_label }}">
+                                        {{ customer_form.email.label }}
+
+                                        {% if customer_form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.email }}
+                                </div>
+                                <!-- == -->
+                                <div class="form-group d-none">
+                                    <label for="{{ customer_form.customer_type.id_for_label }}">
+                                        {{ customer_form.customer_type.label }}
+
+                                        {% if customer_form.customer_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.customer_type }}
+                                </div>
+                                <!-- == -->
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.opening_balance.id_for_label }}">
+                                        {{ customer_form.opening_balance.label }}
+
+                                        {% if customer_form.state.opening_balanceeld.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.opening_balance }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.opening_type.id_for_label }}">
+                                        {{ customer_form.opening_type.label }}
+
+                                        {% if customer_form.opening_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.opening_type }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.house.id_for_label }}">
+                                        {{ customer_form.house.label }}
+
+                                        {% if customer_form.house.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.house }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.building.id_for_label }}">
+                                        {{ customer_form.building.label }}
+
+                                        {% if customer_form.building.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.building }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.street.id_for_label }}">
+                                        {{ customer_form.street.label }}
+
+                                        {% if customer_form.street.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.street }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.country.id_for_label }}">
+                                        {{ customer_form.country.label }}
+
+                                        {% if customer_form.country.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.country }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.state.id_for_label }}">
+                                        {{ customer_form.state.label }}
+
+                                        {% if customer_form.state.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.state }}
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <input type="hidden" class="form-control" name='referer_url'
+                                    value="{{ referer_url }}" />
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                        </form>
+                        <!-- <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+<!-- customer modal end -->
+
+<!-- customer address modal start -->
+<div style="z-index: 3;" class="modal fade show" id="AddressModal" tabindex="-1" role="dialog"
+aria-labelledby="AddressModalTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h6 class="modal-title m-0" id="AddressModalTitle">Create Customer Address</h6>
+            <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="la la-times"></i></span>
+            </button>
+        </div>
+        <!--end modal-header-->
+        <div class="modal-body">
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <form class="address-form create-address-form reset form" method="post" action="{% url 'customers:save_address' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+
+                            {% for field in address_form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+
+                                    {% if field.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ field }}
+                            </div>
+                            {% endfor %}
+                            <input type="hidden" name="customer_pk">
+
+                            <div id="AddNewAddress"  class="form-group" style="text-align: center;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label for="{{ location_form.location.id_for_label }}">
+                                        {{ location_form.location.label }}
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    <p class="text-primary btn mb-0" id="location_manual">Fetch Current Location</p>
+                                </div>
+                                {{ location_form.location }}
+                                <div id="map"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ location_form.latitude.id_for_label }}">
+                                    {{ location_form.latitude.label }}
+
+                                    {% if location_form.latitude.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ location_form.latitude }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ location_form.longitude.id_for_label }}">
+                                    {{ location_form.longitude.label }}
+
+                                    {% if location_form.longitude.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ location_form.longitude }}
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--end modal-body-->
+    </div>
+    <!--end modal-content-->
+</div>
+<!--end modal-dialog-->
+</div>
+<!-- customer modal end -->
+
+<style>
+    .select2-container .select2-selection--single {
+        padding: 0 0 0 0;
+    }
+    .select2-selection__rendered{
+        margin-bottom: 2px;
+    }
+    .pincode-input::-webkit-input-placeholder {
+        text-align: center;
+        text-align: end;  /* For Chrome, Safari, and newer versions of Edge */
+    }
+    .pincode-input:-moz-placeholder {
+        text-align: center;  /* For Firefox 4-18 */
+    }
+    .pincode-input::-moz-placeholder {
+        text-align: center;  /* For Firefox 19+ */
+    }
+    .pincode-input:-ms-input-placeholder {
+        text-align: center;  /* For IE 10+ */
+    }
+    .privilege_point_amnt {
+        display: none;
+    }
+
+    .privilege_point_used {
+        display: none;
+    }
+
+    .form_set_row td input {
+        min-width: 100px;
+    }
+
+    table .select2-container--default .select2-selection--single {
+        height: 43px;
+    }
+
+    .coloured-row td.batch {
+        background-color: #f3c9c9;
+    }
+
+    @media (max-width: 1024px) {
+        .page-wrapper {
+            margin: 0;
+            width: 100% !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-sm-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block static %}
+{% load static %}
+<style>
+    #modal {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        left: -130px;
+        height: max-content;
+    }
+
+    #modal>div.card {
+        width: 60%;
+        padding: 30px 50px;
+        margin: 0 auto;
+    }
+
+    #modal div.card li.place-order {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+
+    #modal div.card li.place-order div.place-order-link .cancel {
+        background-color: #F69746;
+        border: 1px solid #F69746;
+        color: #fff;
+        border-radius: 5px;
+        padding: .375rem .75rem;
+    }
+
+    tr.form_set_row td input {
+        min-width: 70px;
+    }
+
+    .table tr.form_set_row td,
+    .table tr.form_set_row th {
+        padding: .75rem 0.2rem;
+    }
+</style>
+
+{% include 'includes/extra/location_js.html' %}
+<script>
+    
+
+    (() => {
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          };
+
+        // check if the Geolocation API is supported
+        if (!navigator.geolocation) {
+            message.textContent = `Your browser doesn't support Geolocation`;
+            alert(`Your browser doesn't support Geolocation`);
+            return;
+        }
+
+        // handle click event
+        const btn = document.querySelector('#location_manual');
+        btn.addEventListener('click', function () {
+            // get the current position
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+        });
+
+        // handle success case
+        function onSuccess(position) {
+            const {
+                latitude,
+                longitude
+            } = position.coords;
+
+            console.log(position.coords)
+            document.getElementById("id_latitude").value = (position.coords.latitude);
+            document.getElementById("id_longitude").value = (position.coords.longitude);
+            console.log('success');
+        }
+
+        // handle error case
+        function onError() {
+            alert(`Failed to get your location!`);
+            console.log("error");
+        }
+    })();
+
+    $("#location_manual").click(function(){
+        $('.manual_location').css('display','block');
+    });
+</script>
+
+{% if is_edit %}
+<style>
+    .popup-box {
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 1000;
+    }
+
+    .popup-bg {
+        background: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+    }
+
+    .loader {
+        z-index: 120000;
+        border: 5px solid #f3f3f3;
+        /* Light grey */
+        border-top: 5px solid #3498db;
+        /* Blue */
+        border-radius: 50%;
+        width: 90px;
+        height: 90px;
+        position: fixed;
+        top: 50%;
+        bottom: 50%;
+        right: 50%;
+        left: 50%;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    #id_zone .select2-selection--single  {
+    padding: 0 !important;
+    }
+</style>
+{% endif %}
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+
+    $("#modal_button").on("click", function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        $("#overlay_page").css("display", "block");
+        $("section#modal").animate({ top: "10%" });
+    });
+    function modalHight() {
+        let modal_hei = $("section#modal").outerHeight(true);
+        modal_hei = 0 - modal_hei - 10;
+        $("section#modal").css("top", modal_hei);
+        $("#overlay_page").css("display", "none");
+    }
+    modalHight();
+    $('#modal .cancel').click(function () {
+        modalHight()
+    })
+
+    $('input[type=text]').focus(function () {
+        $(this).select();
+    });
+    $(document).ready(function () {
+        $(document).on('click', 'section#model .cancel', function () {
+            modalHight();
+        });
+        $(document).on('click', "#modal_button", function (event) {
+            // event.stopPropagation();
+            // event.preventDefault();
+            $("section#model").animate({ top: "20%" });
+        });
+    })
+
+</script>
+<script type="text/javascript">
+
+    // reload page if visited by history back or forward
+    window.addEventListener( "pageshow", function ( event ) {
+        var historyTraversal = event.persisted || ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+        if ( historyTraversal )
+            window.location.reload();
+    });
+
+    // {% if is_edit %}
+    function show_loader() {
+        if ($('body div.loader')['length'] == 0)
+            $('body').append('<div class="loader"></div><span class="popup-bg"></span>');
+    }
+
+    function remove_popup(from_sale = false) {
+        if (from_sale) {
+            var last_row_product = $('tr.form_set_row').last().find('.product_price select').val();
+            var last_row_batch = $('tr.form_set_row').last().find('td .batch').attr('data-value');
+
+            if (!last_row_product)
+                $('.popup-box, .loader, .popup-bg').remove();
+            else if (!last_row_batch)
+                $('.popup-box, .loader, .popup-bg').remove();
+        } else {
+            $('.popup-box, .loader, .popup-bg').remove();
+        }
+    }
+    // {% else %}
+    $(document).ready(function() {
+        $('#id_sale_type').change();
+        get_prefix_sale_type()
+    });
+    // {% endif %}
+    function RowIndexUpdate() {
+        $('table tr.form_set_row').each(function () {
+            var row = $(this);
+            row.find('.rowIndex input').val(row[0]['rowIndex']);
+        })
+    }
+
+    // to decreas z-index of modal's background for google div#map to work properly
+    $("#AddressModal").on('shown.bs.modal', function(){
+        $('.modal-backdrop').css('z-index', '2')
+    })
+
+    $('.order_item_formset table tr.form_set_row').formset({
+        prefix: '{{ order_item_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+        'added': function (row) {
+            row.find('.selectpicker').selectpicker();
+            row.find('.purchase_quantity input').val()
+            row.find('.discount_sale_rate input').val(0.0)
+
+            row.find('.rowIndex input').val(row[0]['rowIndex'])
+
+            // {% if is_edit %}
+            row.find('.product_price select option[value=""]').attr('selected', '');
+            row.find('.product_variant select option[value=""]').attr('selected', '');
+            row.find('.batch select option[value=""]').attr('selected', '');
+            row.find('.product_price').attr('data-value', '');
+            row.find('td.batch .batch').attr('data-value', '');
+            row.find('.product_variant').attr('data-value', '');
+            row.find('.purchase_quantity').attr('data-value', '');
+            row.find('.mrp-price').attr('data-value', '');
+            row.find('.purchase_amount.value').attr('data-value', '');
+            row.find('.maximum_amount_price').attr('data-value', '');
+            // {% endif %}
+
+            let row_batch = row.find('td .batch select')
+            let batch_select = `<select name="${row_batch.attr('name')}" id="${row_batch.attr('id')}" class="form-control selectpicker" data-live-search=true></select>`
+            row.find('td .batch').html(batch_select)
+
+            row.find('select.selectpicker').each(function () {
+                $(this).selectpicker('refresh');
+            })
+        },
+        'removed': function (row) {
+            RowIndexUpdate()
+            row.removeClass('form_set_row');
+            calculate();
+        }
+    });
+
+    $(document).ready(function () {
+        $(document).on('click', '#id_use_privilege_point', function () {
+            if ($(this).prop('checked') == true) {
+                //do something
+                $(".privilege_point_amnt").css("display", "block");
+                $(".privilege_point_used").css("display", "block");
+            } else {
+                $(".privilege_point_amnt").css("display", "none");
+                $(".privilege_point_used").css("display", "none");
+            }
+            $("#id_privilege_point_used").val(0)
+            calculate()
+        });
+
+        $(document).on('change keyup', '#id_privilege_point_used', function () {
+            calculate()
+        });
+
+        // {% if is_create_page %}
+        // $('.purchase_quantity input').val(1.00);
+        // {% endif %}
+
+        // {% if is_edit %}
+        $('#id_customer').change();
+        // {% endif %}
+    });
+
+    $(document).ready(function () {
+        // {% if is_edit %}
+        $('.product_variant select').each(function () {
+            getProductVariantData($(this))
+        })
+
+        var myVar = setInterval(function () {
+            remove_popup(true);
+            check_timer();
+        }, 5000);
+
+        function check_timer() {
+            let second_last_batch = $('tr.form_set_row:nth-last-child(2) .batch select');
+            let last_batch = $('tr.form_set_row').last().find('.batch select').val();
+            let pop_up = $('.popup-bg')['length'];
+
+            if (pop_up == 0) {
+                if (second_last_batch) {
+                    clearInterval(myVar);
+                }
+            }
+        }
+        // {% endif %}
+    });
+
+    $('#id_discount').on('change keyup', function () {
+        $this = $(this);
+        calculate();
+    });
+
+    $(document).on('change keyup', '#id_prefix', function () {
+        $this = $(this);
+        get_prefix_sale_id();
+    });
+
+    $(document).on('change keyup', '.product_variant select', function () {
+        $this = $(this);
+        getProductVariantData($this, false);
+    });
+
+    $(document).on('focusout', 'tr.form_set_row .sale_item_barcode input', function () {
+        $selector = $(this);
+        if ($selector.val()) {
+            getProductVariantData($selector, true);
+        }
+    })
+    $(document).on('keypress', 'tr.form_set_row .sale_item_barcode input', function (event) {
+        if (event.which == '10' || event.which == '13') {
+            event.preventDefault();
+            $selector = $(this);
+            getProductVariantData($selector, true);
+        }
+    })
+
+    function getProductVariantData(element, barcode) {
+        var url = "{% url 'sales:get_product_variant_data' %}"
+        var product_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+        var selected_batch_pk = $parent.find('td.batch span.batch').attr('data-value')
+        var is_ok = true;
+
+        if (warehouse == undefined || warehouse == null || warehouse == "")
+            is_ok = false;
+        if (product_id == undefined || product_id == null || product_id == "")
+            is_ok = false
+
+        if (is_ok) {
+            var code = barcode?"yes":"no";
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    batch_id: selected_batch_pk,
+                    warehouse: warehouse,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        var mrp = data['mrp'];
+                        var name = data['name'];
+                        var pk = data['pk'];
+                        var product_code = data['product_code'];
+                        var cess = data['cess'];
+                        // var tax_percent = data['tax_percent'];
+                        var igst = data['igst'];
+                        var cgst = data['cgst'];
+                        var sgst = data['sgst'];
+                        var discount_limit = data['discount_limit'];
+                        var current_stock = data['stock'];
+                        var batch_list = data['batch_list'];
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = '';
+                        } else {
+                            if (batch_list.length == 0) {
+                                var batch_list_option = '<option data-text="Stock Unavailable" value="">Stock Unavailable</option>';
+                            } else {
+                                var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+                            }
+                        }
+
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+
+                        if (batch_list.length == 1) {
+                            $parent.find(".batch select").find('[data-text="0DEFLT"]').attr('selected', '')
+                        }
+
+                        if (selected_batch_pk && selected_batch_pk != '') {
+                            // $parent.find(".batch select option").removeAttr('selected') // not working don't know why
+                            $parent.find(".batch select").find(`[value="${selected_batch_pk}"]`).attr('selected', '')
+                        }
+
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+
+                        let old_qty = $parent.find('.purchase_quantity').attr('data-value')
+                        if (!old_qty) {
+                            // {% if is_edit %}
+                            old_qty = 1
+                            // {% else %}
+                            old_qty = 1
+                            // {% endif %}
+                        }
+                        $parent.find(".purchase_quantity input").val(old_qty);
+                        var rate = 0;
+
+                        if (mrp == 0) {
+                            mrp = price;
+                        } else {
+                            mrp = mrp;
+                        }
+                        var customerState = $('#customer_state').val();
+                        if (customerState == "Kerala") {
+                            igst = 0;
+                            $parent.find(".sgst input").val(sgst);
+                            $parent.find(".cgst input").val(cgst);
+                        }
+                        else if (customerState != "Kerala"){
+                            cgst = 0;
+                            sgst = 0;
+                            $parent.find(".igst input").val(igst);
+                        }
+                        $parent.find(".minimum_amount input").val(0);
+                        $parent.find(".maximum_amount_price input").val(0);
+                        $parent.find(".purchase_amount.value input").val(0);
+                        // $parent.find(".tax_percent input").val(tax_percent);
+                        $parent.find(".igst input").val(igst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".sgst input").val(sgst);
+                        // $parent.find(".product_cess input").val(cess);
+                        $parent.find(".discount_limit input").val(discount_limit);
+                        $parent.find(".current_stock input").val(current_stock);
+                        $parent.find(".mrp-price input").val(0)
+                        // $parent.find(".mrp-price input").val(mrp - price)
+                        $parent.find(".current_stock input").attr('data-stock', current_stock);
+
+                        if (barcode)
+                            $parent.find('.product_variant select').html(`<option selected value="${pk}">${name}</option>`)
+                        else
+                            $parent.find('.sale_item_barcode input').val(product_code);
+
+                        if (batch_list.length >= 1) {
+                            $parent.find(".maximum_amount_price input").val(0);
+                            $parent.find(".purchase_amount.value input").val(0).trigger('keyup');
+                            $parent.find(".current_stock input").val(0);
+                            $parent.find('.current_stock input').attr('data-stock', 0);
+                        }
+
+                        calculate()
+                    } else {
+                        var message = data['message']
+                        var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            if (warehouse == undefined || warehouse == null || warehouse == "") {
+                let title = "Warehouse not selected..!";
+                let message = "Please Select a Warehouse";
+                if (barcode) {
+                    element.val('');
+                } else if (element.parent().hasClass('product_variant')) {
+                    element.html('');
+                }
+                setTimeout(function() {swal(title, message, "error")});
+            }
+        }
+    }
+
+    function get_batch_data($this) {
+        // {% if is_edit %}
+        show_loader();
+        // {% endif %}
+
+        var $parent = $this.parents('tr.form_set_row');
+        var batch_id = $this.val();
+        var sale_type = $('#id_sale_type').val()
+        var url = "{% url 'general:get_batch_data' %}";
+
+        if (batch_id != undefined && batch_id != null && batch_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: batch_id,
+                    sale_type: sale_type,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var stock = data['stock'];
+                        var mrp = data['mrp'];
+                        var price = data['price'];
+                        var cost = data['cost'];
+                        var retail_price = data['retail_price'];
+                        var whole_sale_price = data['whole_sale_price'];
+
+                        $parent.find(".maximum_amount_price input").val(mrp);
+                        $parent.find(".current_stock input").val(stock);
+                        $parent.find('.current_stock input').attr('data-stock', stock);
+
+                        price = Math.round(retail_price * 100) /100
+
+                        //{% if is_edit %}
+                        if ($parent.find(".mrp-price").attr('data-value')) {
+                            old_discount = parseFloat($parent.find(".mrp-price").attr('data-value'));
+                            if (old_discount > 0) {
+                                $parent.find(".mrp-price input").val(old_discount);
+                            }
+                            $parent.find(".mrp-price").attr('data-value', '')
+                        }
+
+                        if ($parent.find(".maximum_amount_price").attr('data-value')) {
+                            old_mrp = parseFloat($parent.find(".maximum_amount_price").attr('data-value'));
+                            if (old_mrp > 0) {
+                                $parent.find(".maximum_amount_price input").val(old_mrp);
+                            }
+                            $parent.find(".maximum_amount_price").attr('data-value', '')
+                        }
+
+                        if ($parent.find(".purchase_amount.value").attr('data-value')) {
+                            old_price = parseFloat($parent.find(".purchase_amount.value").attr('data-value'));
+                            if (old_price > 0) {
+                                price = old_price
+                                $parent.find(".purchase_amount.value input").val(old_price);
+                            }
+                            $parent.find(".purchase_amount.value").attr('data-value', '')
+                        }
+                        console.log(old_price, 'old_price')
+
+                        // {% endif %}
+
+                        let $last_parent = $('.order_item_formset table tbody tr:nth-last-child(2)');
+                        test_name1 = $parent.find('.batch select').attr('name');
+                        test_name2 = $last_parent.find('.batch select').attr('name');
+
+                        if (test_name1 === test_name2) {
+                            $('.order_item_formset .icon_add_item').click();
+                        }
+                        $parent.removeClass('coloured-row');
+                        $parent.next().find('.sale_item_barcode input').focus()
+
+                        $parent.find(".purchase_amount.value input").val(price).trigger('keyup');
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        } else {
+            $parent.addClass('coloured-row');
+        }
+
+        // {% if is_edit %}
+        remove_popup(true);
+        // {% endif %}
+    }
+
+    $(document).on('change keyup', '.discount_rate input', function () {
+        $rate = $('.discount_rate input')
+        rate = $rate.val()
+        if (rate != '') {
+            rate = parseFloat(rate)
+        } else {
+            rate = 0
+        }
+        subtotal = $('#meterial_subtotal').val()
+        if (subtotal != '') {
+            subtotal = parseFloat(subtotal)
+        } else {
+            subtotal = 0
+        }
+        amount = (rate / 100) * subtotal
+        amount = Math.round(amount * 100) / 100
+        $('.discount_amount input').val(amount)
+        total_amount = subtotal - amount
+        total_amount = Math.round(total_amount * 100) / 100
+        $('#meterial_total').val(Math.round(total_amount))
+        $('#id_round_off').val(Math.round((Math.round(total_amount) - total_amount) * 100) / 100)
+
+    });
+
+    $(document).on('change keyup', '.discount_amount input', function () {
+        $amount = $('.discount_amount input')
+        amount = $amount.val()
+        if (amount != '') {
+            amount = parseFloat(amount)
+        } else {
+            amount = 0
+        }
+        subtotal = $('#meterial_subtotal').val()
+        if (subtotal != '') {
+            subtotal = parseFloat(subtotal)
+        } else {
+            subtotal = 0
+        }
+        rate = (amount / subtotal) * 100
+        rate = Math.round(rate * 100) / 100
+        rate = rate.toFixed(2)
+        $('.discount_rate input').val(rate)
+    });
+
+    $(document).on('change keyup', '.purchase_quantity input, .purchase_amount , .purchase_amount_value input, .discount_value ,.paid_amount input,#paid_amount, .discount_sale_rate input', function () {
+        var $this = $(this);
+        var parent = $this.parents('tr.form_set_row');
+        var purchase_quantity = parseFloat(parent.find('.purchase_quantity input').val());
+        var old_purchase_quantity = parseFloat(parent.find('.purchase_quantity').attr('data-value'));
+        if (!purchase_quantity) {
+            purchase_quantity = 0
+        } if (!old_purchase_quantity) {
+            old_purchase_quantity = 0
+        }
+        avaialable_stock = parseFloat(parent.find('.current_stock input').attr('data-stock'));
+        avaialable_stock += old_purchase_quantity
+        avaialable_stock -= purchase_quantity;
+        avaialable_stock = Math.round(avaialable_stock * 100) / 100
+        parent.find('.current_stock input').val(avaialable_stock);
+        calculate();
+        $('#id_discount_rate').change();
+    });
+
+    function gst_fields() {
+        var sale_category = $('#id_sale_category').val();
+        if (sale_category == "intra_state") {
+            $('.sale_item_formset table tr.form_set_row igst-amount').hide();
+            $('.igst-amount').hide();
+            // $('.igst').hide();
+            $('.sale_item_formset table tr.form_set_row cgst-amount').show();
+            $('.cgst-amount').show();
+            $('.sale_item_formset table tr.form_set_row sgst-amount').show();
+            $('.sgst-amount').show();
+        } else if (sale_category == "inter_state") {
+            $('.sale_item_formset table tr.form_set_row cgst-amount').hide();
+            $('.cgst-amount').hide();
+            // $('.cgst').hide();
+            $('.sale_item_formset table tr.form_set_row sgst-amount').hide();
+            $('.sgst-amount').hide();
+            // $('.sgst').hide();
+            $('.sale_item_formset table tr.form_set_row igst-amount').show();
+            $('.igst-amount').show();
+        }
+    }
+
+    function calculate() {
+        var subtotal = 0;
+        var dis_amount = 0;
+        var total_amount = 0
+        var special_discount_amount = 0;
+
+        $('.order_item_formset table tr.form_set_row').each(function () {
+            $this = $(this);
+            var qty = parseFloat($this.find('.purchase_quantity input').val());
+            if (!qty) {
+                qty = 0
+            }
+            selling_price = parseFloat($this.find('.purchase_amount input').val());
+            if (!selling_price) {
+                selling_price = 0
+            }
+            var discount_sale_rate = parseFloat($this.find('.discount_sale_rate input').val());
+            if (!discount_sale_rate) {
+                discount_sale_rate = 0
+            }
+            var discount_limit = parseFloat($this.find('.discount_limit input').val());
+            if (!discount_limit) {
+                discount_limit = 0
+            }
+            var tax_percent = parseFloat($this.find('.tax_percent input').val());
+            if (!tax_percent) {
+                tax_percent = 0
+            }
+            var igst = parseFloat($this.find('.igst input').val());
+            if (!igst) {
+                igst = 0
+            }
+            var cgst = parseFloat($this.find('.cgst input').val());
+            if (!cgst) {
+                cgst = 0
+            }
+            var sgst = parseFloat($this.find('.sgst input').val());
+            if (!sgst) {
+                sgst = 0
+            }
+            // var cess = parseFloat($this.find('.product_cess input').val());
+            // if (!cess) {
+            //     cess = 0
+            // }
+            var mrp = parseFloat($this.find('.maximum_amount_price input').val());
+            if (!mrp) {
+                mrp = 0
+            }
+            var price = parseFloat($this.find('.purchase_amount.value input').val());
+            if (!price) {
+                price = 0
+            }
+            var customerState = $('#customer_state').val();
+            console.log("Customer is from:", customerState);
+            $this.find(".mrp-price input").val(Math.round(((mrp - price) * qty) * 100) / 100)
+            var sale_category = $('#id_sale_category').val();
+            var taxable_amount = (qty * selling_price);
+            // if (discount_sale_rate > discount_limit && discount_limit != 0) {
+            //     alert("Product Discount rate must be less than Discount limit")
+            //     discount_sale_rate = discount_limit
+            //     $this.find('.discount_sale_rate input').val(discount_sale_rate)
+            // }else
+            if (selling_price < discount_sale_rate && discount_limit != 0) {
+                alert("Product Discount rate must be less than selling price")
+                discount_sale_rate = discount_limit
+                $this.find('.discount_sale_rate input').val(Math.round(discount_sale_rate * 100) / 100)
+            }
+            else if (selling_price >= discount_sale_rate) {
+                discount_sale_rate = discount_sale_rate * 100 / selling_price
+                if (!discount_sale_rate) {
+                    discount_sale_rate = 0
+                }
+                single_discount = (selling_price * discount_sale_rate) / 100;
+                // single_discount = (qty / discount_sale_rate);
+                discount = (taxable_amount * discount_sale_rate) / 100;
+            }
+            else {
+                discount_sale_rate = 0;
+            }
+
+            var tax_amount = ((((qty * selling_price) / (1 + (tax_percent / 100))) * tax_percent) / 100);
+
+            console.log(tax_amount, '-----------tax_amount');
+            // var cess_total = ((parseFloat(taxable_amount) * cess) / 100);
+            // cess_total = Math.round(cess_total * 100) / 100;
+            single_tax = 0
+            single_tax = selling_price * (tax_percent / 100)
+            net_rate = selling_price - single_discount;
+            var taxable_amount = ((qty * selling_price))
+            var taxable_amount_2 = ((qty * mrp))
+
+            total = taxable_amount //+ tax_amount
+            if (isNaN(total)) {
+                var total = 0;
+            } else if (total < 0 || taxable_amount < 0) {
+                var total = 0;
+                var taxable_amount = 0;
+            }
+            total = total - discount
+
+            tax_amount = Math.round(tax_amount * 100) / 100;
+            net_rate = Math.round(net_rate * 100) / 100;
+            total = Math.round(total * 100) / 100;
+            taxable_amount_2 = Math.round(taxable_amount_2 * 100) / 100;
+
+            if (customerState == "Kerala") {
+                igst = 0;
+                total_gst_rates = ((cgst + sgst) / 100)
+                actual_amount = total / (1 + total_gst_rates);
+                console.log("Actual amount " + actual_amount);
+                igst_amount = 0
+                cgst_amount = Math.round((actual_amount * (cgst / 100)) * 100) / 100;
+                sgst_amount = Math.round((actual_amount * (sgst / 100)) * 100) / 100;
+
+            }
+            else {
+                cgst = 0;
+                sgst = 0;
+                total_gst_rates = (igst) / 100
+                actual_amount = total / (1 + total_gst_rates);
+                igst_amount = Math.round((actual_amount * (igst / 100)) * 100) / 100;
+                cgst_amount = 0;
+                sgst_amount = 0;
+            }
+
+            $this.find('.igst-amount input').val(igst_amount);
+            $this.find('.cgst-amount input').val(cgst_amount);
+            $this.find('.sgst-amount input').val(sgst_amount);
+            $this.find('.purchase_item_total input').val(total);
+            $this.find('.tax_amount input').val(tax_amount);
+            $this.find('.simple_total input').val(taxable_amount_2);
+            // $this.find('.cess-amount input').val(cess_total);
+            $this.find('.net_rate input').val(net_rate);
+            if (!total) {
+                total = 0;
+            }
+            subtotal += total;
+        });
+
+        var dis_amount = parseFloat($('#id_discount').val());
+        total_amount = subtotal - dis_amount
+        total_amount = Math.round(total_amount * 100) / 100
+        subtotal = Math.round(subtotal * 100) / 100
+
+        $("#meterial_total").val(Math.round(total_amount));
+
+        let current_balance = parseFloat($("#id_balance").val())
+        let balance_type = $("#id_balance").attr('data-balance-type')
+        let paid_amount = total_amount - parseFloat($("input#paid_amount").val())
+
+        // console.log(current_balance,balance_type,paid_amount)
+
+        if (current_balance && paid_amount) {
+            if (balance_type == 'credit')
+                balance = current_balance + paid_amount
+            else
+                balance = current_balance - paid_amount
+
+            $('#balance').siblings('label').text("Balance")
+            balance = Math.round(balance * 100) / 100
+            $('#balance').val(balance)
+        }
+
+        var out_standing = parseFloat($("#meterial_total").val());
+
+        // {% if is_edit %}
+        customer_pk = $('#id_customer').val();
+        if (customer_pk == '{{ instance.customer.pk|safe }}') {
+            out_standing -= parseFloat('{{ instance.total }}')
+        }
+        // {% endif %}
+
+        if (!current_balance)
+            current_balance = 0
+        if (balance_type == 'credit') {
+            out_standing -= current_balance
+        }
+        else if (balance_type == 'debit') {
+            out_standing += current_balance
+        }
+
+        if ($("#id_use_privilege_point").is(":checked")) {
+            var privilege_point_used = $('#id_privilege_point_used').val()
+            var value_of_point = $('#id_value_of_point').val()
+
+            if(!privilege_point_used){
+                privilege_point_used = 0
+            }
+            if(!value_of_point){
+                value_of_point = 0
+            }
+            point_amount = parseFloat(privilege_point_used) * parseFloat(value_of_point)
+            point_amount = Math.round(point_amount * 100) / 100
+            $('#id_privilege_point_amnt').val(point_amount)
+            out_standing = out_standing - point_amount
+        }
+        $('#id_total_outstanding').val(Math.round(out_standing * 100) / 100)
+
+        $('#id_round_off').val(Math.round((Math.round(total_amount) - total_amount) * 100) / 100)
+
+        let delivery_charge = parseFloat($('#id_delivery_charge').val());
+        let applicable_limit= parseFloat($('[name="applicable_limit"]').val());
+
+        delivery_charge = delivery_charge?delivery_charge:0
+        applicable_limit = applicable_limit?applicable_limit:0
+
+        applicable_limit = 0 // since client wanted it like that
+
+        let is_express = $("#id_is_express_delivery").is(":checked")
+
+        if (!is_express && subtotal >= applicable_limit && applicable_limit > 0){
+            delivery_charge = 0
+        }
+
+        let final_total = subtotal + delivery_charge;
+        final_total = Math.round(final_total * 100) / 100;
+
+        $("#id_subtotal").val(subtotal);
+        $("#id_total_amt").val(final_total);
+    }
+
+    function get_customer(element) {
+        var url = "{% url 'customers:get_customer' %}"
+        var customer_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+
+        if (customer_id != undefined || customer_id != null || customer_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: customer_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var house = data['house'];
+                        var building = data['building'];
+                        var street = data['street'];
+                        var name = data['name'];
+                        var phone = data['phone'];
+                        var email = data['email'];
+                        var state = data['state'];
+                        var current_balance = data['current_balance'];
+                        var current_privilege_points = data['current_privilege_points'];
+                        var privilege_points = data['privilege_points'];
+                        var minimum_amount = data['minimum_amount'];
+                        var value_of_point = data['value_of_point'];
+                        $("#customer_state").val(state);
+                        $(".address-form [name='house_name']").val(house);
+                        $(".address-form [name='landmark']").val(building);
+                        $(".address-form [name='street']").val(street);
+                        $(".address-form [name='name']").val(name);
+                        $(".address-form [name='phone']").val(phone);
+                        $(".address-form [name='email']").val(email);
+
+                        $('[name="customer_pk"]').val(customer_id)
+                        $('#id_cust_point').val(privilege_points);
+                        $('#id_minimum_amount').val(minimum_amount);
+                        $('#id_value_of_point').val(value_of_point);
+                        $('#id_cust_point').val(current_privilege_points);
+                        $('#id_privilege_point_used').attr('max', current_privilege_points);
+                        gst_fields()
+                        
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+    function get_prefix_sale_id(element) {
+        var url = "{% url 'sales:get_prefix_sale_id' %}"
+        var prefix_id = $('#id_prefix').val();
+        if (prefix_id != undefined || prefix_id != null || prefix_id != "" || sale_type != undefined || sale_type != null || sale_type != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: prefix_id,
+                    sale_type: 'order',
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var sale_id = data['sale_id'];
+
+                        $('#id_order_id').val(sale_id)
+
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+    function get_prefix_sale_type() {
+        var url = "{% url 'sales:get_prefix_sale_type' %}"
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: 'json',
+            data: {
+                sale_type: 'order',
+            },
+            success: function (data) {
+                var status = data['status'];
+                if (status == 'true') {
+                    var output = [];
+                    var data = data['data'];
+                    let first = true;
+
+                    $.each(data, function(key, value){
+                        if (first){
+                            output.push(`'<option selected value="${value['id']}">${value['title']}</option>`);
+                            first=false;
+                        }
+                        else{
+                            output.push(`'<option value="${value['id']}">${value['title']}</option>`);
+                        }
+                    });
+                    $('#id_prefix').html(output.join(''));
+                    $('#id_prefix').change()
+                }
+            },
+            error: function (data) {
+            }
+        })
+    }
+
+    function getTimeSlots(date){
+
+        $.ajax({
+            type: "GET",
+            url: '{% url "web:get_time_slots" %}',
+            dataType: "json",
+            data: {
+                date: date
+            },
+
+            success: function (data) {
+                slots = data['slots']
+                html_content = '<option> -------- </option>'
+
+                for (var i = 0; i < slots.length; i++) {
+                    html_content += `<option value="${slots[i]['pk']}">${slots[i]['name']}</option>`;
+                }
+                $("#id_time_slot").html(html_content)
+            },
+
+            error: function (data) {
+                var title = "An error occurred";
+                var message = data;
+                swal(title, message, "error");
+            }
+        });
+    }
+
+    $('.customer select').on('change keyup', function () {
+        $('#id_balance').val(0).attr('data-balance-type', '');
+        $('.balance_label').text('')
+
+        $this = $(this);
+        get_customer($this);
+    });
+
+    $('#id_address, #id_warehouse, #id_is_express_delivery').on('change', function () {
+        var $this = $(this)
+        var url = "{% url 'general:get_delivery_charge' %}"
+        var address_id = $("#id_address").val();
+        var warehouse_id = $("#id_warehouse").val();
+        var delivery_type = "normal"
+
+        if($("#id_is_express_delivery").is(":checked"))
+            delivery_type = "express"
+
+        var address_ok = false, warehouse_ok = false;
+
+        if (address_id != undefined && address_id != null && address_id != "")
+            address_ok = true
+        if (warehouse_id != undefined && warehouse_id != null && warehouse_id != "")
+            warehouse_ok = true
+
+        if (address_ok && warehouse_ok) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    address: address_id,
+                    warehouse: warehouse_id,
+                    delivery_type: delivery_type,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var delivery_charge = data['delivery_charge'];
+                        var applicable_limit = data['applicable_limit'];
+
+                        if (delivery_type == "normal")
+                            // $('.delivery-msg').show()
+                            console.log('delivery-msg');
+                        else
+                            $('.delivery-msg').hide()
+
+                        if(applicable_limit == 0){
+                            $('.delivery-msg').hide()
+                            applicable_limit = ''
+                        }
+
+                        $('.delivery-msg span').text(applicable_limit)
+                        $('[name="applicable_limit"]').val(applicable_limit)
+
+                        $('#id_delivery_charge').val(delivery_charge)
+
+                        calculate()
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+
+    });
+
+    $("#id_delivery_date").on("change", function(){
+        var date = $(this).val();
+        if(date)
+            getTimeSlots(date);
+        else
+            $("#id_time_slot").html('')
+    });
+
+    $('#cess #id_add_cess').on('change', function () {
+        // get_cess();
+        calculate();
+    })
+
+    $(document).on('change keyup', '.batch select', function () {
+        var parent = $this.parents('tr.form_set_row');
+
+        $this = $(this);
+        get_batch_data($this)
+    });
+
+</script>
+<script>
+    function TransferTypeChanged() {
+        $('#id_transfer_type option[value=""]').remove()
+        var transfer_type = $('#id_transfer_type').val()
+
+        $('.voucher-row .bank, .voucher-row .draft, .voucher-row .transaction, .voucher-row .cheque').hide()
+
+        if (transfer_type == 15) {
+            $('.voucher-row .bank, .voucher-row .cheque').show()
+        }
+        else if (transfer_type == 20) {
+            $('.voucher-row .bank, .voucher-row .draft').show()
+        }
+        else if (transfer_type == 25) {
+            $('.voucher-row .bank, .voucher-row .transaction').show()
+        }
+    }
+
+    $(document).ready(function () {
+        TransferTypeChanged()
+    })
+    $('#id_transfer_type').on('change', function () {
+        TransferTypeChanged()
+    })
+
+    $(document).on('input', '.select2-search__field', function (e) {
+    var inputValue = $(this).val();
+
+    var sanitizedValue = inputValue.replace(/[^a-zA-Z0-9\s]/g, '');
+
+    sanitizedValue = sanitizedValue.substring(0, 50);
+
+    $(this).val(sanitizedValue);
+
+    if (sanitizedValue.length >= 50 && e.which !== 8) {
+        e.preventDefault();
+    }
+});
+
+$(document).on('submit', 'form.create-address-form', function(e){
+		e.preventDefault();
+		var $this = $(this);
+
+        var url = $this.attr('action');
+        var method = $this.attr('method');
+        var data = $this.serialize();
+
+        jQuery.ajax({
+            type : method,
+            url : url,
+            dataType : 'json',
+            data : new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success : function(data) {
+                var status = data['status'];
+                var title = data['title'];
+                var message = data['message'];
+                
+                if(status=='true'){
+                    var pk = data['id'];
+                    var name = data['address'];
+                    $this[0].reset();
+                    $this.find('.select2-hidden-accessible').val(null).trigger('change').click();
+                    $('#AddressModal').modal('toggle')
+                    $('#id_address').html(`<option value="${pk}" selected>${name}</option>`)
+
+                }
+                else {
+                    if (title) {
+                        title = title;
+                    } else {
+                        title = "An Error Occurred";
+                    }
+
+                    swal(title, message, "error");
+
+                    if (stable != "true") {
+                        window.setTimeout(function () {
+                        }, 2000);
+                    }
+                }
+
+            },
+            error: function (data) {
+                remove_popup();
+
+                $this.find('button, input[type="submit"]').removeAttr('disabled');
+                var title = "An error occurred";
+                var message = "An error occurred. Please try again later.";
+                document.onkeydown = function (evt) {
+                    return true;
+                };
+                swal(title, message, "error");
+            }
+        });
+	});
+    $(document).on('submit', 'form.customer-form', function(e){
+		e.preventDefault();
+		var $this = $(this);
+
+        var url = $this.attr('action');
+        var method = $this.attr('method');
+        var data = $this.serialize();
+
+        jQuery.ajax({
+            type : method,
+            url : url,
+            dataType : 'json',
+            data : new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success : function(data) {
+                var status = data['status'];
+                var name = data['name'];
+                var pk = data['customer_id'];
+                var title = data['title'];
+                var message = data['message'];
+                console.log("dsfasdfsf");
+
+                if(status=='true'){
+                    $this[0].reset();
+                    $this.find('.select2-hidden-accessible').val(null).trigger('change').click();
+                    $('#exampleModalScrollable').modal('toggle')
+                    $('#id_customer').html(`<option value="${pk}" selected>${name}</option>`)
+                }
+                else {
+                    if (title) {
+                        title = title;
+                    } else {
+                        title = "An Error Occurred";
+                    }
+
+                    swal(title, message, "error");
+
+                    if (stable != "true") {
+                        window.setTimeout(function () {
+                        }, 2000);
+                    }
+                }
+
+            },
+            error: function (data) {
+                remove_popup();
+
+                $this.find('button, input[type="submit"]').removeAttr('disabled');
+                var title = "An error occurred";
+                var message = "An error occurred. Please try again later.";
+                document.onkeydown = function (evt) {
+                    return true;
+                };
+                swal(title, message, "error");
+            }
+        });
+	});
+</script>
+{{ order_item_formset.media }}
+{{ form.media }}
+{% endblock %}

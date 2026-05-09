@@ -1,0 +1,43 @@
+
+# Created by sabeel
+
+.DS_Store
+._*
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+
+migrations/*.py
+*/migrations/*.py
+*/*/migrations/*.py
+
+!migrations/__init__.py
+!*/migrations/__init__.py
+!*/*/migrations/__init__.py
+
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+settings.ini
+onaiza.sh
+
+new_db.json
+db_latest.json
+db-onaiza.json
+onainza-db.json
+
+# Environments
+.env
+.venv
+env/
+venv/
+myenv/
+.vscode
+.git_credentials
+media.zip
+*.zip

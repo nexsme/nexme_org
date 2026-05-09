@@ -1,0 +1,130 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+{% block content %}
+
+    <!-- header end -->
+    <section id="payment" class="orderConfirmed">
+        <section class="wrapper container">
+            <section class="heading">
+                {% if order_instance.order_status == '10' %}<h1>Order Confirmed!</h1>
+                {% elif order_instance.order_status == '20' %} <h1>Order Shipped</h1>
+                {% elif order_instance.order_status == '30' %} <h1>Order Delivered</h1>
+                {% elif order_instance.order_status == '40' %} <h1>Order Cancelled</h1>
+                {% else %} <h1>Order</h1>
+                {% endif %}
+                <p>Your Order Number &nbsp;<span>#{{order_instance.order_id}}</span></p>
+		    </section>
+
+            <form >
+                <section class="content">
+                    <section class="left">
+                        <div class="head-pay">
+                            <h3>{% trans "IN THIS ORDER" %}</h3>
+                        </div>
+                        <div class="tabs">
+
+                            {% for i in order_item_instances %}
+
+                                <div class="pro-card">
+                                    <div class="img-box">
+
+                                         {% if i.product_variant.image %}
+                                          <img src="{{i.product_variant.image.thumbnail.200x200}}" alt="Image" />
+                                        {% else %}
+                                          <img src="{% static 'web/images/placeholder.jpg' %}" style="width:78px;" alt="Image" />
+                                        {% endif %}
+                                    </div>
+                                    <div class="pay-content">
+                                        <div class="productDetails">
+                                            <h6 class="">{{ i.product_variant }}</h6>
+                                            <h3 class="main-heading" >Quantity: {{ i.qty|floatformat:0 }}</h3>
+                                        </div>
+                                        <div class="QuantitybuttonAreaMain-row">
+                                            <div class="QuantitybuttonAreaSub-row">
+                                                <h6><span class="rupees-symbol">{% trans "₹" %} </span>{{i.product_variant.retail_price|floatformat:2}}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                            <div class="contactSection">
+                                <div class="head-pay">
+                                    <h3>{% trans "YOU WILL RECIEVE UPDATE ON" %}</h3>
+                                </div>
+                                <div class="numberSection">
+                                    <h3 class="first" >{% trans "Phone" %}</h3>
+                                    <h3 class="second">{{order_instance.billing_phone}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <section class="right-box">
+                        <div class="head-pay">
+                            <h3>PAYMENTS DETAILS</h3>
+                        </div>
+                        <div class="cart-list">
+                            <div class="contents borderContents">
+                                <div class="list-content">
+                                    <h3>Total Amount</h3>
+                                    <h3>Payment method</h3>
+                                </div>
+                                <div class="list-content lastContent">
+                                    <h3 class="boldClass"><span class="rupees-symbol">{% trans "₹" %} </span>{{order_instance.total_amt|floatformat:2}}</h3>
+                                    <h3 class="boldClass lastClass">{{order_instance.payment_method}}</h3>
+                                </div>
+                            </div>
+                            <div class="head-pay">
+                                <h3>Order Details</h3>
+                            </div>
+                            <div class="contents">
+                                <div class="list-content">
+                                    <h3>Item Price</h3>
+                                    <h6>{{order_instance.get_product_total}}</h6>
+                                </div>
+                                <div class="list-content">
+                                    <h3>Delivery Charge</h3>
+                                    <h6>{{order_instance.delivery_charge}}</h6>
+                                </div>
+                                <!-- <div class="list-content">
+                                    <h3>Tax</h3>
+                                    <h6>0</h6>
+                                </div> -->
+                                <div class="list-content">
+                                    <h3>Gift Voucher</h3>
+                                    <h6 class="coupon-amt">{{order_instance.voucher_amount}}</h6>
+                                </div>
+                                <div class="list-content">
+                                    <h3>Wallet Amount</h3>
+                                    <h6>{{order_instance.wallet_amount}}</h6>
+                                </div>
+                                <div class="list-content">
+                                    <h6 class="bolder">Total Amount</h6>
+                                    <h6 class="bolder"><span class="rupees-symbol">{% trans "₹" %}&nbsp;</span>{{order_instance.total_amt|floatformat:2}}</h6>
+                                </div>
+                            </div>
+                            <div class="contents borderContents-bottom">
+                                <h3>SHIPPING ADDRESS</h3>
+                                <address>
+                                    Name : {{order_instance.billing_name}} <br>
+                                    Phone : {{order_instance.billing_phone}} <br>
+                                    House Name : {{order_instance.billing_address}} <br>
+                                    landmark : {{order_instance.billing_landmark}} <br>
+                                    Street Name: {{order_instance.billing_street}}
+                                </address>
+                            </div>
+                            <button type="submit" id="cntn-shopping" data-url="{% url 'web:index' %}" data-action-url="{% url 'web:clear_sessions' %}"><a
+                                    href="javascript:void(0);"   style="color: #fff">Continue Shopping</a></button>
+                        </div>
+                    </section>
+                </section>
+            </form>
+        </section>
+    </section>
+
+{% endblock content %}
+

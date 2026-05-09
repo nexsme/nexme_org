@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+
+        <div class="card-body">
+          <form action="{{url}}" class="ajax redirect" method="post">
+            {% csrf_token %}
+            <div class="row">
+              {% if instance.warehouse %}
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.warehouse.id_for_label }}">
+                    {{ form.warehouse.label }}
+
+                    {% if form.warehouse.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.warehouse }}
+                </div>
+              </div>
+              {% else %}
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.vendor.id_for_label }}">
+                    {{ form.vendor.label }}
+
+                    {% if form.vendor.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.vendor }}
+                </div>
+              </div>
+              {% endif %}
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.to_zone.id_for_label }}">
+                    {{ form.to_zone.label }}
+
+                    {% if form.to_zone.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.to_zone }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.normal_charge.id_for_label }}">
+                    {{ form.normal_charge.label }}
+
+                    {% if form.normal_charge.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.normal_charge }}
+                </div>
+              </div>
+              {% if instance.warehouse %}
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.express_charge.id_for_label }}">
+                    {{ form.express_charge.label }}
+
+                    {% if form.express_charge.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.express_charge }}
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            <div class="text-right">
+              <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

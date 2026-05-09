@@ -1,0 +1,1410 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" enctype="multipart/form-data" class="ajax redirect product-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.category.id_for_label }}">
+                                        {{ form.category.label }}
+
+                                        {% if form.category.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.category }}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#category_modal">Create new category</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.subcategory.id_for_label }}">
+                                        {{ form.subcategory.label }}
+
+                                        {% if form.subcategory.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.subcategory }}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#exampleModalScrollable">Create new sub-category</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.brand.id_for_label }}">
+                                        {{ form.brand.label }}
+
+                                        {% if form.brand.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.brand }}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#brand_modal">Create new brand</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.hsn.id_for_label }}">
+                                        {{ form.hsn.label }}
+
+                                        {% if form.brand.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.hsn }}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#hsn_modal">Create new hsncode</p>
+                                </div>
+                            </div>
+
+                            {% comment %}
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.vendor.id_for_label }}">
+                                        {{ form.vendor.label }}
+
+                                        {% if form.vendor.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.vendor }}
+                                </div>
+                            </div>
+                            {% endcomment %}
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.unit_of_measurement.id_for_label }}">
+                                        {{ form.unit_of_measurement.label }}
+
+                                        {% if form.unit_of_measurement.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.unit_of_measurement }}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#uom_modal">Create new unit of measurement</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group custom-control custom-switch switch-primary " style="margin-bottom: 0;margin-top: 30px;">
+                                    <input class="custom-control-input" {% if form.is_active.value %}checked{% endif %} type="checkbox" id="id_is_active" name="is_active" />
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="id_is_active" class="custom-control-label ts-label mb-3">
+                                        <span>Is Active product</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group custom-control custom-switch switch-primary " style="margin-bottom: 0;margin-top: 30px;">
+                                    <input class="custom-control-input" {% if form.is_varying_price.value %}checked{% endif %} type="checkbox" id="id_is_varying_price" name="is_varying_price" />
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="id_is_varying_price" class="custom-control-label ts-label mb-3">
+                                        <span>Is varying price</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 has_special_variant">
+                                <div class="form-group custom-control custom-switch switch-primary " style="margin-bottom: 0;margin-top: 30px;">
+                                    <input class="custom-control-input" {% if form.has_special_variant.value %}checked{% endif %} type="checkbox" id="id_has_special_variant" name="has_special_variant" />
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="id_has_special_variant" class="custom-control-label ts-label mb-3">
+                                        <span>Has Special Variants</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 special_category">
+                                <div class="form-group">
+                                    <label for="{{ form.special_category.id_for_label }}">
+                                        {{ form.special_category.label }}
+
+                                        {% if form.special_category.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.special_category }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.cancellable_duration_type.id_for_label }}">
+                                        {{ form.cancellable_duration_type.label }}
+
+                                        {% if form.cancellable_duration_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.cancellable_duration_type }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.cancellable_duration.id_for_label }}">
+                                        {{ form.cancellable_duration.label }}
+
+                                        {% if form.cancellable_duration.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.cancellable_duration }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.image.label }}
+
+                                        {% if form.image.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.image }}
+                                    {% if is_edit %}
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;" class="text-primary" data-target="#image_modal">Existing image</p>
+
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="{{ form.returnable_duration_type.id_for_label }}">
+                                        {{ form.returnable_duration_type.label }}
+
+                                        {% if form.returnable_duration_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.returnable_duration_type }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.returnable_duration.id_for_label }}">
+                                        {{ form.returnable_duration.label }}
+
+                                        {% if form.returnable_duration.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.returnable_duration }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.description.id_for_label }}">
+                                        {{ form.description.label }}
+
+                                        {% if form.description.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.meta_description.id_for_label }}">
+                                        {{ form.meta_description.label }}
+
+                                        {% if form.meta_description.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.meta_description }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {% if not is_edit %}
+                        <div class="card ordinary-variant-card">
+                            <div class="table-responsive card-body add_item_container product_variation_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th data-column-id="image">Product Variant</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th style="min-width: 130px;">Default Variant</th>
+                                            <th style="min-width: 130px;">Title</th>
+                                            <th style="min-width: 130px;">Product code</th>
+                                            <th style="min-width: 130px;">WareHouses</th>
+                                            <th style="min-width: 130px;">Colour variation</th>
+                                            <th style="min-width: 130px;">Size variation</th>
+                                            <th style="min-width: 130px;">Other variation</th>
+                                            <th style="min-width: 130px;">Unit</th>
+                                            <th style="min-width: 130px;">Warranty</th>
+                                            <th style="min-width: 130px;">Batch Number</th>
+                                            <th style="min-width: 130px;">Manufacturing Date</th>
+                                            <th style="min-width: 130px;">Expire Date</th>
+                                            <th style="min-width: 110px;" class="commission-percentage">Commission(%)</th>
+                                            <th style="min-width: 110px;">Cost</th>
+
+                                            <th style="min-width: 110px;">MRP</th>
+                                            <th style="min-width: 110px;">Retail Price</th>
+                                            <th style="min-width: 110px;">Whole Sale Quantity</th>
+                                            <th style="min-width: 110px;">Whole Sale Price</th>
+
+                                            <th style="min-width: 110px;">Low Stock Limit</th>
+                                            <th style="min-width: 110px;">First Time Stock</th>
+                                            <th style="min-width: 110px;">Discount Limit</th>
+                                            <th style="min-width: 130px;">IGST</th>
+                                            <th style="min-width: 130px;">CGST</th>
+                                            <th style="min-width: 130px;">SGST</th>
+                                            <th style="min-width: 130px;">Default Image</th>
+                                            <th style="min-width: 130px;">Other Images</th>
+                                            <th style="min-width: 100px;"></th>
+                                        </tr>
+                                        {% for item in product_variation_formset.forms %}
+                                        <tr class="form_set_row product_variation">
+                                            <td class="text-center">
+                                                <span class="is_default">
+                                                    {{ item.is_default }}
+                                                </span>
+                                            </td>
+                                            <td class="title">
+                                                {{ item.id }}
+                                                <span class="order_request_qty">
+                                                    {{ item.title }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {{ item.product_code }}
+                                                </span>
+                                            </td>
+                                            <td class="warehouse">
+                                                <span>
+                                                    {{ item.warehouse }}
+                                                </span>
+                                            </td>
+
+                                            <td>{{ item.colour_variation }}</td>
+                                            <td>{{ item.size_variation }}</td>
+                                            <td>{{ item.other_variation }}</td>
+                                            <td><span class="unit">{{ item.unit }}</span></td>
+                                            <td><span>{{ item.warranty }}</span></td>
+                                            <td>
+                                                <span class="order_request_qty">
+                                                    {{ item.batch_number }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="order_request_qty">
+                                                    {{ item.manufacturing_date }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="order_request_qty">
+                                                    {{ item.expire_date }}
+                                                </span>
+                                            </td>
+                                            <td class="commission-percentage">
+                                                <span class="commission_percentage">
+                                                    {{ item.commission_percentage }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="order_request_qty">
+                                                    {{ item.cost }}
+                                                </span>
+                                            </td>
+
+                                            <td class="image">
+                                                <span class="order_request_qty">
+                                                    {{ item.mrp }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="retail_price">
+                                                    {{ item.retail_price }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="whole_sale_quantity">
+                                                    {{ item.whole_sale_quantity }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="whole_sale_price">
+                                                    {{ item.whole_sale_price }}
+                                                </span>
+                                            </td>
+
+                                            <td class="low_stock_limit">
+                                                <span class="order_request_qty">
+                                                    {{ item.low_stock_limit }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="order_request_qty">
+                                                    {{ item.first_time_stock }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="discount_limit">
+                                                    {{ item.discount_limit }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="igst">
+                                                    <input class="number form-control" name="1gst_rate" id="" placeholder="IGST Rate">
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="cgst">
+                                                    <input class="number form-control" name="cgst_rate" id="" placeholder="CGST Rate">
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="sgst">
+                                                    <input class="number form-control" name="sgst_rate" id="" placeholder="SGST Rate">
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="order_request_qty">
+                                                    {{ item.image }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ item.images }}
+                                            </td>
+                                            <td style="min-width: 100px;" class="delete image">
+                                                {% if item.instance.pk %}{{ item.DELETE }}{% endif %}
+                                                <a href="javascript:void(0)" class="copy-row btn btn-sm btn-primary mr-2">Copy</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ product_variation_formset.management_form }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Create Sub-category
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form id="sub_category_ajax" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:sub_category_create' %}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+                                    <!-- <div class="col-sm-12">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ sub_category_form.category.id_for_label }}">
+                                                {{ sub_category_form.category.label }}
+                                                {% if sub_category_form.category.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if sub_category_form.category.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ sub_category_form.category.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ sub_category_form.category }}
+
+                                            {% if sub_category_form.category.errors %}
+                                            <label class="error">{{ sub_category_form.category.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div> -->
+                                    <p id="category-error-message" style="color: red;">Please Choose a Category</p>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ sub_category_form.name.id_for_label }}">
+                                                {{ sub_category_form.name.label }}
+                                                {% if sub_category_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if sub_category_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ sub_category_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ sub_category_form.category }}
+                                            {{ sub_category_form.name }}
+
+                                            {% if sub_category_form.name.errors %}
+                                            <label class="error">{{ sub_category_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="category_modal" tabindex="-1" role="dialog"
+    aria-labelledby="category_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="category_modalTitle">Create Category
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="ajax reset cat_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_category'%}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ category_form.name.id_for_label }}">
+                                                {{ category_form.name.label }}
+                                                {% if category_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if category_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ category_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ category_form.name }}
+
+                                            {% if category_form.name.errors %}
+                                            <label class="error">{{ category_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="brand_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="brand_modalTitle">Create brand
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form id="brand_form" class="reset brand_close my-form" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_brand' %}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ brand_form.name.id_for_label }}">
+                                                {{ brand_form.name.label }}
+                                                {% if brand_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if brand_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ brand_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ brand_form.name }}
+
+                                            {% if brand_form.name.errors %}
+                                            <label class="error">{{ brand_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="hsn_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="hsn_modalTitle">Create HSN Code
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="hsn-form reload brand_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_hsn_codes' %}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.name.id_for_label }}">
+                                                {{ hsn_form.name.label }}
+                                                {% if hsn_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ hsn_form.name }}
+
+                                            {% if hsn_form.name.errors %}
+                                            <label class="error">{{ hsn_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.hsn_number.id_for_label }}">
+                                                {{ hsn_form.hsn_number.label }}
+                                                {% if hsn_form.hsn_number.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.hsn_number.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ hsn_form.hsn_number }}
+
+                                            {% if hsn_form.hsn_number.errors %}
+                                            <label class="error">{{ hsn_form.hsn_number.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.igst_rate.id_for_label }}">
+                                                {{ hsn_form.igst_rate.label }}
+                                                {% if hsn_form.igst_rate.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.igst_rate.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.igst_rate.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                            </label>
+                                            {{ hsn_form.igst_rate }}
+
+                                            {% if hsn_form.igst_rate.errors %}
+                                            <label class="error">{{ hsn_form.igst_rate.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.cgst_rate.id_for_label }}">
+                                                {{ hsn_form.cgst_rate.label }}
+                                                {% if hsn_form.cgst_rate.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.cgst_rate.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.cgst_rate.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ hsn_form.cgst_rate }}
+
+                                            {% if hsn_form.cgst_rate.errors %}
+                                            <label class="error">{{ hsn_form.cgst_rate.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.sgst_rate.id_for_label }}">
+                                                {{ hsn_form.sgst_rate.label }}
+                                                {% if hsn_form.sgst_rate.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.sgst_rate.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.sgst_rate.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ hsn_form.sgst_rate }}
+
+                                            {% if hsn_form.sgst_rate.errors %}
+                                            <label class="error">{{ hsn_form.sgst_rate.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ hsn_form.sgst_rate.id_for_label }}">
+                                                {{ hsn_form.unit.label }}
+                                                {% if hsn_form.unit.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if hsn_form.unit.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ hsn_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ hsn_form.unit }}
+
+                                            {% if hsn_form.unit.errors %}
+                                            <label class="error">{{ hsn_form.unit.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="uom_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="brand_modalTitle">Create Unit of measurement
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="unit-form reset uom_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_unit_measurement'%}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ uom_form.unit_of_measurement.id_for_label }}">
+                                                {{ uom_form.unit_of_measurement.label }}
+                                                {% if uom_form.unit_of_measurement.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if uom_form.unit_of_measurement.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ uom_form.unit_of_measurement.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ uom_form.unit_of_measurement }}
+
+                                            {% if uom_form.unit_of_measurement.errors %}
+                                            <label class="error">{{ uom_form.unit_of_measurement.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="image_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="la la-times"></i></span>
+            </button>
+        </div>
+        <!--end modal-header-->
+        <div class="modal-body">
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <div class=" card-body card card-padding">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <img src="{{instance.image.url}}" alt="" width="400">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-content-->
+</div>
+<!--end modal-dialog-->
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+
+<style>
+    .delete{
+      padding-top: 30px;
+    }
+    .commission-percentage{
+        display: none;
+    }
+    /* td.delete{
+        display: flex;
+        align-items: center;
+    } */
+    span.select2-selection.select2-selection--single.required.form-control {
+    padding: 0;
+
+}
+
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+<script type="text/javascript">
+
+    // script to copy a row with all of its values
+    $(document).on('click', '.copy-row', function(){
+        $('.product_variation_formset .icon_add_item').click()
+        $parent_row = $(this).parents('tr');
+        $new_row = $('.product_variation_formset tr:nth-last-child(2)')
+
+        let parent_row_count = $parent_row.find('.is_default input').attr('name').split('-')[1]
+        let new_row_count = $new_row.find('.is_default input').attr('name').split('-')[1]
+
+        $parent_row.find('input[type="text"], input[type="text"]').each(function(){
+            name = $(this).attr('name')
+            new_name = name.split(parent_row_count).join(new_row_count)
+            $new_row.find(`[name="${new_name}"]`).val($(this).val())
+        })
+
+        $parent_row.find('input[type="file"]').each(function(){
+            id = $(this).attr('id')
+            name = $(this).attr('name')
+            new_id = id.split(parent_row_count).join(new_row_count)
+            new_name = name.split(parent_row_count).join(new_row_count)
+
+            clone = $(this).clone();
+            clone.attr('id', new_id);
+            clone.attr('name', new_name);
+
+            $new_row.find(`[name="${new_name}"]`).parent().html(clone);
+        })
+
+        $parent_row.find('select').each(function(){
+            name = $(this).attr('name')
+            new_name = name.split(parent_row_count).join(new_row_count)
+
+            option_val = $(this).val();
+            if(option_val){
+                option_text = $(this).find(`option[value="${option_val}"]`).text();
+                $new_row.find(`[name="${new_name}"]`).html(`<option selected value="${option_val}">${option_text}</option>`)
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        $('#id_has_special_variant').change();
+
+        $('.product_variation_formset table tr.form_set_row').formset({
+            prefix: '{{ product_variation_formset.prefix }}',
+            formCssClass: 'dynamic-formset',
+
+            'added': function (row) {
+                row.find('.product_variation select').selectpicker();
+                row.find('.date-picker').datepicker('destroy');
+                row.find('.date-picker').datepicker();
+                get_product_detailes($('#id_hsn'));
+
+                // {% if current_role == 'warehouse_manager' %}
+                var pk = '{{warehouse.pk}}'
+
+                if (pk != '') {
+                    row.find('.warehouse select').html('<option value="{{warehouse.pk}}" selected>{{warehouse.name}}<option/>');
+                }
+                // {% endif %}
+            },
+        });
+
+    });
+
+    $('#id_has_special_variant').on('change click', function () {
+        if ($(this).is(':checked')) {
+            $('.special_category').show()
+        } else {
+            $('.special_category').hide()
+            $('.special_category select').html('').change()
+        }
+    });
+
+    $('#id_category').on('change', function () {
+        var $this = $(this);
+        get_division_data($this);
+    });
+
+    function get_division_data(element) {
+        var id_category = element.val();
+
+        if (id_category != "" || id_category != null || id_category != undefined) {
+            var url = "{% url 'products:get_category_details' %}"
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id_category: id_category,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var subcategory = data['subcategory']
+                    console.log(subcategory)
+
+                    console.log(status)
+                    if (status == "true") {
+                        console.log()
+                        var subcategory = data['subcategory']
+                        var options = '<option value="">---------</option>', i, maxlength = subcategory.length;
+
+                        for (i = 0; i < maxlength; i++) {
+                            options += `<option value="${subcategory[i]['id']}">${subcategory[i]['name']}</<option>`
+                        }
+                    }
+
+                    else {
+                        var message = data['message']
+                        var options = `<option value="">${message}</option>`
+                    }
+                    $("#id_subcategory").html(options)
+                    $("#id_form_category").val(id_category)
+                    var categorySelect = $('#id_category');
+                    var numberOfOptions = categorySelect.find('option').length;
+                    if (numberOfOptions === 0) {
+                        $('#category-error-message').show();
+                    }
+                    else {
+                        $('#category-error-message').hide();
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+    }
+
+    $('#id_hsn').on('change keyup', function () {
+        var $this = $(this);
+        get_product_detailes($this);
+    });
+    $('#id_vendor').on('change keyup', function () {
+        var $this = $(this);
+        get_vendor_data($this);
+    });
+
+    function get_product_detailes(element) {
+        var url = "{% url 'products:get_product_hsn_detailes' %}"
+        var hsn_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        if (hsn_id != undefined || hsn_id != null || hsn_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    hsn_id: hsn_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var unit = data.hsncodes.unit;
+                        var igst = data.hsncodes.igst;
+                        var sgst = data.hsncodes.sgst;
+                        var cgst = data.hsncodes.cgst;
+
+                        var $parent = $("tr.form_set_row")
+                        $('.form_set_row').each(function () {
+                            $(this).find('.igst input').val(igst);
+                            $(this).find('.sgst input').val(sgst);
+                            $(this).find('.cgst input').val(cgst);
+                        });
+
+                    }
+
+                    else {
+                        console.log("nothing found");
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+
+    $("#sub_category_ajax").submit(function (e) {
+    e.preventDefault();
+    var url = "{% url 'products:sub_category_create' %}"
+    var category = document.querySelector("#id_category").value;
+    var sub_name = document.getElementById("sub_category_name").value;
+
+    if (category != undefined || category != null || category != "" || sub_name != undefined || sub_name != null || sub_name != "") {
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: 'json',
+            data: {
+                category: category,
+                sub_name: sub_name,
+            },
+            success: function (data) {
+                var status = data['status'];
+
+                if (status == 'true') {
+                $('#exampleModalScrollable').modal('hide');
+                let sub_id = data['sub_id'];
+                let sub_name = data['sub_name'];
+                let option = `<option value="${sub_id}" selected>${sub_name} </option>`;
+
+                $('#id_subcategory').append(option);
+                $('#id_subcategory').val(sub_id)
+                console.log(option);
+                console.log($('#sub_category_name').val());
+                }
+
+                else {
+                    console.log("nothing found");
+                }
+            // $('#id_category').change()
+            },
+            error: function (data) {
+
+            }
+        })
+    }
+});
+
+
+
+    function get_vendor_data(element) {
+        var url = "{% url 'vendors:get_vendor_data' %}"
+        var id = element.val();
+        var $parent = $('tr.form_set_row');
+        if (id != undefined || id != null || id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    console.log(status);
+                    if (status == 'true') {
+                        var commission_type = data.commission_type;
+                        var commission_percentage = data.commission_percentage;
+
+                        if (commission_type == 'product_based'){
+                            $('.commission-percentage').css('display','block');
+                            var $parent = $("tr.form_set_row")
+                            $('.form_set_row').each(function () {
+                                $(this).find('.commission_percentage input').val(commission_percentage);
+
+                            });
+                        }else{
+                            $('.commission-percentage').css('display','none');
+                        }
+                    }
+                    else {
+                        console.log("nothing found");
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+$(document).on('submit', 'form.my-form', function(e){
+		e.preventDefault();
+		var $this = $(this);
+
+        var url = $this.attr('action');
+        var method = $this.attr('method');
+        var data = $this.serialize();
+
+        jQuery.ajax({
+            type : method,
+            url : url,
+            dataType : 'json',
+            data : new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success : function(data) {
+                var brand_name = data['brand_name'];
+                var brand_id = data['brand_id'];
+                var title = data['title'];
+                var message = data['message'];
+                var status = data['status'];
+
+                if(status=='true'){
+                    $this[0].reset();
+                    $('#brand_modal').modal('toggle')
+                    $('#id_brand').html(`<option value="${brand_id}" selected>${brand_name}</option>`)
+                }
+                else {
+                    if (title) {
+                        title = title;
+                    } else {
+                        title = "An Error Occurred";
+                    }
+
+                    swal(title, message, "error");
+
+                    if (stable != "true") {
+                        window.setTimeout(function () {
+                        }, 2000);
+                    }
+                }
+
+            },
+            error: function (data) {
+                remove_popup();
+
+                $this.find('button, input[type="submit"]').removeAttr('disabled');
+                var title = "An error occurred";
+                var message = "An error occurred. Please try again later.";
+                document.onkeydown = function (evt) {
+                    return true;
+                };
+                swal(title, message, "error");
+            }
+        });
+	});
+
+    $(document).on("submit", "form.hsn-form", function(e){
+
+        e.preventDefault();
+
+        var $this = $(this);
+        var url = $this.attr('action');
+        var method = $this.attr('method');
+        var data = $this.serialize();
+
+        jQuery.ajax({
+            type: method,
+            url: url,
+            dataType: 'json',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success : function(data) {
+                var hsn_name = data["name"];
+                var hsn_number = data["hsn_number"];
+                var hsn_id = data["hsn_id"];
+                var status = data["status"];
+
+                if (status == "true") {
+                    $this[0].reset();
+                    $("#hsn_modal").modal('toggle')
+                    $("#id_hsn").html(`<option value="${hsn_id}" selected>${hsn_number} - ${hsn_name}</option>`)
+                }
+                else {
+                    if (title) {
+                        title = title;
+                    } else {
+                        title = "An Error Occurred";
+                    }
+
+                    swal(title, message, "error");
+
+                    if (stable != "true") {
+                        window.setTimeout(function () {
+                        }, 2000);
+                    }
+                }
+
+            },
+            error: function (data) {
+                remove_popup();
+
+                $this.find('button, input[type="submit"]').removeAttr('disabled');
+                var title = "An error occurred";
+                var message = "An error occurred. Please try again later.";
+                document.onkeydown = function (evt) {
+                    return true;
+                };
+                swal(title, message, "error");
+            }
+        })
+    })
+
+    $(document).on("submit", "form.unit-form", function(e){
+
+        e.preventDefault();
+
+        var $this = $(this);
+        var url = $this.attr('action');
+        var method = $this.attr('method');
+        var data = $this.serialize();
+
+        jQuery.ajax({
+            type: method,
+            url: url,
+            dataType: 'json',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success : function(data) {
+                var unit_name = data["unit_name"];
+                var unit_id = data["unit_id"];
+                var title = data["title"];
+                var message = data["message"];
+                var status = data["status"];
+
+                if (status == "true") {
+                    $this[0].reset();
+                    $("#uom_modal").modal('toggle')
+                    $("#id_unit_of_measurement").html(`<option value="${unit_id}" selected>${unit_name}</option>`)
+                }
+                else {
+                    if (title) {
+                        title = title;
+                    } else {
+                        title = "An Error Occurred";
+                    }
+
+                    swal(title, message, "error");
+
+                    if (stable != "true") {
+                        window.setTimeout(function () {
+                        }, 2000);
+                    }
+                }
+
+            },
+            error: function (data) {
+                remove_popup();
+
+                $this.find('button, input[type="submit"]').removeAttr('disabled');
+                var title = "An error occurred";
+                var message = "An error occurred. Please try again later.";
+                document.onkeydown = function (evt) {
+                    return true;
+                };
+                swal(title, message, "error");
+            }
+        })
+    })
+
+    $(document).on('change', '.warehouse select, .unit select', function(e){
+        $(this).parents('td').find('.error').remove();
+    });
+
+
+</script>
+{{sub_category_form.media}}
+{{ form.media }}
+{% endblock %}

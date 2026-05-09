@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+
+        <div class="card-body">
+          <form action="{{url}}" class="ajax redirect" method="post">
+            {% csrf_token %}
+            <div class="row">
+              {% if instance.warehouse %}
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="id_warehouse">
+                        Warehouse
+                        <small class="star text-danger">*</small>
+                        
+                    </label>
+                    <input type="text" readonly name="warehouse" value="{{instance.warehouse}}" class="required form-control" placeholder="Normal Delivery Charge" required="" id="id_warehouse">
+                </div>
+              </div>
+              {% else %}
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="id_vendor">
+                        Vendor
+                        <small class="star text-danger">*</small>
+                        
+                    </label>
+                    <input type="text" readonly name="vendor" value="{{instance.vendor}}" class="required form-control" placeholder="Normal Delivery Charge" required="" id="id_vendor">
+                </div>
+              </div>
+              {% endif %}
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="id_to_zone">
+                        Zone
+                        <small class="star text-danger">*</small>
+                        
+                    </label>
+                    <input type="text" readonly name="to_zone" value="{{instance.to_zone}}" class="required form-control" placeholder="Normal Delivery Charge" required="" id="id_to_zone">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.normal_charge.id_for_label }}">
+                    {{ form.normal_charge.label }}
+
+                    {% if form.normal_charge.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.normal_charge }}
+                </div>
+              </div>
+              {% if instance.warehouse %}
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.express_charge.id_for_label }}">
+                    {{ form.express_charge.label }}
+
+                    {% if form.express_charge.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.express_charge }}
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            <div class="mr-2 mb-2">
+              <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

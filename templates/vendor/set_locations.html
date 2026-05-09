@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+                        {% comment %} <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary" id="Dash_Date">
+                            <span class="day-name" id="Day_Name">Today:</span>&nbsp;
+                            <span class="" id="Select_date">Jan 11</span>
+                            <i data-feather="calendar" class="align-self-center icon-xs ml-1"></i>
+                        </a> {% endcomment %}
+                        {% comment %} <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary">
+                            <i data-feather="download" class="align-self-center icon-xs"></i>
+                        </a> {% endcomment %}
+                    </div>
+                    <!--end col-->
+                </div>
+                <form method="get" action="{{url}}">
+                    <div style="display: flex; align-items: center; margin-bottom: 2%;">
+                        <div class="col-md-3">
+                            <label for='id_district'>Filter by district</label>
+                            <select class="selectpicker form-control" data-live-search='true' data-size="5" name="district">
+                                <option value="">----All Districts----</option>
+                                {% for district_value, district_label in DISTRICTS %}
+                                    <option value="{{ district_value }}" {% if request.GET.district == district_value %}selected{% endif %}>
+                                        {{ district_label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for='q'>Search</label>
+                            <input class="form-control" type="text" name="q" id="q" placeholder="Search" value="{{query|default:''}}">
+                            <!-- <button class="btn btn-sm btn-soft-primary" type="submit">Search Zones</button> -->
+                        </div> 
+                        <div style="margin-top: 1.6%;">
+                            <button type="submit" class="btn btn-sm btn-soft-primary">
+                                <i class="fa fa-align-center mr-2"></i>Filter
+                            </button>
+                        </div>   
+                    </div>
+                </form>   
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form class="ajax redirect" enctype="multipart/form-data" method="post" action="{{url}}?{{request.META.QUERY_STRING}}">
+                        {% csrf_token %}
+
+                        <h3>Deliverable Location</h3>   
+                        
+                        <div class="card-body card card-padding">
+                            <div class="row deliverable_locations">
+
+                                {% if deliverable_locations %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="deliverable_locations" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="deliverable_locations" class="custom-control-label ts-label mb-3">
+                                        <strong>All Zones</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap mb-4" style="padding-left: 45px;">
+                                        
+                                        
+                                        {% load el_pagination_tags %}
+                                        {% paginate 100 deliverable_locations %}
+                                        {% for item in deliverable_locations %}
+                                        
+                                        <div class="col-6 mb-2 form-check1">
+                                            {% if is_edit %}
+                                            {% if item.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="deliverable_location-{{item.pk}}" name="deliverable_location"
+                                                value="{{item.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="deliverable_location-{{item.pk}}" class="custom-control-input ok"
+                                                name="deliverable_location" value="{{item.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="deliverable_location-{{item.pk}}" name="deliverable_location"
+                                                value="{{item.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="deliverable_location-{{item.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{item}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="row pagi my-3" style="width: 100%;">
+                                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+{% load static %}
+<style>
+    .input-group-location{
+        width: 26%;
+    }
+    .col-6{
+        max-width:48%;
+    }
+    .form-check1:nth-of-type(odd){
+        margin-right:20px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".phone_alert").hide()
+    });
+
+    $(document).on('change keyup', '#id_phone', function () {
+        var $this = $(this);
+        var amount_to_pay = $('#id_phone').val();
+        if (amount_to_pay.length < 10) {
+            $(".phone_alert").show()
+        }
+        else {
+            $(".phone_alert").hide()
+        }
+        return true;
+
+    });
+</script>
+{% if is_edit %}
+<script>
+    $(document).ready(function () {
+        $('div.check_all_box').each(function () {
+            inputs = $(this).find('input[type="checkbox"]')
+            inputs_len = inputs.length;
+            i = 0;
+            inputs.each(function () {
+                value = $(this).attr('checked');
+                if (value) {
+                    i += 1;
+                }
+            });
+            if (inputs_len - 1 == i) {
+                $(this).find('input.list1').click();
+            }
+        });
+    });
+
+    $('.list1').click(function(){
+        
+        if ($(this).hasClass('checked-all')){
+            $(`.form-check1`).find('input[type=checkbox]').prop('checked',false);
+            $(this).removeClass('checked-all');
+        } else {
+            $(`.form-check1`).find('input[type=checkbox]').prop('checked',true);
+            $(this).addClass('checked-all');
+
+        }
+    })
+
+
+</script>
+{% endif %}
+{% endblock %}

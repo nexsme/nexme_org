@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row mt-2">
+            <div class="col">
+                <h4 class="page-title">{{title|title}}</h4>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0);">{{title|title}}</a></li>
+                </ol>
+            </div>
+            <div class="col-auto col-sm-2 float-right ml-auto">
+                <div class="col-auto float-right ml-auto">
+                    {% if instance.return_type == "bank" %}
+                    <a title="Print Order" href="" class="btn btn-soft-success edit-icon">
+                        <i class="las la-print"></i> Update Payment
+                     </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="tab-content  col-md-12">
+        <div class="row">
+            <div class=" col-6">
+                <div class="card-header">
+                    <h5>Order Info <small></small></h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Return Id</div>
+                                <small class="lgi-text">{{instance.return_id}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Order Id</div>
+                                <small class="lgi-text">{{instance.order_item.order.order_id}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Amount</div>
+                                <small class="lgi-text">{{instance.amount}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Refund Type </div>
+                                <small class="lgi-text">{{instance.get_return_type_display}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Payment Status </div>
+                                <small class="lgi-text">
+                                    {{instance.get_payment_status_display}}
+                                </small>
+                            </div>
+                        </div>
+
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Return Status </div>
+                                <small class="lgi-text">
+                                    {{instance.get_status_display}}
+                                </small>
+                            </div>
+                        </div>
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Payment Method </div>
+                                <small class="lgi-text">{{instance.order_item.order.payment_method}}</small>
+                            </div>
+                        </div>
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Transaction Id </div>
+                                <small class="lgi-text">{{instance.order_item.order.transaction_id}}</small>
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+                </div>
+            </div>
+            <div class=" col-6">
+                <div class="card-header d-flex justify-content-between">
+                    <h5>Returned Product</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                            <thead>
+                                <tr>
+                                    <th class="p-l-10">Name</th>
+                                  <th class="p-l-10">Qty</th>
+                                  <th class="p-l-10">Price</th>
+                                  <th class="p-l-10">Batch</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if instance.order_item.product_variant.product.image %}
+                            <tr>
+                              <img src="{{instance.order_item.product_variant.product.image.url}}" style="width:36%; display:block;" alt="">
+                            </tr>
+                            {% endif %}
+                                <tr>
+                                    <td>{{instance.order_item.product_variant}}</td>
+                                    <td>{{instance.order_item.qty}}</td>
+                                   <td>{{instance.order_item.price}}</td>
+                                   <td>{{instance.order_item.batch}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class=" col-6">
+                  <div class="card-header d-flex justify-content-between">
+                      <h5>Return Approval Status</h5>
+                  </div>
+
+                  <div class="card-body">
+
+                      <ul>
+                        {% if instance.status == '10' %}
+                          <li>Waiting for picking the product</li>
+
+                        {% elif instance.status == '40' %}
+                          <li>Nexsme recieved the product</li>
+                        {% endif %}
+                      </ul>
+
+                    {% if instance.status == 'delivery_boy_collected' %}
+                      <div class="card-body">
+                        <h4 class="text-warning text-center">Did you recieve the product ?</h4>
+                        <p class="text-center">The Product is collected by the delivery agent </p>
+                        <div class="text-center">
+                          <button class="btn btn-primary" data-url="{% url 'orders:product_recieved' %}" data-pk="{{instance.pk}}" id="onaiza-return-accept-button">YES</button>
+                          <button class="btn ml-2">No</button>
+                        </div>
+                      </div>
+                    {% endif %}
+                    {% if instance.status == '40' %}
+                        <div class="table-responsive">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                        <select name="return_approval_status"  class="selectpicker w-100" id="return_approval_status">
+                                            <option value="">---select option ---</option>
+                                            <option value="reject">Reject</option>
+                                            <option value="accepted">Accepted</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 reason-text" style="display:none" >
+                                    <label for="">Specify the reason for rejection</label>
+                                    <div class="form-group">
+                                        <textarea class="form-control reason-text-return"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" data-pk="{{instance.pk}}" data-url="{% url 'orders:accept_or_reject_return' %}" class="btn btn-soft-primary btn-sm submit-product-return">Submit</button>
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if instance.status == 'rejected' %}
+                      <h4 class="text-danger">Rejected</h4>
+                      <p class="">{{instance.rejected_reason}}</p>
+                    {% elif instance.status == 'accepted' %}
+                    <h4 class="text-success">Accepted</h4>
+                    {% endif %}
+                  </div>
+            </div>
+
+            {% if instance.return_type == "bank" %}
+            <div class=" col-6">
+                <div class="card-header">
+                    <h5>Bank Account Info <small></small></h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Account Holder Name</div>
+                                <small class="lgi-text">{{account_info.account_holder}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Account Number</div>
+                                <small class="lgi-text">{{account_info.account_number}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">IBAN </div>
+                                <small class="lgi-text">{{account_info.iban}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">SWIFT Code</div>
+                                <small class="lgi-text">{{account_info.swift_code}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Bank Name</div>
+                                <small class="lgi-text">{{account_info.bank_name}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Branch</div>
+                                <small class="lgi-text">{{account_info.branch}}</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+        </div>
+      {% if instance.status == '10' or instance.status == '20' %}
+      <div class="row">
+        <div class=" col-6">
+                <div class="card-header">
+                    <h5>Delivery Agent Info <small></small></h5>
+                </div>
+                <div class="card-body">
+                    {% if instance.delivery_boy %}
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Delivery Agent</div>
+                                <small class="lgi-text">{{instance.delivery_boy.name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                  {% else %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.delivery_agent.id_for_label }}">
+                                        {{ form.delivery_agent.label }}
+
+                                        {% if form.delivery_agent.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.delivery_agent }}
+                                </div>
+                              <select class="delivery_agents_return" name="delivery_agents_return" >
+                                {% for i in delivery_agents %}
+                                <option value="{{i.pk}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" data-return="{{instance.pk}}" data-url="{% url 'orders:assign_agent_for_return' %}" class="btn btn-soft-primary btn-sm assign-delivery-agent-return">Submit</button>
+                        </div>
+                  {% endif %}
+                </div>
+            </div>
+      </div>
+
+  {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+
+<script>
+$(document).ready(function() {
+    $('.delivery_agents').select2();
+});
+
+</script>
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+{{ form.media }}
+{% endblock %}

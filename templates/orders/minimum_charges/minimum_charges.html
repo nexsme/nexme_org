@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load web_template_tags %}
+
+{% load static %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+
+
+            <div class="col-auto float-right ml-auto">
+                <a title="Filter" href="{% url 'orders:create_minimum_charge' %}"
+                    class=" btn btn-md btn-primary">Create Charge
+                </a>
+                {% comment %} <div class="col-auto float-right ml-auto">
+                    <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)"
+                        class=" btn btn-sm btn-primary">Filter
+                    </a>
+                </div> {% endcomment %}
+            </div>
+            <div class="col-auto col-sm-2 float-right ml-auto">
+                <form method="get" action="{% url 'orders:minimum_charges' %}">
+                    <li class="list-inline-item">
+                        <div class="input-group">
+
+                            <input name="q" type="text" placeholder="Search" value="{{ filter_data.q }}"
+                                class="form-control" />
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-soft-primary btn-sm"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+                    </li>
+                </form>
+            </div>
+
+
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Name </th>
+                            <th>Warehouse/Vendor </th>
+                            <th>Minimum Order Amount</th>
+                            <th>Free delivery only for Delivery Charges less than </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for i in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            {% if i.vendor %}
+                            <td>{{ i.vendor }}</td>
+                            <td>Vendor</td>
+                            {% else %}
+                            <td>{{ i.warehouse }}</td>
+                            <td><span class="badge badge-primary">Warehouse</span></td>
+                            {% endif %}
+
+                            <td>{{ i.no_delivery_charge_amount}}</td>
+                            <td>
+                                {% if i.no_free_delivery_amount > 0 %}{{ i.no_free_delivery_amount }}
+                                {% else %}No free delivery {% endif %}
+                            </td>
+
+                             <td class="text-right">
+                                <a href="{% url 'orders:edit_minimum_charge' pk=i.pk %}"><i
+                                    class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ i.pk }}" class="action-button remove reload"
+                                    href="{% url 'orders:delete_minimum_charge' pk=i.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Delivery Charges</label>
+                        <!-- <input name="category" type="text" class="form-control" /> -->
+                        <select class="select order-select-query form-control">
+                            <option value="no">---Select----</option>
+                            <option value="vendor">Vendor</option>
+                            <option value="warehouse">Warehouse</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button"  class="btn btn-sm btn-primary order-filter-button" data-url="{% url 'orders:orders' order_type=order_type %}">Submit</button>
+                </div>
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+{% endblock %}

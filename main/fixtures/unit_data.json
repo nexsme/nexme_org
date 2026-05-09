@@ -1,0 +1,278 @@
+[
+    {
+        "model": "products.unitofmeasurement",
+        "pk": "5896a66f-300c-4944-8e6b-f9d31c6ab001",
+        "fields": {
+            "auto_id": 1,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "Quantity",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unitofmeasurement",
+        "pk": "5896a66f-300c-4944-8e6b-f9d31c6ab002",
+        "fields": {
+            "auto_id": 2,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "Weight",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unitofmeasurement",
+        "pk": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+        "fields": {
+            "auto_id": 3,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "Length",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unitofmeasurement",
+        "pk": "5896a66f-300c-4944-8e6b-f9d31c6ab004",
+        "fields": {
+            "auto_id": 4,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "Volume",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unitofmeasurement",
+        "pk": "5896a66f-300c-4944-8e6b-f9d31c6ab005",
+        "fields": {
+            "auto_id": 5,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "Area",
+            "is_admin_approved": true
+        }
+    },
+
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00001",
+        "fields": {
+            "auto_id": 6,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab001",
+            "unit": "Each",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00002",
+        "fields": {
+            "auto_id": 7,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab002",
+            "unit": "Gram",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00003",
+        "fields": {
+            "auto_id": 8,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab002",
+            "unit": "Kilogram",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00004",
+        "fields": {
+            "auto_id": 9,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab002",
+            "unit": "Pound",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00005",
+        "fields": {
+            "auto_id": 10,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+            "unit": "Meter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00006",
+        "fields": {
+            "auto_id": 11,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+            "unit": "Centimeter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00007",
+        "fields": {
+            "auto_id": 12,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+            "unit": "Millimeter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00008",
+        "fields": {
+            "auto_id": 13,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+            "unit": "Kilometer",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00009",
+        "fields": {
+            "auto_id": 14,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab003",
+            "unit": "Inch",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00010",
+        "fields": {
+            "auto_id": 15,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab004",
+            "unit": "Liter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00011",
+        "fields": {
+            "auto_id": 16,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab004",
+            "unit": "Milliliter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00012",
+        "fields": {
+            "auto_id": 17,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab004",
+            "unit": "Gallon",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00013",
+        "fields": {
+            "auto_id": 18,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab005",
+            "unit": "Square Meter",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00014",
+        "fields": {
+            "auto_id": 19,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab005",
+            "unit": "Square Feet",
+            "is_admin_approved": true
+        }
+    },
+    {
+        "model": "products.unit",
+        "pk": "f445a5da-7c5d-433a-859e-0e56e2f00015",
+        "fields": {
+            "auto_id": 20,
+            "creator": 1,
+            "updater": 1,
+            "date_added": "2023-02-10T15:28:06.228Z",
+            "date_updated": "2023-02-10T15:38:01.525Z",
+            "unit_of_measurement": "5896a66f-300c-4944-8e6b-f9d31c6ab005",
+            "unit": "Square Inch",
+            "is_admin_approved": true
+        }
+    }
+]

@@ -1,0 +1,118 @@
+{% extends "web/web_base.html" %}
+
+{% load i18n %} {% load tz %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% load static %}
+{% load i18n %}
+
+{% load web_template_tags %}
+{% block content %}
+{% if all_notifications %}
+    <div id="notification">
+        <div class="wrapper container">
+            
+            <div class="notification-main">
+                <div class="notification-top">
+                    <h1>Notification</h1>
+                    
+                    <div class="right">
+                        <a class="mark-read" href="{% url 'web:read_notification' pk='all' %}">
+                            <img class="mark-image" src="../../static/web/images/icons/mark-as-read.svg" style="width: 18px;"/> 
+                            <h6>Mark all as Read</h6>
+                        </a>
+                        <a class="delete-all" href="{% url 'web:delete_notification' pk='all' %}"> 
+                            <img class="delete-image" src="../../static/web/images/icons/delete-red.svg" style="width: 18px;"/> 
+                            <h6>Delete All</h6>
+                        </a> 
+                    </div>  
+                </div>
+                <div class="re-body">
+                    {% for notification in all_notifications %}
+                    <div class="notification-product"  >
+                        <a class="right-container" href="{% url 'web:read_notification' pk=notification.pk %}"> 
+                            <div class="left-box">
+                                {%if notification.get_image %}
+                                <img style="width:100px; height:100px" src="{{notification.get_image}}" alt="Image" />
+                                {% else %}
+                                <img src="{% static 'web/images/refund.png' %}" alt="Image" />
+                                {% endif %}
+
+                            </div>
+                            <div class="middle-box">
+                                <div class="top-card">
+                                    <h6>{{notification.subject}}</h6>
+                                    <small>{{notification.message}}</small>
+                                </div>
+                                <div class="time">
+                                    <p>{{notification.time}}</p>
+                                </div>
+                            </div>
+
+                        </a>
+                        <div class="right-box">
+                            <a class="delete" href="{% url 'web:delete_notification' pk=notification.pk %}">
+                                <img src="{% static 'web/images/icons/delete-icon.svg' %}" alt="Delete-all"/>
+                            </a>
+                            <div class="vertical-line {{notification.is_read|yesno:'read,'}}"></div>
+                        </div>
+                    </div>
+
+
+                   {% endfor%}
+                </div>
+                {% if customer_notifications  and auth_status %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <section id="order-spotlight">
+        <section class="wrapper ">
+            <div class="container">
+                <div class="img-container">
+                    <img src="{% static 'web/images/icons/no-notification.jpg' %}" alt="Image" />
+                </div>
+                <p>{% trans "No Notifications" %}</p>
+                
+            </div>
+        </section>
+    </section>
+{% endif %}
+
+
+    <style>
+        #menu{
+            display: none;
+        }
+
+        .whatsappContainer {
+        display: none;
+        }
+        .wrapper {
+            margin: 40px auto 0;
+        }
+        #sign-ip {
+            margin-top: 40px;
+        }
+        @media all and (max-width: 768px) {
+            header {
+                height: 100px;
+            }
+            #refund .wrapper .refund-main {
+                padding-top: 0 !important;
+            }
+            #sign-ip {
+                margin-top: 60px;
+            }
+            .wrapper .container{
+                margin: 62px auto 0;
+            }
+        }
+    </style>
+
+
+{% endblock content %}
+
+{% block static %}
+{% endblock static %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto float-right ml-auto">
+                        <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)" class="btn btn-soft-primary btn-sm add-btn mt-1">Filter
+                        </a>
+
+                    </div>
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'finance:create_receipt_voucher' %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>New Receipt Voucher</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl.No.</th>
+                            <th style="width: 30px;">ID</th>
+                            <th>Warehouse </th>
+                            <th>Account Head </th>
+                            <th>Voucher Number </th>
+                            <th>Voucher Date </th>
+                            <th>Title </th>
+                            <th>Amount </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for receipt_voucher in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{receipt_voucher.auto_id}}</td>
+                            <td>{{ receipt_voucher.warehouse }}</td>
+                            <td>{{ receipt_voucher.account_head }}</td>
+                            <td>{{ receipt_voucher.voucher_number }}</td>
+                            <td>{{ receipt_voucher.voucher_date }}</td>
+                            <td>{{ receipt_voucher.title }}</td>
+                            <td>{{ receipt_voucher.amount }}</td>
+                            <td class="text-right">
+
+                                {% if receipt_voucher.is_deleted %}
+                                <span class="badge badge-danger badge-pill">Deleted</span>
+                                {% endif %}
+                                <a href="{% url 'finance:receipt_voucher' pk=receipt_voucher.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+
+                                {% if not receipt_voucher.is_deleted %}
+                                <a href="{% url 'finance:edit_receipt_voucher' pk=receipt_voucher.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ receipt_voucher.pk }}" class="reload action-button remove"
+                                    href="{% url 'finance:delete_receipt_voucher' pk=receipt_voucher.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                    class="las la-trash-alt text-danger font-18"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="get" action="{% url 'finance:receipt_vouchers' %}">
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Search</label>
+                        <input name="q" value="{% if filter_data.query %}{{filter_data.query}}{% endif %}" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Voucher date</label>
+                       <input type="date" name="voucher_date" value="{% if filter_data.voucher_date %}{{filter_data.voucher_date}}{% endif %}" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Voucher Number</label>
+                       <input type="text" name="voucher_number" value="{% if filter_data.voucher_number %}{{filter_data.voucher_number}}{% endif %}" class="form-control">
+                    </div>
+                </div>
+  
+                <div class="modal-footer">
+                    <a href="{% url 'finance:receipt_vouchers' %}" class="btn btn-sm btn-danger">Reset</a>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </div>
+            </form>
+  
+        </div>
+    </div> <!-- modal-bialog .// -->
+  </div> <!-- modal.// -->
+<!-- /Page Content -->
+
+{% endblock %}

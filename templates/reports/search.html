@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load el_pagination_tags %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Search</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+    {% if orders or customer or sales or products %}
+
+    <div class="row">
+
+        {% if orders %}
+        <div class="col-md-12">
+            <div class="card-header">
+                <h4>Orders</h4>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px;">ID</th>
+                                    <th>Name </th>
+                                    <th>Address </th>
+                                    <th>Date </th>
+                                    <th>Payment Status</th>
+                                    <th>Time Slot</th>
+                                    <th>Total Amount</th>
+                                    {% if current_role == "superadmin" %}<th>Warehouse/Vendor</th>{% endif %}
+                                    {% if is_all_order %}<th>Delivery Agent</th>{% endif %}
+                                    <th>Items</th>
+                                    <th>Print</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% paginate 10 orders using "orders" %}
+                                {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.order_id }}</td>
+                                    <td>{{ order.billing_name }}</td>
+                                    <td>{{ order.get_full_address }}</td>
+                                    <td>{{ order.delivery_date|date:'d/m/Y' }}</td>
+                                    <td>
+                                        {% if order.payment_status == '10' %}
+                                            Unpaid
+                                        {% else %}
+                                        Paid
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order.time_slot }}</td>
+
+                                    <td>{{ order.total_amt }}</td>
+
+                                    {% if current_role == "superadmin" %}
+                                        {% if order.vendor %}
+                                            <th>{{ order.vendor|default:'-' }}</th>
+                                        {% else %}
+                                            <th>{{ order.warehouse|default:'-' }}</th>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if is_all_order %}
+                                    <td>
+                                        {% if order.delivery_agent %}
+                                            {{ order.delivery_agent }}
+                                        {% else %}
+                                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'orders:order' pk=order.pk %}" role="button">Assign Delivery Agent</a>
+                                        {% endif %}
+                                    </td>
+                                    {% endif %}
+                                    <td>
+                                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'orders:order' pk=order.pk %}" role="button">View Items</a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'orders:print_order_invoice' view_type="customer" pk=order.pk %}" role="button" class="btn btn-sm btn-outline-primary">
+                                            <i class="icon fa fa-print"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{ order.get_order_status_display }}</td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% get_pages %}
+                        <div class="clearfix"></div>
+                        <div class="row pagi my-3">
+                            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                                <div class="m-t-10">
+                                    Showing {{title}}
+                                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                        class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                        class="total_count">{{ pages.total_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if sales %}
+        <div class="col-md-12">
+            <div class="card-header">
+                <h4>Sales</h4>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable-">
+                            <thead>
+                                <tr>
+                                <th>Invoice Id</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Payment Type</th>
+                                <th>Cancelled?</th>
+                                <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% paginate 10 sales using "sales" %}
+                                {% for instance in sales %}
+                                <tr class="{% if instance.is_updated %}text-danger{% endif %}">
+                                <td>{{ instance.sale_id }}</td>
+                                <td>{{ instance.sale_date|date:"d/m/y" }}</td>
+                                <td>{{ instance.customer }}</td>
+                                <td>{{ instance.total }}</td>
+                                <td>{{ instance.payment_method|title }}</td>
+                                <td class="text-danger">{{ instance.is_deleted|yesno:"Cancelled, " }}</td>
+                                <td class="text-right noExl">
+                                    <a href="{% url 'sales:sale' pk=instance.pk %}"><i class="las la-eye text-info font-18"></i></a>
+                                    {% if not instance.is_deleted %}
+                                    <a href="{% url 'sales:edit' pk=instance.pk %}"><i class="las la-pen text-info font-18"></i></a>
+                                    <a data-id="{{ instance.pk }}" class="action-button remove"
+                                        href="{% url 'sales:delete' pk=instance.pk %}" data-text="{{ confirm_delete_message }}"
+                                        data-title="Are you sure?"><i class="las la-trash-alt text-danger font-18"></i></a>
+                                    {% endif %}
+                                </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% get_pages %}
+                        <div class="clearfix"></div>
+                        <div class="row pagi my-3">
+                            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                                <div class="m-t-10">
+                                    Showing {{title}}
+                                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                        class="current_end_status">{{ pages.current_end_index }}
+                                    </span> of <span class="total_count">{{pages.total_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if customers %}
+        <div class="col-md-12">
+            <div class="card-header">
+                <h4>Customers</h4>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable-">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px;">Sl.No</th>
+                                    <th style="width: 30px;">ID</th>
+                                    <th>Name </th>
+                                    <th>Phone </th>
+                                    <th>Email </th>
+                                    <!-- <th>Current Privilege Points </th> -->
+                                    <th>Current Balance </th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% paginate 10 customers using "customers" %}
+
+                                {% for instance in customers %}
+                                <tr class="">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ instance.auto_id }}</td>
+                                    <td><a class="text-primary" href="{% url 'customers:customer' pk=instance.pk %}">{{ instance.name }}</a>{% if instance.is_deleted %}(Deleted){% endif %}</td>
+                                    <td>{{ instance.phone }}</td>
+                                    <td>{{ instance.email }}</td>
+
+                                    <!-- <td>{{ instance.current_privilege_points }}</td> -->
+                                    <td>{{instance.get_balance_data.balance}}({{instance.get_balance_data.balance_type}})</td>
+
+                                    <td class="text-right noExl">
+                                        <a href="{% url 'customers:customer' pk=instance.pk %}"><i
+                                                class="las la-eye text-info font-18"></i></a>
+                                        {% if not instance.is_deleted %}
+                                        <a href="{% url 'customers:edit' pk=instance.pk %}"><i
+                                                class="las la-pen text-info font-18"></i></a>
+                                        <a data-id="{{ instance.pk }}" class="action-button remove"
+                                            href="{% url 'customers:delete' pk=instance.pk %}"
+                                            data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                                class="las la-trash-alt text-danger font-18"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% get_pages %}
+                        <div class="clearfix"></div>
+                        <div class="row pagi my-3">
+                            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                                <div class="m-t-10">
+                                    Showing {{title}}
+                                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                        class="current_end_status">{{ pages.current_end_index }}
+                                    </span> of <span class="total_count">{{pages.total_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if products %}
+        <div class="col-md-12">
+            <div class="card-header">
+                <h4>Products</h4>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable-">
+                            <thead>
+                                <tr>
+                                   <th>Variant</th>
+                                   <th>Product Code</th>
+                                   <th>In stock</th>
+                                   <th>Default</th>
+                                   <th>Wholesale Quantity</th>
+                                   <th>wholesale Price</th>
+                                   <th>Retail Price</th>
+                                   <th>Offer Price</th>
+                                   <th>Expiry Date</th>
+                                   <th>Manufacturing Date</th>
+                                   <th>Image</th>
+                                   <th class="text-right">Action</th>
+                                </tr>
+                             </thead>
+                             <tbody>
+                                {% paginate 10 products using "products" %}
+                                {% for variant_item in products %}
+                                <tr>
+                                   <td><a class="text-primary" href="{% url 'products:view_variant' variant_item.pk %}">{{variant_item}}</a></td>
+                                   <td>{{variant_item.product_code}}</td>
+                                   <td>
+                                      {% if variant_item.stock <= variant_item.low_stock_limit %}
+                                         <span class="badge badge-danger font-weight-bold">
+                                            {{variant_item.total_stock}}
+                                         </span>
+                                      {% else %}
+                                         <span class="badge badge-success font-weight-bold">
+                                            {{variant_item.stock}}
+                                         </span>
+                                      {% endif %}
+                                   </td>
+                                   <td>{{variant_item.is_default|yesno|title }}</td>
+                                   <th>{{variant_item.whole_sale_quantity}}</th>
+                                   <td>{{variant_item.whole_sale_price}}</td>
+                                   <th>{{variant_item.mrp}}</th>
+                                   <td>{{variant_item.retail_price}}</td>
+                                   <th>{{variant_item.expire_date}}</th>
+                                   <th>{{variant_item.manufacturing_date}}</th>
+                                   {% if variant_item.image %}
+                                   <th><img src="{{variant_item.image.crop.100x100}}" alt=""></th>
+                                   {% else %}
+                                   <th><img style="width: 100px; height: 100px;" src="{% static 'img/unnamed.png' %}" alt=""></th>
+                                   {% endif %}
+                                   <td>
+                                        {% if not variant_item.is_deleted %}
+                                        <a href="{% url 'products:edit_variant' pk=variant_item.pk %}" class="btn btn-outline-primary btn-sm">
+                                            <i class="las la-pen"></i>
+                                        </a>
+
+                                        <a class="action-button remove btn btn-outline-danger btn-sm"
+                                            href="{% url 'products:delete_variant' pk=variant_item.pk %}"
+                                            data-text="{{ confirm_delete_message }}" data-title="Are you sure?">
+                                            <i class="las la-trash-alt"></i>
+                                        </a>
+                                        {% endif %}
+
+                                      {% if current_role == 'vendor_user' and variant_item.is_admin_approved %}
+                                      <a href="{% url 'products:update_variant_stock' pk=variant_item.pk %}" id="UpdateStockModalButton" title="Update Stock" class="btn btn-outline-success btn-sm">
+                                         Update Stock
+                                      </a>
+                                      {% endif %}
+
+                                      {% if current_role != 'vendor_user' and instance.vendor %}
+                                      <a data-id="{{ instance.pk }}" class="approve-btn" data-toggle="modal" data-target="#exampleModalScrollable"
+                                         href="{% url 'vendors:approve_vendor_product' pk=instance.pk %}" data-reason="no">
+                                         <i class="fas fa-check btn btn-sm btn-success bold"></i>
+                                      </a>
+                                      <a data-id="{{ instance.pk }}" class="action-button remove"
+                                         href="{% url 'vendors:decline_vendor_product' pk=instance.pk %}"
+                                         data-text="{{ confirm_delete_message }}" data-title="Are you sure?">
+                                         <i class="fas fa-times btn btn-sm btn-danger bold"></i>
+                                      </a>
+                                      {% endif %}
+                                   </td>
+
+                                </tr>
+                                {% endfor %}
+                             </tbody>
+                        </table>
+
+                        {% get_pages %}
+                        <div class="clearfix"></div>
+                        <div class="row pagi my-3">
+                            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                                <div class="m-t-10">
+                                    Showing {{title}}
+                                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                        class="current_end_status">{{ pages.current_end_index }}
+                                    </span> of <span class="total_count">{{pages.total_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% else %}
+        {% include 'includes/not_found.html' %}
+    {% endif %}
+
+</div>
+<!-- /Page Content -->
+{% endblock %}
+
+{% block static %}
+{% load static %}
+
+{% endblock %}

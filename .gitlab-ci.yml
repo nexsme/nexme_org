@@ -1,0 +1,46 @@
+stages:
+  - test
+  - deploy_demo
+  - deploy_production
+
+test:
+  only:
+    refs: 
+      - deploy/dev-server
+  stage: test
+  tags:
+    - devops
+  script:
+    - echo "testing..."
+    - source /srv/test_venvs/nexsme-backend/venv/bin/activate
+    - pip install -r requirements.txt
+    - cp env.example .env
+    - python manage.py test
+
+deploy_staging:
+  only:
+    refs: 
+      - deploy/dev-server
+  stage: deploy_demo
+  tags:
+    - devops
+  script:
+    - echo "deploying to staging environment"
+    - ssh $SERVER_USER@$SERVER_IP -o StrictHostKeyChecking=no "sudo bash $STAGING_DEPLOY_FILE_PATH"
+  environment:
+    name: staging
+
+
+deploy_production:
+  only:
+    refs: 
+      - deploy/dev-server
+  stage: deploy_production
+  tags:
+    - devops
+  script:
+    - echo "deploying..."
+    - ssh $SERVER_USER@$SERVER_IP -o StrictHostKeyChecking=no "sudo bash $DEPLOY_FILE_PATH"
+  environment:
+    name: production
+  when: manual

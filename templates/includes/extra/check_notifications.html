@@ -1,0 +1,72 @@
+{% load static %}
+<script type="text/javascript">
+
+	// var audio = document.getElementById("audio_alert");
+	// audio.play();
+	function play() {
+		var element = document.getElementById("audio_alert");
+		// element.muted = true;
+		// element.play();
+		// audio.play();    function play() {
+		if (element) {
+			console.log("yessss");
+			element.autoplay = true;
+			const p = element.play();
+			// if (p && (typeof Promise !== 'undefined') && (p instanceof Promise)) {
+			// 	p.catch(e => console.log(e, 'ddddd'));
+			// }
+		}
+		 else {
+			playOnceInitialized = true;
+		}
+	}
+	window.setTimeout(checkNotifications(), 2500);
+	setTimeout(checkNotifications(), 3000);
+	checkNotifications()
+	function checkNotifications() {
+
+
+		$.ajax({
+			url: "{%url 'users:check_notification' %}"
+		}).done(function (data) {
+			// console.log(data);
+			let old_count = $('span.notification-count.recent').text();
+			old_count = parseInt(old_count)
+			if (parseInt(data) > 0) {
+
+				$('span.notification-count.recent').text(data).show();
+			} else {
+				$('#sound_alert').children($('audio')).remove();
+				// $('span.notification-count.recent').hide();
+			}
+
+			let new_count = parseInt(data)
+			if (new_count > old_count) {
+				console.log("Ok Part")
+			$('#sound_alert').append(`<audio src="{% static 'alert/bell_alert.mp3' %}" autoplay=false autostart=false ></audio>`);
+				console.log(old_count, "old Cound");
+				console.log(new_count, "new Cound");
+
+				setTimeout(function () {
+					$("#button_alert").click();
+				}, 1000);
+
+				old_count = new_count;
+
+
+			}
+			else{
+
+			}
+			window.setTimeout(checkNotifications, 2500);
+
+			// setTimeout(function () {
+			// 	$("#button_alert").click();
+			// }, 1000);
+		});
+	}
+		window.setTimeout(checkNotifications, 3000);
+</script>
+
+<div id="sound_alert"></div>
+<button id="button_alert" onclick="play()" style="visibility: hidden;"></button>

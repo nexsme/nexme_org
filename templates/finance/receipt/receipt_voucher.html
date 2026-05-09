@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.title}}</h3>
+
+            <ul class="personal-info row align-items-center">
+               <li class="col">
+                  <a title="Create new Receipt Voucher" href="{% url 'finance:create_receipt_voucher' %}" class="btn btn-soft-success edit-icon">
+                     <i style="color: black" class="las la-plus"></i>
+                  </a>
+               </li>
+
+               {% if instance.is_deleted %}
+               <li class="col">
+                  <span class="badge badge-danger badge-pill">Deleted</span>
+               </li>
+
+               {% elif not instance.is_system_generated %}
+               <li class="col">
+                  <a title="Edit Receipt Voucher" href="{% url 'finance:edit_receipt_voucher' pk=instance.pk %}" class="btn btn-soft-primary edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Receipt Voucher" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'finance:delete_receipt_voucher' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon btn btn-soft-primary ">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class=" col-8">
+               <div class="card-header">
+                  <h5>Payment Info <small></small></h5>
+               </div>
+               <div class="card-body">
+
+                  <div class="list-group lg-alt c-overflow">
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Warehouse</div>
+                           <small class="lgi-text">{{instance.warehouse|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Account Head</div>
+                           <small class="lgi-text">{{instance.account_head|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Voucher Number</div>
+                           <small class="lgi-text">{{instance.voucher_number|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Voucher Date</div>
+                           <small class="lgi-text">{{instance.voucher_date|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Title</div>
+                           <small class="lgi-text">{{instance.title|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Description</div>
+                           <small class="lgi-text">{{instance.description|default:'-'}}</small>
+                        </div>
+                     </div>
+
+                     {% get_sub_ledger instance as sub_ledger %}
+                     {% if sub_ledger.0 %}
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Sub Ledger</div>
+                           <a class="text-primary" href="{{sub_ledger.1}}"><small class="lgi-text">{{sub_ledger.0|default:'-'}}</small></a>
+                        </div>
+                     </div>
+                     {% endif %}
+
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Amount</div>
+                           <small class="lgi-text">{{instance.amount|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Transfer Type</div>
+                           <small class="lgi-text">{{instance.get_transfer_type_display|default:'-'}}</small>
+                        </div>
+                     </div>
+
+                     {% if not instance.transfer_type == 10 %}
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Bank</div>
+                           <small class="lgi-text">{{instance.bank|default:'-'}}</small>
+                        </div>
+                     </div>
+
+                     {% if instance.transfer_type == 15 %}
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Cheque Number</div>
+                           <small class="lgi-text">{{instance.cheque_number|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Cheque Date</div>
+                           <small class="lgi-text">{{instance.cheque_date|default:'-'}}</small>
+                        </div>
+                     </div>
+                     {% elif instance.transfer_type == 20 %}
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Draft Number</div>
+                           <small class="lgi-text">{{instance.draft_number|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Draft Date</div>
+                           <small class="lgi-text">{{instance.draft_date|default:'-'}}</small>
+                        </div>
+                     </div>
+                     {% elif instance.transfer_type == 25 %}
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Transfer Number</div>
+                           <small class="lgi-text">{{instance.transfer_number|default:'-'}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Transfer Date</div>
+                           <small class="lgi-text">{{instance.transfer_date|default:'-'}}</small>
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% endif %}
+                  </div>
+
+               </div>
+
+            </div>
+
+            <div class="col-sm-4">
+               <div class="card">
+                  <div class="card-header">
+                     <h4>Basic Info <small></small></h4>
+                  </div>
+
+                  <div class="card-body">
+                     <div class="list-group lg-alt c-overflow">
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Creator </div>
+                              <small class="lgi-text">{{instance.creator}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Added </div>
+                              <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        {% if instance.is_deleted %}
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted By </div>
+                              <small class="lgi-text">{{instance.updater}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted Date </div>
+                              <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted Reason </div>
+                              <small class="lgi-text">{{instance.deleted_reason}}</small>
+                           </div>
+                        </div>
+
+                        {% else %}
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Updater </div>
+                              <small class="lgi-text">{{instance.updater}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Updated </div>
+                              <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        {% endif %}
+
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
+         </div>
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

@@ -1,0 +1,1142 @@
+[
+    {
+        "model": "warehouses.Zone",
+        "pk": 1,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Jasra",
+            "arabic_name": "أل جسرا",
+            "latitude": "25.2884026",
+            "longitude": "51.5327506"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 2,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Bidda",
+            "arabic_name": "أل بيضة",
+            "latitude": "25.2918526",
+            "longitude": "51.5215786"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 3,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Mushaireb",
+            "arabic_name": "مشيرب",
+            "latitude": "25.2843485",
+            "longitude": "51.5215786"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 4,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Mushaireb",
+            "arabic_name": "مشيرب",
+            "latitude": "25.2843485",
+            "longitude": "51.5215786"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 5,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Barahat Al Jufairi, Al Najada, Fereej Al Asmakh",
+            "arabic_name": "براحة أل جوفير, أل نجد, فريج أل أسماخ",
+            "latitude": "25.2819819",
+            "longitude": "51.53488339999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 6,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Old Al Ghanim",
+            "arabic_name": "ألد أل غنيم",
+            "latitude": "25.2799883",
+            "longitude": "51.5399805"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 7,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Souq (Souq Waqif)",
+            "arabic_name": "أل سوق (سوق وقف)",
+            "latitude": "25.2880413",
+            "longitude": "51.531876"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 8,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "",
+            "arabic_name": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 9,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "",
+            "arabic_name": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 10,
+        "fields": {
+            "municipality": "Wadi Al Sail",
+            "municipality_arabic": "وادي السيل",
+            "name": "",
+            "arabic_name": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 11,
+        "fields": {
+            "municipality": "Rumeilah",
+            "municipality_arabic": "الرميلة",
+            "name": "",
+            "arabic_name": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 12,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Bidda, Rumaila, Wadi Al Sail",
+            "arabic_name": "أل بيضة, رميلة, وادي أل سئل",
+            "latitude": "25.2918526",
+            "longitude": "51.5215786"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 13,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Mushaireb",
+            "arabic_name": "مشيرب",
+            "latitude": "25.2843485",
+            "longitude": "51.5215786"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 14,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Fereej Abdel Aziz",
+            "arabic_name": "فريج عبدال عزيز",
+            "latitude": "25.2776509",
+            "longitude": "51.5242071"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 15,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Doha Al Jadeeda",
+            "arabic_name": "دوحة أل جديدة",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 16,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Old Al Ghanim",
+            "arabic_name": "ألد أل غنيم",
+            "latitude": "25.277569",
+            "longitude": "51.53209340000001"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 17,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Ruffaa, Al Hitmi",
+            "arabic_name": "الرفاع, الهتمي",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 18,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Slata, Al Mirqab",
+            "arabic_name": "سليت ، المرقاب",
+            "latitude": "25.2839736",
+            "longitude": "51.5444068"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 19,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Doha Port",
+            "arabic_name": "ميناء الدوحة",
+            "latitude": "25.2949584",
+            "longitude": "51.5439245"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 20,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Wadi Al Sail",
+            "arabic_name": "وادي أل سئل",
+            "latitude": "25.3086721",
+            "longitude": "51.5071235"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 21,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Rumailah",
+            "arabic_name": "الرميلة",
+            "latitude": "25.2963253",
+            "longitude": "51.5161552"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 22,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Bin Mahmoud",
+            "arabic_name": "بين محمود",
+            "latitude": "25.2802738",
+            "longitude": "51.51237949999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 23,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Bin Mahmoud",
+            "arabic_name": "بين محمود",
+            "latitude": "25.2802738",
+            "longitude": "51.51237949999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 24,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Rawdat Al Khail, Al Muntazah",
+            "arabic_name": "روضة أل خيل, أل منتزه",
+            "latitude": "25.26997709999999",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 25,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Mansoura, Bin Dirhem",
+            "arabic_name": "المنصورة بن درهم ",
+            "latitude": "25.2692576",
+            "longitude": "51.5294645"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 26,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Najma",
+            "arabic_name": "نجمة",
+            "latitude": "25.2683268",
+            "longitude": "51.5386659"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 27,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Umm Ghuwailina",
+            "arabic_name": "أم غويلينا",
+            "latitude": "25.2765555",
+            "longitude": "51.5491834"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 28,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Khulaifat, Ras Bu Abboud",
+            "arabic_name": "الخليفي , راس بو عبود",
+            "latitude": "25.2839365",
+            "longitude": "51.5610176"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 29,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Ras Bu Abboud",
+            "arabic_name": "راس بو عبود",
+            "latitude": "25.2791959",
+            "longitude": "51.570913"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 30,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Duhail",
+            "arabic_name": "دحيل",
+            "latitude": "25.35917809999999",
+            "longitude": "51.46514620000001"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 31,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Umm Lekhba",
+            "arabic_name": "أم لخبا",
+            "latitude": "25.3476971",
+            "longitude": "51.4674975"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 32,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Madinat Khalifa North, Dahl Al Hamam",
+            "arabic_name": "مدينة خليفة الشمالية ، دحل الحمام",
+            "latitude": "25.3289807",
+            "longitude": "51.4755961"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 33,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Markhiya",
+            "arabic_name": "المرخية",
+            "latitude": "25.3387579",
+            "longitude": "51.4992403"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 34,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Madinat Khalifa South",
+            "arabic_name": "مدينة خليفة الجنوبية",
+            "latitude": "25.3155964",
+            "longitude": "51.4808497"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 35,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Fareej Kulaib",
+            "arabic_name": "كليب",
+            "latitude": "25.3138281",
+            "longitude": "51.4913579"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 36,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Messila",
+            "arabic_name": "المسيلة",
+            "latitude": "25.3005945",
+            "longitude": "51.4808497"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 37,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "New Al Hitmi, Bin Omran, Hamad Medical City",
+            "arabic_name": "الهتمي الجديد ، بن عمران ، مدينة حمد الطبية",
+            "latitude": "25.2979782",
+            "longitude": "51.49267159999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 38,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Sadd",
+            "arabic_name": "السد",
+            "latitude": "25.2838208",
+            "longitude": "51.4913579"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 39,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Nasr, Al Sadd, Al Mirqab Al Jadeed",
+            "arabic_name": "النصر ، السد ، المرقاب الجديد",
+            "latitude": "25.2695833",
+            "longitude": "51.4979265"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 40,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "As Salatah al Jadidah",
+            "arabic_name": "سلاتا الجديدة",
+            "latitude": "25.2602228",
+            "longitude": "51.5163218"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 41,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Nuaija",
+            "arabic_name": "نعيجة",
+            "latitude": "25.2467",
+            "longitude": "51.5334078"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 42,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Hilal",
+            "arabic_name": "الهلال",
+            "latitude": "25.2583192",
+            "longitude": "51.5386659"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 43,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Maamoura, Nuaija-Fereej Al Ali",
+            "arabic_name": "المعمورة ، نعيجة-فريج العلي",
+            "latitude": "25.2470337",
+            "longitude": "51.5018679"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 44,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Nuaija",
+            "arabic_name": "نعيجة",
+            "latitude": "25.2467",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 45,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Old Airport (Mathar Qadeem)",
+            "arabic_name": "المطار القديم (المعذر القديم)",
+            "latitude": "25.2532433",
+            "longitude": "51.5597124"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 46,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Thumama",
+            "arabic_name": "الثمامة",
+            "latitude": "25.2316027",
+            "longitude": "51.5412952"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 47,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Thumama",
+            "arabic_name": "الثمامة",
+            "latitude": "25.2316027",
+            "longitude": "51.5412952"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 48,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Doha International Airport",
+            "arabic_name": "مطار الدوحة الدولي",
+            "latitude": "25.26087590000001",
+            "longitude": "51.61384169999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 49,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Hamad International Airport, Banana Island, Ras Bu Fontas",
+            "arabic_name": "مطار حمد الدولي ، جزيرة الموز ، رأس بوفنطاس",
+            "latitude": "25.26087590000001",
+            "longitude": "51.61384169999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 50,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Thumama",
+            "arabic_name": "الثمامة",
+            "latitude": "25.2316027",
+            "longitude": "51.5412952"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 51,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Bani Hajer, Al Seej, Al Themaid, Gharaffat Al Rayan, Izghawa, Jery Al Dabi, QNCC, Rawdat Al Jahhaniya, Rawdat Egdaim, Shariya",
+            "arabic_name": "بني حجر ، السيج ، الثميد ، غرافة الريان ، إزغوى ، جري الضبي ، مركز قطر الوطني للمؤتمرات ، روضة الجهانية ، روضة اقدم ، الشريعة",
+            "latitude": "25.3163231",
+            "longitude": "51.4020909"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 52,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Al Luqta, Old Al Rayyan, Al Shaqab, Lebday, Fereej Al Zaeem, Education City",
+            "arabic_name": "اللقطة ، الريان القديم ، الشقب ، لبدي ، فريج الزعيم ، المدينة التعليمية",
+            "latitude": "25.3107466",
+            "longitude": "51.4650904"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 53,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "New Al Rayyan, Muaither, Al Wajba, Rawdat Abal Heeran, Umm Al Juwashen",
+            "arabic_name": "الريان الجديد ، معيذر ، الوجبة ، روضة أبال حيران ، أم الجواشن",
+            "latitude": "25.262897",
+            "longitude": "51.4152108"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 54,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Baaya, Muraikh, Mehairja, Fereej Al Amir, Luaib, Aspire Zone, Fereej Al Soudan",
+            "arabic_name": "بايا ، مريخ ، ميهيرجا ، فريج الأمير ، لويب ، أسباير زون ، فريج السودان",
+            "latitude": "25.2676694",
+            "longitude": "51.4388333"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 55,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Fereej Al Soudan, Al Waab, Al Aziziya, Al Ghanim Al Jadeed, Al Mearad, Al Sailiya, Bu Sidra, Fereej Al Manaseer, Fereej Al Murra, Muaither, Umm Al Seneem",
+            "arabic_name": "فريج السودان ، الوعب ، العزيزية ، الغانم الجديد ، المعارض ، السيلية ، بو سدرة ، فريج المناصير ، فريج المرة ، معيذر ، أم السنيم",
+            "latitude": "25.2672025",
+            "longitude": "51.4861036"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 56,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Bu Hamour, Ain Khaled, Mesaimeer, Al Maamoura, Barwa City, Fereej Al Asiri, New Fereej Al Khulaifat",
+            "arabic_name": "بو هامور ، عين خالد ، مسيمير ، المعمورة ، مدينة بروة ، فريج العسيري ، فريج الخليفات الجديدة",
+            "latitude": "25.2388065",
+            "longitude": "51.4913579"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 57,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Industrial Area (Sanaya)",
+            "arabic_name": "المنطقة الصناعية (الصنايع)",
+            "latitude": "25.17531220000001",
+            "longitude": "51.4653572"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 58,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Wholesale Market",
+            "arabic_name": "سوق الجملة",
+            "latitude": "25.17531220000001",
+            "longitude": "51.4653572"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 59,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "",
+            "arabic_name": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 60,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Dafna",
+            "arabic_name": "الدفنة",
+            "latitude": "25.3077469",
+            "longitude": "51.5163218"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 61,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Al Dafna, Al Gassar",
+            "arabic_name": "الدفنة ,الجسار",
+            "latitude": "25.3512764",
+            "longitude": "51.5264677"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 62,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Lekhwair",
+            "arabic_name": "لخوير",
+            "latitude": "25.3137643",
+            "longitude": "51.51242699999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 63,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Onaiza",
+            "arabic_name": "عنيزة",
+            "latitude": "25.3469175",
+            "longitude": "51.517636"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 64,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Lejbailat",
+            "arabic_name": "لجبيلات",
+            "latitude": "25.3212151",
+            "longitude": "51.5031818"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 65,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Onaiza",
+            "arabic_name": "عنيزة",
+            "latitude": "25.3469175",
+            "longitude": "51.517636"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 66,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Legtaifiya, Onaiza, The Pearl, Al Gassar, Katara Cultural Village",
+            "arabic_name": "لقطيفية ، عنيزة ، اللؤلؤة ، الجسار ، الحي الثقافي كتارا",
+            "latitude": "25.3643592",
+            "longitude": "51.5103956"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 67,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Hazm Al Markhiya",
+            "arabic_name": "حزم المرخية",
+            "latitude": "25.340418",
+            "longitude": "51.4948578"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 68,
+        "fields": {
+            "municipality": "Doha",
+            "municipality_arabic": "الدوحة",
+            "name": "Jelaiah, Al Tarfa, Jeryan Nejaima,Pearl Qatar",
+            "arabic_name": "الجليعة ، الطرفة ، جريان نجيمة ، لؤلؤة قطر",
+            "latitude": "25.3522172",
+            "longitude": "51.4861036"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 69,
+        "fields": {
+            "municipality": "Al Daayen",
+            "municipality_arabic": "الظعاين",
+            "name": "Al Egla, Lusail, Jabal Thuaileb, Al Kharayej, Wadi Al Banat",
+            "arabic_name": "العقلة ، الوسيل ، جبل ثويلب ، الخرايج ، وادي البنات",
+            "latitude": "25.3897339",
+            "longitude": "51.5036462"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 70,
+        "fields": {
+            "municipality": "Al Daayen",
+            "municipality_arabic": "الظعاين",
+            "name": "Leabaib, Al Ebb, Wadi Al Banat, Al Kheesa, Rawdat Al Hamama, Wadi Al Wasah, Jeryan Jenaihat, Al Masrouhiya, Al Rehayya, Al Sakhama, Jery Al Matrooshi, Semaisma, Tenbek, Umm Garn, Wadi Al Ewaira, Al Jeryan, Al Kheesa",
+            "arabic_name": "لعبيب ، العب ، وادي البنات ، الخيصة ، روضة الحمامة ، وادي الوساح ، جيران جنيهات ، المسروحية ، الرحية ، الصخامة ، جري المطروشي ، سميسمة ، تنبك ، أم قرن ، وادي العويرة ، الجريان. الخيسة",
+            "latitude": "25.3770962",
+            "longitude": "51.45634949999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 71,
+        "fields": {
+            "municipality": "Umm Salal",
+            "municipality_arabic": "أم صلال",
+            "name": "Al Froosh, Al Kharaitiyat, Bu Fessela, Bu Garn, Bu Glaila, Izghawa, Jery Khabbab, Snay Lehmaidi, Umm Al Amad, Umm Ebairiya, Umm Salal Ali, Umm Salal Muhammad",
+            "arabic_name": "الفروش ، الخريطيات ، بو فصيلة ، بو جارن ، بو جليلة ، إزغا ، جيري خباب ، سني لحميدي ، أم العمد ، أم عبيرية ، أم صلال علي ، أم صلال محمد",
+            "latitude": "25.2509135",
+            "longitude": "51.490478"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 72,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Leatooriya, Bu Kheesa, Atran, Wadi Laswag, Broog",
+            "arabic_name": "اللطورية ، بو خيسة ، عتران ، وادي السواج ، بروق",
+            "latitude": "25.5237141",
+            "longitude": "51.1990423"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 73,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Lijmiliya/Al Jemailiya, Al Gaeyya, Al Hawafer, Abal Jahazel, Getna, Lebsayyer, Umm Sidra",
+            "arabic_name": "الجميلية / الجميلية ، الجاية ، الحافر ، أبال جهازيل ، جتنا ، لبصير ، أم سدرة",
+            "latitude": "25.613745",
+            "longitude": "51.09501649999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 74,
+        "fields": {
+            "municipality": "Al Khor and Al Thakira",
+            "municipality_arabic": "الخور والذكية",
+            "name": "Al Khor City, Rasheeda, Umm Ejwaifa",
+            "arabic_name": "مدينة الخور ، الرشدة ، أم أجواء",
+            "latitude": "25.6804078",
+            "longitude": "51.4968502"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 75,
+        "fields": {
+            "municipality": "Al Khor",
+            "municipality_arabic": "الخور",
+            "name": "Al Thakira, Ras Laffan, Umm Birkah",
+            "arabic_name": "الذكرة ، راس لفان ، أم بركة",
+            "latitude": "25.7653638",
+            "longitude": "51.5328258"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 76,
+        "fields": {
+            "municipality": "Al Khor",
+            "municipality_arabic": "الخور",
+            "name": "Leghraifa, Rawdat Hawtan, Rawdat Al Faras, Leawaija",
+            "arabic_name": "الذكرة ، راس لفان ، أم بركة",
+            "latitude": "25.7569956",
+            "longitude": "51.2823578"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 77,
+        "fields": {
+            "municipality": "Al Shamal",
+            "municipality_arabic": "الشمال",
+            "name": "Fuwairit, Ain Sinan, Madinat Al Kaaban, Al Marroona",
+            "arabic_name": "فويرط ، عين سنان ، مدينة الكعبان ، المرونة",
+            "latitude": "26.0243468",
+            "longitude": "51.3705587"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 78,
+        "fields": {
+            "municipality": "Al Shamal",
+            "municipality_arabic": "الشمال",
+            "name": "Al Areesh, Abu Zaluf/Abu Dhalouf, Al Zubara",
+            "arabic_name": "العريش ، أبو زلف / أبو ظلوف ، الزبارة",
+            "latitude": "26.1269257",
+            "longitude": "51.1806253"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 79,
+        "fields": {
+            "municipality": "Al Shamal",
+            "municipality_arabic": "الشمال",
+            "name": "Al Ruwais, Madinat Ash Shamal, Al Ghariya",
+            "arabic_name": "الرويس ، مدينة الشمال ، الغارية",
+            "latitude": "",
+            "longitude": "51.1977605"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 80,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Al Sheehaniya, Al Ruwaidat, Umm Lekhya, Umm Leghab, Lebyatiya",
+            "arabic_name": "الشيحانية ، الرويدات ، أم لخية ، أم لغاب ، لبياتية",
+            "latitude": "25.2587093",
+            "longitude": "51.511124"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 81,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Mebaireek, New Industrial Area, Mekaines, Al Edaid Base, Al Khaldiya, Al Hemaila, Jeryan Al Reyoog",
+            "arabic_name": "مبيريك ، المنطقة الصناعية الجديدة ، مكينس ، قاعدة العديد ، الخالدية ، الحميلة ، جريان الريوج",
+            "latitude": "25.1810087",
+            "longitude": "51.3746813"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 82,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Bu Garn, Umm Al Zubar West, Rawdat Kharja",
+            "arabic_name": "بوقرن ، أم الزبر الغربية ، روضة الخارجة",
+            "latitude": "25.4216806",
+            "longitude": "51.3401608"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 83,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Al Karaana, Al Jelaiat, Umm Al March, Umm Al Shubrum, Sabina, Leashara, Al Deainiyat, Al Rekayya",
+            "arabic_name": "الكراعنة ، الجليات ، أم مارس ، أم الشبرم ، سابينا ، ليشارة ، الضعينات ، الرقية",
+            "latitude": "25.2975683",
+            "longitude": "51.5018995"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 84,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Umm Bab, Umm Samra, Bu Ghawlana, Al Hamla, Bu Traifa, Umm Al Dayyat, Al Shabhana",
+            "arabic_name": "أم باب ، أم سمرة ، بو غولانة ، الهملة ، بوطريفة ، أم الديات ، الشبهانة",
+            "latitude": "25.2091503",
+            "longitude": "50.80118969999999"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 85,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Al Nasraniya, Tharb, Imlaih, Abal Halayem",
+            "arabic_name": "النصرانية ، ثرب ، امليح ، ابال حلايم",
+            "latitude": "25.407668",
+            "longitude": "51.0762389"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 86,
+        "fields": {
+            "municipality": "Al Shahaniya",
+            "municipality_arabic": "الشحانية",
+            "name": "Dukhan, Afjan, Al Zeghain, Barga Egaif, Umm Wadi",
+            "arabic_name": "دخان ، أفجان ، الزغين ، برج إيجيف ، أم وادي",
+            "latitude": "25.4280036",
+            "longitude": "50.7833068"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 90,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Al Wakrah South East",
+            "arabic_name": "الوكرة جنوب شرق",
+            "latitude": "25.1709448",
+            "longitude": "51.6100203"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 91,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Al Mashaf, Al Wukair, Muaither Al Wukair, Umm Besher, Wadi Aba Seleel",
+            "arabic_name": "المشاف ، الوكير ، معيذر الوكير ، أم بشر ، وادي أبا صليل",
+            "latitude": "25.175958",
+            "longitude": "51.5687818"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 92,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Mesaieed, Mesaieed Free Zone",
+            "arabic_name": "مسيعيد المنطقة الحرة مسيعيد",
+            "latitude": "24.9909255",
+            "longitude": "51.5493483"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 93,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Mesaieed Industrial Area, Sealine",
+            "arabic_name": "منطقة مسيعيد الصناعية ، سيلين",
+            "latitude": "25.0060115",
+            "longitude": "51.55980210000001"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 94,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Shagra, Al Afja, Jabal Marmi, Leshaiger, Al Metfardat",
+            "arabic_name": "شقراء ، العفجة ، جبل مرمي ، لشايجر ، المفردات",
+            "latitude": "25.26666669999999",
+            "longitude": "50.9166667"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 95,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Al Kharrara, Umm Garn, Al Daiha, Traina, Ghasham, Al Sidari, Al Nigyan, Wadi Jallal, Al Nehaidan, Mesaigra",
+            "arabic_name": "الخراره ، أم قرن ، الضيحه ، تراينا ، غشام ، السيداري ، النيجيان ، وادي جلال ، النهيدان ، ميسيجرا",
+            "latitude": "24.9008054",
+            "longitude": "51.1716107"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 96,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Abu Samra, Umm Ain, Rawdat Ishala, Eglat Faisal, Learaig, Wadi Al Jihh, Al Slemiya, Al Galayel, Umm Jarra",
+            "arabic_name": "أبو سمرة ، أم عين ، روضة إشالة ، عقلة فيصل ، لعريج ، وادي الجيح ، السالمية ، الجليل ، أم جرة",
+            "latitude": "24.7501563",
+            "longitude": "50.8521918"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 97,
+        "fields": {
+            "municipality": "Al Rayyan",
+            "municipality_arabic": "الريان",
+            "name": "Sawda Natheel, Al Garayen, Barga Al Kharaz, Geezan Learaig, Barga Al Hamil, Ghareb Al Thawr, Rawdat Al Faras, Jaww Al Kharaz",
+            "arabic_name": "سودة نثيل ، القرائن ، برجا الخراز ، جيزان ليراج ، برج الحامل ، غريب الثور ، روضة الفرس ، جو الخراز",
+            "latitude": "24.58229",
+            "longitude": "51.0622363"
+        }
+    },
+    {
+        "model": "warehouses.Zone",
+        "pk": 98,
+        "fields": {
+            "municipality": "Al Wakra",
+            "municipality_arabic": "الوكرة",
+            "name": "Khor Al Udaid, Nega Al Fagara, Aamra, Negyan Al Sada, Wadi Abal Gherban, Legsaira, Eglat Zuwayyed, Lekhfoos",
+            "arabic_name": "خور العديد ، نجا الفجاره ، عمرة ، نجيان السادة ، وادي آبال غربان ، لغسيرا ، عقلة زويد ، لخفوس",
+            "latitude": "24.6525019",
+            "longitude": "51.4254265"
+        }
+    }
+]

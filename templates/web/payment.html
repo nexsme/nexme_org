@@ -1,0 +1,1018 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+
+{% block content %}
+
+<style>
+  li{
+    list-style: none !important;
+  }
+
+  .amt, .amt1{
+
+    width:100%;
+  }
+
+  .address-active{
+    border: 1px solid red;
+    border-radius: 20px;
+  }
+
+.red{
+  color: red;
+  display: none;
+}
+
+</style>
+
+<!-- edit-address -->
+<div class="OverLay" id="EditAddress">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+      <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+      <span class="mycart-name">{% trans "Edit Address" %}</span>
+    </div>
+
+    <form action="" class="web-ajax reload" method="post">
+    </form>
+  </div>
+</div>
+<!-- header end -->
+
+<!-- add-new-address -->
+<div class="OverLay" id="AddNewAddress">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+      <span class="mycart-name">{% trans "Add New Address" %}</span>
+      <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+
+    </div>
+    {% if address_instances %}
+    <form action="{{url}}" class="web-ajax reload" method="post">
+      {% csrf_token %}
+      <div class="AddressMainContainer">
+        <div class="title-Row">{% trans "Contact Details" %}</div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.name.label}}</Label>
+          {{address_form.name}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.phone.label}}</Label>
+          {{address_form.phone}}
+        </div>
+
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.email.label}}</Label>
+          {{address_form.email}}
+        </div>
+
+        <div class="title-Row Details">{% trans "Address Details" %}</div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.zone.label}}</Label>
+          {{address_form.zone}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.house_name.label}}</Label>
+          {{address_form.house_name}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.landmark.label}}</Label>
+          {{address_form.landmark}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.street.label}}</Label>
+          {{address_form.street}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{location_form.location.label}}</Label>
+          {{location_form.location}}
+          <div id="map"></div>
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{location_form.latitude.label}}</Label>
+          {{location_form.latitude}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{location_form.longitude.label}}</Label>
+          {{location_form.longitude}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.state.label}}</Label>
+          {{address_form.state}}
+        </div>
+        <h6 href="#" class="text-primary" style="color:#9f0529" id="location_manual">Fetch Current Location</h6>
+        <div class="title-Row">
+          {% trans "Save Address As" %}
+        </div>
+        <div class="ContactDetails-Row saveAddressAs">
+          <div class="homeSection">
+            <input class="input-hidden" id="home" name="homeoroffice" value="home" type="radio"/ checked="checked">
+            <label for="home"><img alt="home" src="{% static 'web/images/icons/home.svg' %}" alt="Image" />{% trans "Home" %}</label>
+          </div>
+          <div class="officeSection">
+            <input class="input-hidden" id="office" name="homeoroffice" value="office" type="radio"/>
+            <label for="office">
+              <img alt="office" src="{% static 'web/images/icons/office.svg' %}" alt="Image" />{% trans "Office" %}
+            </label>
+          </div>
+        </div>
+        <div class="commonCheckBox">
+          <label class="container">
+            <input name="default" type="checkbox">
+            <span class="checkmark"><span class="zmdi zmdi-check"></span></span>
+            {% trans "Use this as my default address" %}
+          </label>
+        </div>
+        <div class="buttonAreaSub">
+          <button type="submit">{% trans "Save" %}</button>
+        </div>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+</div>
+<!-- header end -->
+
+<section id="payment">
+  <section class="wrapper container">
+    <section class="heading">
+      <ul>
+        <li class="active tab1">1 - {% trans "Address" %}</li>
+        <li class="tab3">2 - {% trans "Delivery Time" %}</li>
+        <li class="tab2">3 - {% trans "Payment" %}</li>
+      </ul>
+    </section>
+
+
+    <div class="tab-click" id="payment_tab">
+      <section class="content">
+        <section class="left">
+          <div class="head-pay">
+            <h3 class="item-head">{% trans "Payment Method" %}</h3>
+          </div>
+          <div class="tabs">
+            {% comment %} <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method1">UPI</label>
+                <input class="hided" id="method1" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="upi" placeholder="UPI/VPI ID (eg: 8888999966@upi)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method2">{% trans "Credit card" %}</label>
+                <input class="hided" id="method2" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="creditCard" placeholder="(Card No.)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method3">{% trans "Debit Card" %}</label>
+                <input class="hided" id="method3" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="debitCard" placeholder="(Card No.)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method4">{% trans "Google Pay" %}</label>
+                <input class="hided" id="method4" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="gpay" placeholder="Google Pay (eg: 808646464)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method5">{% trans "Apple Pay" %}</label>
+                <input class="hided" id="method5" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="apay" placeholder="Apple Pay: 8888999966@upi)" type="text">
+              </section>
+            </div> {% endcomment %}
+
+            <div class="item active">
+              <div class="container">
+                  <div class="roundBotton">
+                      <span class="orangeRound"></span>
+                  </div>
+                  <label for="method6">Cash On Delivery</label>
+                  <input class="hided" id="method6" value="cod" checked name="paymentMethod" type="radio">
+              </div>
+            </div>
+          
+            <div class="item" id="razorpay">
+              <div class="container">
+                  <div class="roundBotton">
+                      <span class="orangeRound"></span>
+                  </div>
+                  <label for="method7">Pay using UPI</label>
+                  <input class="hided" id="method7" value="razorpay" name="paymentMethod" type="radio">
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <section class="right-box">
+          <div class="head-pay">
+            <h3 class="item-head">{% trans "Items" %}</h3>
+          </div>
+
+          {% for i in cart %}
+          <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+            <div class="pro-card">
+              <div class="img-box">
+                {% if i.product_variant.image %}
+                <img src="{{ i.product_variant.image.thumbnail.600x600 }}" alt="Image" />
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;" alt="Image" />
+                {% endif %}
+              </div>
+              <div class="pay-content">
+                <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                     href="{% url 'web:decrement_cart' %}"></div>
+                <h6 class="main-heading">{{ i.product_variant }}
+                  <!-- <a class="removeCart" data-pk="{{i.pk}}" data-url="{% url 'web:remove_cart' %}">
+                    <img alt="" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                  </a> -->
+                  <!-- <img alt="Delete" src="{% static 'web/images/icons/delete-icon.svg' %}" alt="Image" /> -->
+                </h6>
+                <small>{{i.product_variant.product.category}}</small>
+                <div class="QuantitybuttonAreaMain-row">
+                  <div class="QuantitybuttonAreaSub-row">
+                    <h6><span class="rupees-symbol">₹ </span>{% get_product_price i.product_variant.pk zone_session %}</h6>
+                    <!-- <div class="Quantity-button {{i.pk}}">
+                      <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                             id="minus"
+                             type="button"
+                             value="-"
+                      >
+                      <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                             step="1" title="Qty" type="text"
+                             value="{% get_cart_count i.product_variant.pk request.user %}">
+                      <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                             href="{% url 'web:increment_cart' %}" id="plus"
+                             type="button" value="+"
+                      >
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+          <div class="cart-list">
+            <div class="head-pay">
+              <h3>Order Details</h3>
+            </div>
+            <div class="contents">
+              <div class="list-content">
+                <h3>Item Price</h3>
+                <h6>{{cart_amt}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>Delivery Charge</h3>
+                <h6>{{delivery_charge}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>Tax</h3>
+                <h6>0</h6>
+              </div>
+              <div class="list-content">
+                <h3>Gift Voucher</h3>
+                {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+              </div>
+              <div class="list-content">
+                <h3>Wallet Amount</h3>
+                <h6>{{wallet_applied_amt}}</h6>
+              </div>
+              <div class="list-content amt">
+                <h6 class="bolder">Total</h6>
+                <h6 class="bolder"><span class="rupees-symbol">₹</span><span class="total-td">{{cart_grand_total|floatformat:2}}</span></h6>
+              </div>
+            </div>
+            <button 
+              data-redirect="{% url 'web:order_confirmed' %}" 
+              data-url="{% url 'web:place_order' %}" 
+              id="checkout" 
+              
+              type="submit">Proceed
+            </button>
+            <input type="hidden" value"" name="razorpay_payment_id" id="razorpay_payment_id">
+            <input type="hidden" value"" name="razorpay_order_id" id="razorpay_order_id">
+            <input type="hidden" value"" name="razorpay_signature" id="razorpay_signature">
+          </div>
+        </section>
+        {% comment %} loader {% endcomment %}
+        <div id="Loader">
+          <div class="PaymentLoader">Loading
+            <span class="loader"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="" id="checkOutproduct">
+      <div class="content">
+        <div class="container-side">
+          <div class="checkOutContainer">
+            <h4>{% trans "Choose Delivery Type "%}</h4>
+            <div class="ContactDetails-Row saveAddressAs">
+              <div class="homeSection">
+                <input class="input-hidden" id="normal" name="delivery_type" value="normal" type="radio" checked="checked"/>
+                <label for="normal">{% trans "Normal Delivery" %}</label>
+              </div>
+              {% if not is_vendor %}
+              <div class="officeSection">
+                <input class="input-hidden" id="express" name="delivery_type" value="express" type="radio"/>
+                <label for="express">
+                  {% trans "Express Delivery" %}
+                </label>
+              </div>
+              {% endif %}
+            </div>
+
+            <div id="DateSection" style="display: block">
+              <h4>{% trans "Delivery date setting" %}</h4>
+              <div class="dateSection">
+                <label for="datepicker">
+                  <p>{% trans "Date" %}</p>
+                  <input autocomplete="off" id="datepicker" placeholder="Date" type="text" data-url="{% url 'web:get_time_slots' %}"/>
+                  <span class="zmdi zmdi-calendar-note" ></span>
+                </label>
+              </div>
+              <h4>{% trans "Choose a time slot" %}</h4>
+              <input type="hidden" id="timeslot" />
+              <div class="timeSelect">
+              </div>
+            </div>
+            <div id="ExpressDelivery" >
+              <div class="img_box">
+                <img src="{% static 'web/images/icons/Express_delivery.svg' %}" alt="ExpressDelivery-icon" />
+              </div>
+              <span style="color:#989B97;" >
+                Delivery within one hour You cannot place 
+                an order in express delivery during the period from 10 pm to 8 am
+              </span>
+            </div>
+            <p style="display:none" id="not_slots_available">{% trans "No time slots available" %}</p>
+          </div>
+        </div>
+
+        <section class="right-box">
+          <div class="head-pay">
+            <h3 class="item-head">{% trans "Items" %}</h3>
+          </div>
+
+          {% for i in cart %}
+          <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+            <div class="pro-card">
+              <div class="img-box">
+                {% if i.product_variant.image %}
+                <img src="{{ i.product_variant.image.thumbnail.600x600 }}" alt="Image" />
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;" alt="Image" />
+                {% endif %}
+              </div>
+              <div class="pay-content">
+                <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                     href="{% url 'web:decrement_cart' %}"></div>
+                <h6 class="main-heading">{{ i.product_variant }}
+
+
+                  <a class="remove-cart-checkout" data-pk="{{i.pk}}" href="{% url 'web:remove_cart' %}">
+                    <img  class="" src="{% static 'web/images/icons/delete-icon.svg' %}" alt="Icon" />
+                  </a>
+                </h6>
+                <small>{{i.product_variant.product.category}}</small>
+                <div class="QuantitybuttonAreaMain-row">
+                  <div class="QuantitybuttonAreaSub-row">
+                    <h6><span class="rupees-symbol">₹ </span>{% get_product_price i.product_variant.pk zone_session %}</h6>
+                    <div class="Quantity-button {{i.pk}}">
+                      <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                             id="minus"
+                             type="button"
+                             value="-"
+                      >
+                      <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                             step="1" title="Qty" type="text"
+                             value="{% get_cart_count i.product_variant.pk request.user %}">
+                      <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                             href="{% url 'web:increment_cart' %}" id="plus"
+                             type="button" value="+"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+
+          <div class="cart-list">
+            <div class="head-pay">
+              <h3>Order Details</h3>
+            </div>
+            <div class="contents">
+              <div class="list-content">
+                <h3>Item Price</h3>
+                <h6>{{cart_amt}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>Delivery Charge</h3>
+                <h6>{{delivery_charge}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>Tax</h3>
+                <h6>0</h6>
+              </div>
+              <div class="list-content">
+                <h3>Gift Voucher</h3>
+                {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+              </div>
+              <div class="list-content">
+                <h3>Wallet Amount</h3>
+                <h6>{{wallet_applied_amt}}</h6>
+              </div>
+              <div class="list-content amt1">
+                <h6 class="bolder">Total Amount</h6>
+                <h6 class="bolder"><span class="rupees-symbol">₹ <span class="total-amount">{{cart_grand_total|floatformat:2}}</span></h6>
+              </div>
+            </div>
+            <button data-url="{% url 'web:validate_order' %}" id="validate" type="submit">Proceed</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section id="address">
+      <div class="top">
+        <h1>{% trans "My Address" %}</h1>
+      </div>
+      <div class="bottom">
+        <div class="header-box">
+          <div class="left">
+            <span class="no">{{address_count}}</span>
+            <h1>Saved Address</h1>
+          </div>
+          {% if address_instances %}
+          <div class="right">
+            <a class="add-button" href="#">{% trans "Add Address" %}</a>
+          </div>
+          {% endif %}
+        </div>
+        <p class="red" id="addressError">{% trans "Please select a valid address" %}</p>
+        <div class="container default">
+          {% if address_instances %}
+          <ul id="customerAddress">
+            {% for i in address_instances %}
+            <li style="border-radius:10px" class="{% if i.is_default %} address-active {% endif %}" data-pk="{{i.pk}}"
+                data-url="{% url 'web:set_default_address' %}" style="cursor:pointer;" onclick="address()">
+              <div class="item address-section">
+                <div class="one">
+                  <div class="new-sec">
+                    <h1>{{i.name}}</h1>
+                    <p>
+                      {% if i.address_type == 10 %}
+                      Home
+                      {% else %}
+                      Office
+                      {% endif %}
+                    </p>
+                    <span class="num">{{i.phone}}</span>
+                  </div>
+                  <div class="new-sec">
+                    <div class="option">
+                      <a data-get_url="{% url 'web:get_address_edit_form' i.pk %}" data-post_url="{% url 'web:edit_address' i.pk %}" class="edit" href="#">
+                        <img alt="edit" src="{% static 'web/images/icons/edit.svg' %}"  />
+                      </a>
+  
+                      <a class="delete" data-id="{{ i.pk }}" data-text="{{ confirm_delete_message }}"
+                        data-title="Are you sure?" href="{% url 'web:delete_address' pk=i.pk %}?source=payment">
+                        <img alt="edit" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                      </a>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="two">
+                  <p>{{i}}</p>
+                  
+                </div>
+                <div class="three">
+
+                  {% if i.is_default %}
+                  <h1>{% trans "Default Address" %}</h1>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+
+            {% endfor %}
+          </ul>
+          {% else %}
+
+            <form action="{{url}}" class="web-ajax reload" method="post">
+              {% csrf_token %}
+              <div class="AddressMainContainer">
+                <div class="title-Row">{% trans "Contact Details" %}</div>
+
+                <div class="ContactDetails-Row">
+                  <Label>{{address_form.name.label}}</Label>
+                  {{address_form.name}}
+                </div>
+
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.phone.label}}</Label>
+                  {{address_form.phone}}
+                </div>
+
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.email.label}}</Label>
+                  {{address_form.email}}
+                </div>
+
+                <div class="title-Row Details">{% trans "Address Details" %}</div>
+
+                <div class="ContactDetails-Row">
+                  <Label>{{address_form.zone.label}}</Label>
+                  {{address_form.zone}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.house_name.label}}</Label>
+                  {{address_form.house_name}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.landmark.label}}</Label>
+                  {{address_form.landmark}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.street.label}}</Label>
+                  {{address_form.street}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{location_form.location.label}}</Label>
+                  {{location_form.location}}
+                  <div id="map"></div>
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{location_form.latitude.label}}</Label>
+                  {{location_form.latitude}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{location_form.longitude.label}}</Label>
+                  {{location_form.longitude}}
+                </div>
+                <div class="ContactDetails-Row fifty-fifty">
+                  <Label>{{address_form.state.label}}</Label>
+                  {{address_form.state}}
+                </div>
+                <h6 href="#" class="text-primary" style="color:#9f0529" id="location_manual">Fetch Current Location</h6>
+                <div class="title-Row">
+                  {% trans "Save Address As" %}
+                </div>
+                <div class="ContactDetails-Row saveAddressAs">
+                  <div class="homeSection">
+                    <input class="input-hidden" id="home" name="homeoroffice" value="home" type="radio"/ checked="checked">
+                    <label for="home"><img alt="home" src="{% static 'web/images/icons/home.svg' %}"/>{% trans "Home" %}</label>
+                  </div>
+                  <div class="officeSection">
+                    <input class="input-hidden" id="office" name="homeoroffice" value="office" type="radio"/>
+                    <label for="office">
+                      <img alt="office" src="{% static 'web/images/icons/office.svg' %}"/>{% trans "Office" %}
+                    </label>
+                  </div>
+                </div>
+                <div class="commonCheckBox">
+                  <label class="container">
+                    <input name="default" type="checkbox">
+                    <span class="checkmark"><span class="zmdi zmdi-check"></span></span>
+                    {% trans "Use this as my default address" %}
+                  </label>
+                </div>
+                <div class="buttonAreaSub">
+                  <button type="submit">{% trans "Save" %}</button>
+                </div>
+              </div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <section class="right-box">
+        <div class="head-pay">
+          <h3 class="item-head">{% trans "Items" %}</h3>
+        </div>
+
+        {% for i in cart %}
+        <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+          <div class="pro-card">
+            <div class="img-box">
+              {% if i.product_variant.image %}
+              <img src="{{ i.product_variant.image.thumbnail.600x600 }}" alt="Image" />
+              {% else %}
+              <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;" alt="Image" />
+              {% endif %}
+            </div>
+            <div class="pay-content">
+              <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                   href="{% url 'web:decrement_cart' %}"></div>
+              <h6 class="main-heading">{{ i.product_variant }}
+
+
+                <a class="remove-cart-checkout" data-pk="{{i.pk}}" href="{% url 'web:remove_cart' %}">
+                  <img alt="Delete" class="" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                </a>
+              </h6>
+              <small>{{i.product_variant.product.category}}</small>
+              <div class="QuantitybuttonAreaMain-row">
+                <div class="QuantitybuttonAreaSub-row">
+                  <h6><span class="rupees-symbol">₹ </span>{% get_product_price i.product_variant.pk zone_session %}</h6>
+                  <div class="Quantity-button {{i.pk}}">
+                    <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                           type="button" value="-" id="minus">
+                    <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                           step="1" title="Qty" type="text"
+                           value="{% get_cart_count i.product_variant.pk request.user %}">
+                    <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                           href="{% url 'web:increment_cart' %}" id="plus" type="button" value="+" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+        <div class="cart-list">
+          <div class="head-pay">
+            <h3>Order Details</h3>
+          </div>
+          <div class="contents">
+            <div class="list-content ">
+              <h3>Item Price</h3>
+              <h6 class="item-total">{{cart_amt}}</h6>
+            </div>
+            <div class="list-content">
+              <h3>Delivery Charge</h3>
+              <h6>{{delivery_charge}}</h6>
+            </div>
+            <div class="list-content">
+              <h3>Tax</h3>
+              <h6>0</h6>
+            </div>
+            <div class="list-content">
+              <h3>Gift Voucher</h3>
+              {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+            </div>
+            <div class="list-content">
+              <h3>Wallet Amount</h3>
+              <h6>{{wallet_applied_amt}}</h6>
+            </div>
+            <div class="list-content amt1">
+              <h6 class="bolder">Total Amount</h6>
+              <h6 class="bolder"><span class="rupees-symbol">₹</span><span class="total-amount">{{cart_grand_total|floatformat:2}}</span></h6>
+            </div>
+          </div>
+          <button id="proceed" type="submit">Proceed</button>
+        </div>
+      </section>
+    </section>
+  </section>
+</section>
+
+{{ form.media }}
+
+{% endblock content %}
+{% block static %}
+{% include 'includes/extra/location_js.html' %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    (() => {
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          };
+
+        // check if the Geolocation API is supported
+        if (!navigator.geolocation) {
+            message.textContent = `Your browser doesn't support Geolocation`;
+            alert(`Your browser doesn't support Geolocation`);
+            return;
+        }
+
+        // handle click event
+        const btn = document.querySelector('#location_manual');
+        btn.addEventListener('click', function () {
+            // get the current position
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+        });
+
+
+        // handle success case
+        function onSuccess(position) {
+            const {
+                latitude,
+                longitude
+            } = position.coords;
+
+            document.getElementById("id_latitude").value = (position.coords.latitude);
+            document.getElementById("id_longitude").value = (position.coords.longitude);
+        }
+
+        // handle error case
+        function onError() {
+            alert(`Failed to get your location!`);
+        }
+    })();
+
+
+    $("#location_manual").click(function(){
+        $('.manual_location').css('display','block');
+    });
+
+    $('#normal,#express').on('change', function(){
+      let delivery_type = $(this).val();
+      if (delivery_type == 'express'){
+        $("#DateSection").hide();
+        $("#ExpressDelivery").addClass("visible");
+      }else{
+        $("#DateSection").show()
+        $("#ExpressDelivery").removeClass("visible");
+      }
+    })
+    $(document).on('input','#id_name', function () {
+        var inputValue = $(this).val();
+        var sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
+        $(this).val(sanitizedValue);
+    });
+
+    $(document).on('input', '#id_phone', function () {
+    var inputValue = $(this).val();
+    var sanitizedValue = inputValue.replace(/[^0-9]/g, '');
+    $(this).val(sanitizedValue);
+});
+
+
+
+
+$('#checkout').click(function (e) {
+    var $this = $(this);
+
+    var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+    e.preventDefault();
+    var is_ok = false
+    
+    if (paymentMethod == 'cod') {
+      $("#Loader").addClass("visible")
+      is_ok = true;
+    }
+    else {
+      proceedToRazorpay("{% url 'web:create_razorpay_order_id' %}", function(isSuccess) {
+          if (isSuccess) {
+            let razorpay_payment_id = $("#razorpay_payment_id").val();
+            let razorpay_order_id = $("#razorpay_order_id").val();
+            let razorpay_signature = $("#razorpay_signature").val();
+            $.ajax({
+              url: "{% url 'web:verify_payment_signature' %}",
+              method: 'POST',
+              data: {
+                  'razorpay_payment_id': razorpay_payment_id,
+                  'razorpay_order_id': razorpay_order_id,
+                  'razorpay_signature': razorpay_signature,
+                  'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() 
+              },
+              success: function(data) {
+                let status = data["status"]
+                  if (status === "success") {
+                    $("#Loader").addClass("visible")
+                    createOrder($this);
+                  } 
+                  else {
+                    swal("Payment Failed", "There was an error processing your payment. Please try again later.", "error");
+                    function reloadPage() {
+                      window.location.reload();
+                    }
+                    document.onkeydown = reloadPage;
+                    document.onmousedown = reloadPage;
+                  }
+              },
+              error: function(xhr, status, error) {
+                  // Handle AJAX errors
+                console.error(error);
+                swal("Error", "An error occurred while processing your payment. Please try again later.", "error");
+                function reloadPage() {
+                  window.location.reload();
+                }
+                document.onkeydown = reloadPage;
+                document.onmousedown = reloadPage;
+              }
+            });
+          }
+          else {
+            
+          }
+      });
+    };
+    if (is_ok) {
+      createOrder($this);
+    }
+    
+});
+
+
+
+function proceedToRazorpay(url, callback) {
+  $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+          var options = {
+              "key": data.razorpay_api_key,
+              "amount": data.cart_grand_total * 100, // Convert to integer
+              "currency": "INR",
+              "name": "Acme Corp",
+              "description": "Test Transaction",
+              "order_id": data.order_id,
+              "handler": function(response) {
+                let razorpay_payment_id = response.razorpay_payment_id;
+                let razorpay_order_id = response.razorpay_order_id;
+                let razorpay_signature = response.razorpay_signature;
+                
+                $("#razorpay_payment_id").val(razorpay_payment_id);
+                $("#razorpay_order_id").val(razorpay_order_id);
+                $("#razorpay_signature").val(razorpay_signature);
+                if (razorpay_payment_id && razorpay_order_id && razorpay_signature) {
+                  callback(true); 
+                }
+                
+              },
+              "prefill": {
+                  "name": data.customer_name,
+                  "email": data.customer_email,
+                  "contact": data.customer_phone
+              },
+              "notes": {
+                  "address": "Razorpay Corporate Office"
+              },
+              "theme": {
+                  "color": "#3399cc"
+              }
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+          rzp1.on('payment.failed', function(response) {
+            setTimeout(function() {
+              rzp1.close();
+              $(".razorpay-container").hide();
+              swal({
+                title: "Something went wrong",
+                text: "Your transaction was declined due to some error, please try again !!",
+                icon: "error"
+              })
+              function reloadPage() {
+                window.location.reload();
+              }
+              document.onkeydown = reloadPage;
+              document.onmousedown = reloadPage;
+              callback(false); 
+            }, 1000);
+            rzp1.destroy()
+        });
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+        callback(false); // Invoke the callback with false
+      }
+  });
+}
+
+
+
+function createOrder($selector) {
+
+  var parent = $selector.parents('.tab-click'),method, number;
+
+  var url = parent.find('#checkout').attr('data-url');
+  var redirect_url = parent.find('#checkout').attr('data-redirect');
+  var time_slot = $('#timeslot').val()
+  var delivery_date = $('#datepicker').val()
+  var delivery_type = $('[name="delivery_type"]').val()
+  var deliver = parent.find('')
+  console.log();
+
+  let is_express = $("#express").is(":checked")
+  delivery_type = is_express?"express":"normal";
+
+  var paymentMethod = $('input[type="radio"][name="paymentMethod"]:checked').val();
+  if (paymentMethod == "cod") {
+    method = "Cash On Delivery";
+  } else {
+    method = "UPI";
+  }
+  $.ajax({
+      type: "GET",
+      url: url,
+      dataType: "json",
+      data: {
+          method:method,
+          number:number,
+          time_slot:time_slot,
+          delivery_type:delivery_type,
+          delivery_date:delivery_date,
+      },
+      success: function (data) {
+          let status = data["status"]
+
+          if (status == "true"){
+              let pk = data['pk']
+              window.location.replace(redirect_url+"?order="+pk);
+          }else if (status == "different-location"){
+              let title = "Not Available";
+              let message = data["message"];
+              swal(title, message, "error")
+
+              document.onkeydown = function (evt) {
+                  window.location.reload()
+              };
+              document.onmousedown = function (evt) {
+                  window.location.reload()
+              };
+
+          }else if(status == "stock-unavailable"){
+              let title = "Not Available";
+              let stock_data = data["data"];
+              let message = "";
+              for (i=0; i<stock_data.length; i++){
+                  let item = stock_data[i];
+                  message += `${item["name"]} has only ${item["stock"]} in stock`;
+                  if (i+1 == stock_data.length)
+                      message += "\n"
+              }
+
+              swal(title, message, "error");
+          }
+      },
+
+      error: function (data) {
+          var title = "An error occurred";
+          var message = "An error occurred. Please try again later.";
+      }
+  });
+}
+
+
+
+
+</script>
+<style>
+  .saveAddressAs input[type="radio"] + label{
+      border: 2px solid #F9F9F9;
+    }
+</style>
+{% endblock %}

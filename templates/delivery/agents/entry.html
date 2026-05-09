@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if is_edit %}
+<style>
+    input[name=phone1]{
+        opacity: 0.4;
+    }
+    input[name=password]{
+        opacity: 0.4;
+    }
+</style>
+{% endif %}
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.warehouse.id_for_label }}">
+                                        {{ form.warehouse.label }}
+                                    {% if is_edit %}(Dont Edit){% endif %}
+
+                                        {% if form.warehouse.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.warehouse }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.phone1.id_for_label }}">
+                                        {{ form.phone1.label }}
+                                    {% if is_edit %}(Dont Edit){% endif %}
+
+                                        {% if form.phone1.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.phone1 }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.phone2.id_for_label }}">
+                                        {{ form.phone2.label }}
+
+                                        {% if form.phone2.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.phone2 }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}
+
+                                        {% if form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="{{ form.password.id_for_label }}">
+                                        {{ form.password.label }}
+                                        {% if form.password.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    <!-- {% comment %} <input type="password" name="password" value="{{form.password}}" class="required form-control" placeholder="Password" maxlength="256" required="" id="id_password" {% if is_edit %}disabled{% endif %}> {% endcomment %} -->
+                                    {{ form.password }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.id_proof.id_for_label }}">
+                                        {{ form.id_proof.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.id_proof %}
+                                            <a href="{{instance.id_proof.url}}">{{instance.id_proof.url}}</a>
+                                            {% else %}
+                                            <span>No Initial id_proof found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.id_proof.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.id_proof }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.image.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.image %}
+                                            <a href="{{instance.image.url}}">{{instance.image.url}}</a>
+                                            {% else %}
+                                            <span>No Initial image found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.image.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.license.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.license %}
+                                            <a href="{{instance.image.url}}">{{instance.license.url}}</a>
+                                            {% else %}
+                                            <span>No Initial image found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.license.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.license }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.license_expiry_date.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.license_expiry_date %}
+                                            <a href="{{instance.image.url}}">{{instance.license_expiry_date.url}}</a>
+                                            {% else %}
+                                            <span>No Initial image found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.license_expiry_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.license_expiry_date }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.company_id.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.company_id %}
+                                            <a href="{{instance.image.url}}">{{instance.company_id.url}}</a>
+                                            {% else %}
+                                            <span>No Initial image found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.company_id.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.company_id }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.company_id_expiry_date.label }}
+
+                                        {% if is_edit %}
+                                            {% if instance.company_id_expiry_date %}
+                                            <a href="{{instance.image.url}}">{{instance.company_id_expiry_date.url}}</a>
+                                            {% else %}
+                                            <span>No Initial image found</span>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if form.company_id_expiry_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.company_id_expiry_date }}
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+   .dropify{
+        height: 42px;
+    }
+</style>
+<script>
+    var id_phone1 = document.getElementById('id_phone1');
+    var id_phone2 = document.getElementById('id_phone2');
+    var id_name = document.getElementById('id_name');
+
+    id_phone1.addEventListener('input', function() {
+        var sanitizedInput = id_phone1.value.replace(/[^0-9]/g, '').slice(0,10);
+        id_phone1.value = sanitizedInput
+    });
+
+    id_phone2.addEventListener('input', function() {
+        var sanitizedInput = id_phone2.value.replace(/[^0-9]/g, '').slice(0,10);
+        id_phone2.value = sanitizedInput
+    });
+
+    id_name.addEventListener('input', function() {
+        var sanitizedInput = id_name.value.replace(/[^a-zA-Z]/g, '').slice(0,35);
+        id_name.value = sanitizedInput
+    });
+
+    
+</script>
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load main_template_tags %}
+
+<head>
+    <meta charset="utf-8" />
+    <title>Invoice {{ instance.order_id }}</title>
+    <link rel="stylesheet" href="{% static 'css/invoice_css/style.css' %}" />
+    <meta name="viewport" content="width=device-width" initial-scale="1.0" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!--
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/script.js" type="text/javascript"></script> -->
+    <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/script.js' %}" type="text/javascript"></script> -->
+</head>
+
+<body onload="this.print()">
+
+    <section id="gst-tax-invoice">
+        <section class="outer-module">
+            <div class="top-module">
+                <div class="left">
+                    <h1 style="max-height: 50px; max-width: 50px;"><img src="{% static 'web/images/icons/nexsme-color-logo.png' %}" alt="Nexsme" style="height: 50px;" /></h1>
+                </div>
+                <div class="right">
+                    <div class="box">
+                        <h1>Invoice</h1>
+                    </div>
+                </div>
+                <br class="clear" />
+            </div>
+
+            <div class="invoice">
+                <table>
+                    <tr class="head">
+                        <th colspan="11">INVOICE</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" colspan="6">
+                            <p class="bld">Sold By</p>
+                            <p style="margin-left: 10px;" class="bld">Nexsme</p>
+                            <p style="margin-left: 10px;" class="bld">Doha-Qatar</p>
+                            <p style="margin-left: 10px;" class="bld">50874964</p>
+                            <p style="margin-left: 10px;" class="bld">Info@Nexsme</p>
+                        </td>
+                        <td>Order Id.</td>
+                        <td colspan="2">{{instance.order_id}}</td>
+                        <td>Order No.</td>
+                        <td>{{instance.get_order_number}}</td>
+                    </tr>
+
+                    <tr>
+                        <td >Delivery Date</td>
+                        <td colspan="2">{{instance.get_full_timeslot}}</td>
+                        <td >Order Date</td>
+                        <td>{{instance.date_added|date:"d-m-Y"}}</td>
+                    </tr>
+                    <tr>
+                        <td>Customer</td>
+                        <td colspan="4">{{instance.customer.name}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Zone</td>
+                        <td colspan="4">{{instance.zone}}</td>
+                    </tr>
+
+                    <tr class="head">
+                        <th colspan="6">Billing Address</th>
+                        <th colspan="5">Shipping Address</th>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="6">Customer Name : {{instance.billing_name}}</td>
+                        <td class="bb-none" colspan="5">Customer Name : {{instance.billing_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="6">Customer Phone : {{instance.billing_phone}}</td>
+                        <td class="bb-none" colspan="5">Customer Phone : {{instance.billing_phone}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="6">House No/Name : {{instance.billing_address}}</td>
+                        <td class="bb-none" colspan="5">House No/Name : {{instance.billing_address}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="6">Building No/Name : {{instance.billing_landmark}}</td>
+                        <td class="bb-none" colspan="5">Building No/Name : {{instance.billing_landmark}}</td>
+                    </tr>
+                    <tr>
+                        <td class="" colspan="6">Street : {{instance.billing_street}}</td>
+                        <td class="" colspan="5">Street : {{instance.billing_street}}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr class="sub-title t-a-c">
+                        <th class="bld" rowspan="2">Sl No.</th>
+                        <th rowspan="2" class="bld">Items</th>
+                        <th class="bld" rowspan="2">QTY</th>
+                        <th class="bld" rowspan="2">Unit <br>Price</th>
+                        <th class="bld" rowspan="2">Offer <br>Price</th>
+                        <th class="bld" rowspan="2">Warranty</th>
+                        {%if customer_state == "Kerala" %}
+                        <th colspan="2" class="bld">CGST </th>
+                        <th colspan="2" class="bld">SGST </th>
+                        {%else%}
+                        <th colspan="2" class="bld">IGST </th>
+                        {%endif%}
+                        <th class="bld" rowspan="2">Subtotal</th>
+                        <th class="bld" rowspan="2">Discount</th>
+                        <th class="bld" rowspan="2">Total</th>
+                    </tr>
+                    
+                    <tr class="t-a-c">
+                        {%if customer_state == "Kerala" %}
+                        <td class="bld">CGST %</td>
+                        <td class="bld">CGST Amt</td>
+                        <td class="bld">SGST %</td>
+                        <td class="bld">SGST Amt</td>
+                        {%else%}
+                        <td class="bld">IGST %</td>
+                        <td class="bld">IGST Amt</td>
+                        {%endif%}
+                    </tr>
+                    {% if order_items %}
+                    {% for i in order_items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{i.product_variant}}</td>
+                        <td class="text-left">{{ i.qty }}</td>
+                        <td class="text-left">{{ i.mrp }}</td>
+                        <td class="text-left">{{ i.price }}</td>   
+                        <td>{{ i.product_variant.warranty|default:"-" }}</td>
+                        {%if customer_state == "Kerala" %}
+                        <td class="text-right">{{ i.cgst_rate|default:"0" }}</td>
+                        <td class="text-right">{{ i.cgst_amount|floatformat:2|default:"0" }}
+                        <td class="text-right">{{ i.sgst_rate|default:"0" }}</td>
+                        <td class="text-right">{{ i.sgst_amount|floatformat:2|default:"0" }}
+                        {%else%}
+                        <td class="text-right">{{ i.igst_rate|default:"0" }}</td>
+                        <td class="text-right">{{ i.igst_amount|floatformat:2|default:"0" }}
+                        {%endif%}
+                        <td class="text-right bld">{{total_mrp_amount|floatformat:2}}</td>
+                        <td class="text-right bld">{{total_discount|floatformat:2}}</td>
+                        <td class="text-right bld">{{total_amount|floatformat:2}}</td>
+                    </tr>
+                </table>
+
+                    {% endfor %}
+                    <table>
+                        <tr>
+                            <td class="t-a-r" style="border-left: 1px solid #000;" colspan="3">Sub Total:</td>
+                            <td colspan="2" class="bld text-right">{{ total_amount|floatformat:2 }}</td>
+                        </tr>
+    
+                        <tr>
+                            <td class="t-a-r" style="border-left: 1px solid #000;" colspan="3">{% if instance.is_express_delivery %}Express{% endif %}Delivery Charge:</td>
+                            <td colspan="2" class="text-right">{{instance.delivery_charge|floatformat:2}}</td>
+                        </tr>
+    
+                        <tr>
+                            <td class="t-a-r" style="border-left: 1px solid #000;" colspan="3">Grand Total:</td>
+                            <td colspan="2" class="text-right">{{instance.total_amt|floatformat:2}}</td>
+                        </tr>
+                    </table>
+                    {% endif %}
+            </div>
+
+            <div class="lower-module">
+                <div class="inner-module one">
+                    <div class="left">
+                        <p>Thank you</p>
+                        <p> It has been a pleasure doing business with you</p>
+                        <p> thank you for choosing <b>Nexsme</b></p>
+                    </div>
+                    <div class="right">
+                        <h3>Nexsme</h3>
+                        <div class="sign"></div>
+                        <p>(Authorized Signatory)</p>
+                    </div>
+                    <br class="clear" />
+
+                    <p>Customer Support Email: <span>info@Nexsme</span></p>
+                </div>
+                <div class="inner-module">
+                    <p><span>Cash on Delivery:</span> please pay remaining amount to the sales representative before
+                        unloading the materials.</p>
+                </div>
+            </div>
+
+            <div class="split">
+                <div class="eng">
+                    <p class="p">
+                        * Terms & Conditions apply <br>
+                        <b>Terms & Conditions for after sales service / repair:</b><br>
+                        1 - Warranty shall not be considered without proof of purchase le. Original invoice or till receipt.<br>
+                        2 - Maximum of 15 days are expected for repairs of the items under warranty and period may vary from 3-15 days depending on the product.<br>
+                        3 - Warranty does not cover abuse, dent, accidental damages liquid damages, corrosion, consumables and accessories (viz. batteries, chargers, brushes, hoses, mixer jars etc.)<br>
+                        4 - Nexsme shall not be deemed responsible for any loss of data for any items given for repair and customer are advised to BACKUP their data before giving for service.<br>
+                        5 - Please ensure the repaired unit is collected within maximum of 45 days of data of service and Nexsme shall not be responsible after that.<br>
+                        6 - Please check and preview the product after it is repaired, and Nexsme shall not be responsible after signing the receipt.<br>
+                        7 - Washing machines, Refigerators, cookng ranges. TVs etc may be enttled for on-site malintenance after informing Nexsme about it, and Nexsme will provide maintenance in cooperation with an authorized service center.<br>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+<style>
+</style>
+
+</html>

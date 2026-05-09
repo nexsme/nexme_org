@@ -1,0 +1,244 @@
+{% extends "web/web_base.html" %}
+
+{% load i18n %} {% load tz %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% load static %}
+{% load i18n %}
+
+{% load web_template_tags %}
+{% block content %}
+
+<div id="refund">
+    <div class="wrapper">
+        <div class="refund-main">
+            <form action="{{url}}" method="POST" enctype="multipart/form-data" class="web-ajax redirect">
+                {% csrf_token %}
+                <div class="re-head">
+                    <a href="{% url 'web:view_orders' %}">
+                        <img src="{% static 'web/images/icons/left-arrow.svg' %}" alt="Icon" />
+                    </a>
+                    <a href="{% url 'web:view_orders' %}">
+                    <h5> Refund Request </h5>
+                    </a>
+                </div>
+                <div class="re-body">
+                    <div class="re-product">
+                        <div class="left-box">
+                            {% if instance.product_variant.image %}
+                            <img src="{{instance.product_variant.image.thumbnail.200x200}}"/>
+                        {% else %}
+                            <img src="{% static 'web/images/placeholder.jpg' %}" style="width:68px;"/>
+                        {% endif %}
+                        </div>
+                        <div class="right-box">
+                            <div class="top-card">
+                                <h6>{{instance}}</h6>
+                                <small>Quantity: {{instance.qty}}</small>
+                            </div>
+                            <div class="price-p">
+                                <p>{{instance.price}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ProductReturnDetails">
+                        <h4 style="    color: #161616;
+                        font-size: 15px;
+                        margin-bottom: 10px;">Select Reason for return</h4>
+                        <div class="ReasonForReturn"
+                        style="color: #707070;
+                            background: #fff;
+                            padding: 15px;
+                            border-radius: 5px;
+                            margin-bottom: 20px;">
+                            {{form.reason_for_return}}
+                        </div>
+
+                        <div class="SpecifyTheReason"
+                        style="color: #707070;
+                        background: #fff;
+                        padding: 15px;
+                        border-radius: 5px;
+                        margin-bottom: 20px;">
+                            <p>{{form.return_specification}}<p>
+                        </div>
+
+
+                    </div>
+                    <div class="select-re">
+                        <h4>Select Refund Option</h4>
+                        <div class="input-box">
+                            <div class="RefundOptionCash">
+                                <p >
+                                    <input class="input-hidden" id="cash" name="return_type" value="cash" type="radio" onclick="ShowAddressDiv()" checked="checked"/>
+                                    <label for="cash">
+                                       Cash
+                                    </label>
+                                </p>
+                            </div>
+                            <div class="RefundOptionBank">
+                                <p>
+                                    <input class="input-hidden" id="bank" name="return_type" value="bank" type="radio" onclick="ShowAccountDiv()"/>
+                                    <label for="bank">
+                                       Bank
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="select-address" id="cash-form">
+                        <h4>Select Address</h4>
+
+                        {% if address_list %}
+                        {% for item in address_list %}
+                            <div class="address-list">
+                            <input type="radio" id="address-input" class="address_pk" name="address" value="{{item.pk}}">
+                            <label for="address-input">
+                                <div class="top-bar">
+                                    <h5>{{item.name}}</h5>
+                                    {{form.address}}
+                                    {% if item.is_default %}<span>Default Address</span>{% endif %}
+                                </div>
+                                <div class="address-pin">
+                                    <p>{{item.house_name}}, {{item.location}} {{item.street}}</p>
+                                    <p>{{ item.pincode}}</p>
+                                    <p>{{ item.phone }}</p>
+                                </div>
+
+
+                            </label>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <a href="#">Create an address</a>
+                        {% endif %}
+
+                    </div>
+                    <div class="BankDetails" id="bank-form"  style="display:none" >
+                    </div>
+
+                    <div class="refund-card">
+                        <div class="cancel">
+                            <button onclick="window.history.back()">Cancel</button>
+                        </div>
+                        <div class="refund">
+                            <button type="submit" >Refund</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-container">
+                <div class="refund-modal">
+                    <p>The refund will proceed once the item has been verified by our agent</p>
+                    <button class="close-button">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bank--details">
+    <h4 style="margin:15px 0">Add Bank Details</h4>
+    <div class="InputBankDetals">
+        {{account_form.account_holder}}
+    </div>
+    <div class="InputBankDetals"  >
+        {{account_form.account_number}}
+    </div>
+    <div class="InputBankDetals" >
+        {{account_form.bank_name}}
+    </div>
+    <div class="InputBankDetals" >
+        {{account_form.iban}}
+    </div>
+    <div class="InputBankDetals" >
+        {{account_form.swift_code}}
+    </div>
+    <div class="InputBankDetals" >
+        {{account_form.branch}}
+    </div>
+</div>
+
+<style>
+    #menu {
+        display: none;
+    }
+    #id_return_specification{
+        width: auto;
+    }
+
+    .whatsappContainer {
+        display: none;
+    }
+
+    .wrapper {
+        margin: 40px auto 0;
+    }
+    #popupBackground{
+        margin-top:40px;
+    }
+    .bank--details{
+        display: none;
+    }
+
+    @media all and (max-width: 768px) {
+        header {
+            height: 100px;
+        }
+
+        #refund .wrapper .refund-main {
+            padding-top: 0 !important;
+        }
+
+        #popupBackground {
+            margin-top: -20px;
+        }
+    }
+</style>
+
+{% endblock content %}
+
+{% block static %}
+<script>
+
+    function ShowAddressDiv() {
+        var cash = document.getElementById("cash");
+        var FormArea = document.getElementById("cash-form");
+        FormArea.style.display = cash.checked ? "block" : "none";
+        var Hidden = document.getElementById("bank-form");
+        Hidden.style.display = cash.checked ? "none" : "block";
+        if (cash.checked == false){
+            let content = $('.bank--details').html();
+            $('.BankDetails').html(content)
+        }else{
+            $('.BankDetails').html('')
+        }
+    }
+
+    function ShowAccountDiv() {
+        var bank = document.getElementById("bank");
+        var FormArea = document.getElementById("bank-form");
+        FormArea.style.display = bank.checked ? "block" : "none";
+        var Hidden = document.getElementById("cash-form");
+        Hidden.style.display = bank.checked ? "none" : "block";
+        if (bank.checked){
+            let content = $('.bank--details').html();
+            $('.BankDetails').html(content)
+        }else{
+            $('.BankDetails').html('')
+        }
+    }
+
+
+    $('.address_pk').on('change click', function () {
+        if ($(this).is(':checked')) {
+            var pk=$('input[name="address"]:checked').val();
+            console.log("pk: ",pk)
+        } else {
+            console.log("error: ")
+        }
+    });
+
+</script>
+{% endblock static %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" enctype="multipart/form-data" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="{{ form.facebook_link.id_for_label }}">
+                                        {{ form.facebook_link.label }}
+
+                                        {% if form.facebook_link.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.facebook_link }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 product">
+                                <div class="form-group">
+                                    <label for="{{ form.instagram_link.id_for_label }}">
+                                        {{ form.instagram_link.label }}
+
+                                        {% if form.instagram_link.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.instagram_link }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 subcategory">
+                                <div class="form-group">
+                                    <label for="{{ form.twitter_link.id_for_label }}">
+                                        {{ form.twitter_link.label }}
+
+                                        {% if form.twitter_link.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.twitter_link }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="{{ form.whatsapp_link.id_for_label }}">
+                                        {{ form.whatsapp_link.label }}
+
+                                        {% if form.whatsapp_link.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.whatsapp_link }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+<script>
+    $(document).ready(function(){
+        $('#id_offer_type').change(function(){
+            var offer_type = $(this).val();
+            if (offer_type == 'category'){
+                $('.product, .subcategory').hide();
+                $('.category').show();
+            }
+            else if (offer_type == 'sub_category'){
+                $('.product, .category').hide();
+                $('.subcategory').show();
+            }
+            else if (offer_type == 'product'){
+                $('.subcategory, .category').hide();
+                $('.product').show();
+            }
+        })
+
+        $('#id_offer_type').change();
+
+        $('#date-time-picker').datepicker({
+            changeYear:true,
+            yearRange: "2022:2030"
+        });
+    });
+
+</script>
+{{ form.media }}
+{% endblock %}

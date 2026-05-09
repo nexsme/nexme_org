@@ -1,0 +1,713 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" enctype="multipart/form-data" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for field in form %}
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+
+                                        {% if field.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ field }}
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Create Sub-category
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form id="sub_category_ajax" enctype="multipart/form-data" method="post"
+                            action="javascript:void(0);">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+                                    <div class="col-sm-12">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ sub_category_form.category.id_for_label }}">
+                                                {{ sub_category_form.category.label }}
+                                                {% if sub_category_form.category.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if sub_category_form.category.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ sub_category_form.category.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ sub_category_form.category }}
+
+                                            {% if sub_category_form.category.errors %}
+                                            <label class="error">{{ sub_category_form.category.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ sub_category_form.name.id_for_label }}">
+                                                {{ sub_category_form.name.label }}
+                                                {% if sub_category_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if sub_category_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ sub_category_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ sub_category_form.name }}
+
+                                            {% if sub_category_form.name.errors %}
+                                            <label class="error">{{ sub_category_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ sub_category_form.arabic_name.id_for_label }}">
+                                                {{ sub_category_form.arabic_name.label }}
+                                                {% if sub_category_form.arabic_name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if sub_category_form.arabic_name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ sub_category_form.arabic_name.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ sub_category_form.arabic_name }}
+
+                                            {% if sub_category_form.arabic_name.errors %}
+                                            <label class="error">{{ sub_category_form.arabic_name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="category_modal" tabindex="-1" role="dialog"
+    aria-labelledby="category_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="category_modalTitle">Create Category
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="ajax reset cat_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_category'%}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ category_form.name.id_for_label }}">
+                                                {{ category_form.name.label }}
+                                                {% if category_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if category_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ category_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ category_form.name }}
+
+                                            {% if category_form.name.errors %}
+                                            <label class="error">{{ category_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ category_form.arabic_name.id_for_label }}">
+                                                {{ category_form.arabic_name.label }}
+                                                {% if category_form.arabic_name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if category_form.arabic_name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ category_form.arabic_name.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ category_form.arabic_name }}
+
+                                            {% if category_form.arabic_name.errors %}
+                                            <label class="error">{{ category_form.arabic_name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+<div class="modal fade" id="brand_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="brand_modalTitle">Create brand
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="ajax reset brand_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_brand'%}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ brand_form.name.id_for_label }}">
+                                                {{ brand_form.name.label }}
+                                                {% if brand_form.name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if brand_form.name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ brand_form.name.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ brand_form.name }}
+
+                                            {% if brand_form.name.errors %}
+                                            <label class="error">{{ brand_form.name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ brand_form.arabic_name.id_for_label }}">
+                                                {{ brand_form.arabic_name.label }}
+                                                {% if brand_form.arabic_name.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if brand_form.arabic_name.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ brand_form.arabic_name.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ brand_form.arabic_name }}
+
+                                            {% if brand_form.arabic_name.errors %}
+                                            <label class="error">{{ brand_form.arabic_name.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="uom_modal" tabindex="-1" role="dialog"
+    aria-labelledby="brand_modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="brand_modalTitle">Create Unit of measurement
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="ajax reset uom_close" enctype="multipart/form-data" method="post"
+                            action="{% url 'products:create_unit_measurement'%}">
+                            {% csrf_token %}
+                            <h3>Basic Info</h3>
+                            <div class=" card-body card card-padding">
+                                <div class="row justify-content-between">
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ uom_form.unit_of_measurement.id_for_label }}">
+                                                {{ uom_form.unit_of_measurement.label }}
+                                                {% if uom_form.unit_of_measurement.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+
+                                                {% if uom_form.unit_of_measurement.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ uom_form.unit_of_measurement.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline">
+                                                    {% endif %}
+                                            </label>
+                                            {{ uom_form.unit_of_measurement }}
+
+                                            {% if uom_form.unit_of_measurement.errors %}
+                                            <label class="error">{{ uom_form.unit_of_measurement.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<div class="modal fade" id="image_modal" tabindex="-1" role="dialog"
+aria-labelledby="brand_modalTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="la la-times"></i></span>
+            </button>
+        </div>
+        <!--end modal-header-->
+        <div class="modal-body">
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <div class=" card-body card card-padding">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <img src="{{instance.image.url}}" alt="" width="400">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-content-->
+</div>
+<!--end modal-dialog-->
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+
+<style>
+    #id_need_special_variant {
+        height: 18px;
+        width: 18px;
+        margin-left: 10px;
+    }
+    .commission-percentage{
+        display: none;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+        $('.special-variant-card').hide()
+
+        $('.product_image_formset table tr.form_set_row').formset({
+            prefix: '{{ product_image_formset.prefix }}',
+            formCssClass: 'dynamic-formset1',
+
+            'added': function (row) {
+                row.find('.product_image select').selectpicker();
+            },
+        });
+
+        $('.special_variant_formset table tr.form_set_row').formset({
+            prefix: '{{ special_variant_formset.prefix }}',
+            formCssClass: 'dynamic-formset1',
+
+            'added': function (row) {
+
+            },
+        });
+
+        $('.product_variation_formset table tr.form_set_row').formset({
+            prefix: '{{ product_variation_formset.prefix }}',
+            formCssClass: 'dynamic-formset',
+
+            'added': function (row) {
+                row.find('.product_variation select').selectpicker();
+                row.find('.date-picker').datepicker('destroy');
+                row.find('.date-picker').datepicker();
+                get_product_detailes($('#id_hsn'));
+                get_vendor_data('#id_vendor')
+
+                // {% if current_role == 'warehouse_manager' %}
+                var pk = '{{warehouse.pk}}'
+                console.log(pk)
+                if (pk != '') {
+                    row.find('.warehouse select').html('<option value="{{warehouse.pk}}" selected>{{warehouse.name}}<option/>');
+                }
+                // {% endif %}
+            },
+        });
+
+    });
+
+    $('#id_need_special_variant').on('change click', function () {
+        if ($(this).is(':checked')) {
+            $('.special-variant-card').show()
+            $('.ordinary-variant-card').hide()
+            $('.ordinary-variant-card td.delete a').click()
+        } else {
+            $('.special-variant-card').hide()
+            $('.ordinary-variant-card').show()
+            $('.special-variant-card td.delete a').click()
+        }
+    });
+
+    $('.is_default input').on('click', function () {
+        if ($(this).is(':checked')) {
+            $('.is_default input:checked').not(this).prop('checked', false);
+        }
+    });
+
+    $('#id_category').on('change', function () {
+        var $this = $(this);
+        get_division_data($this);
+    });
+
+    function get_division_data(element) {
+        var id_category = element.val();
+
+        if (id_category != "" || id_category != null || id_category != undefined) {
+            var url = "{% url 'products:get_category_details' %}"
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id_category: id_category,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var subcategory = data['subcategory']
+                    console.log(subcategory)
+
+                    console.log(status)
+                    if (status == "true") {
+                        console.log()
+                        var subcategory = data['subcategory']
+                        var options = '<option value="">---------</option>', i, maxlength = subcategory.length;
+
+                        for (i = 0; i < maxlength; i++) {
+                            options += `<option value="${subcategory[i]['id']}">${subcategory[i]['name']}</<option>`
+                        }
+                    }
+
+                    else {
+                        var message = data['message']
+                        var options = `<option value="">${message}</option>`
+                    }
+                    $("#id_subcategory").html(options).selectpicker('refresh');
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+    }
+
+    $('#id_hsn').on('change keyup', function () {
+        var $this = $(this);
+        get_product_detailes($this);
+    });
+    $('#id_vendor').on('change keyup', function () {
+        var $this = $(this);
+        get_vendor_data($this);
+    });
+
+    function get_product_detailes(element) {
+        var url = "{% url 'products:get_product_hsn_detailes' %}"
+        var hsn_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        if (hsn_id != undefined || hsn_id != null || hsn_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    hsn_id: hsn_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    console.log(status);
+                    if (status == 'true') {
+                        var unit = data.hsncodes.unit;
+                        var igst = data.hsncodes.igst;
+                        var sgst = data.hsncodes.sgst;
+                        var cgst = data.hsncodes.cgst;
+
+                        var $parent = $("tr.form_set_row")
+                        $('.form_set_row').each(function () {
+                            $(this).find('.igst input').val(igst);
+                            $(this).find('.sgst input').val(sgst);
+                            $(this).find('.cgst input').val(cgst);
+
+
+                        });
+
+                    }
+
+                    else {
+                        console.log("nothing found");
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+
+    $("#sub_category_ajax").submit(function (e) {
+        e.preventDefault();
+        var url = "{% url 'products:sub_category_create' %}"
+        var category = document.querySelector("#category").value;
+        var sub_name = document.getElementById("sub_category_name").value;
+        // var sub_arabic_name = document.getElementById("sub_category_arabic_name").value;
+
+        if (category != undefined || category != null || category != "" || sub_name != undefined || sub_name != null || sub_name != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    category: category,
+                    sub_name: sub_name,
+                    // sub_arabic_name: sub_arabic_name,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    console.log(status);
+                    if (status == 'true') {
+                        console.log("success")
+
+                        var option = document.createElement("option");
+                        option.text = data['sub_name'];
+                        option.value = data['sub_id'];
+                        option.selected = true;
+                        document.getElementById("id_subcategory").appendChild(option);
+
+                        $('#exampleModalScrollable').modal('hide');
+
+                    }
+
+                    else {
+                        console.log("nothing found");
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    });
+
+
+
+    function get_vendor_data(element) {
+        var url = "{% url 'vendors:get_vendor_data' %}"
+        var id = element.val();
+        var $parent = $('tr.form_set_row');
+        if (id != undefined || id != null || id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    console.log(status);
+                    if (status == 'true') {
+                        var commission_type = data.commission_type;
+                        var commission_percentage = data.commission_percentage;
+
+                        if (commission_type == 'product_based'){
+                            $('.commission-percentage').css('display','block');
+                            var $parent = $("tr.form_set_row")
+                            $('.form_set_row').each(function () {
+                                $(this).find('.commission_percentage input').val(commission_percentage);
+
+                            });
+                        }else{
+                            $('.commission-percentage').css('display','none');
+                        }
+                    }
+                    else {
+                        console.log("nothing found");
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+</script>
+{{sub_category_form.media}}
+{{ form.media }}
+{% endblock %}

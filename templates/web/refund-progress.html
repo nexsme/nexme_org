@@ -1,0 +1,134 @@
+{% extends "web/web_base.html" %}
+
+{% load i18n %} {% load tz %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% load static %}
+{% load i18n %}
+
+{% load web_template_tags %}
+{% block content %}
+
+    <div id="refund">
+        <div class="wrapper">
+            <div class="refund-main">
+                <div class="re-head">
+                    <a href="{% url 'web:refund_product_list' %}">
+                        <img src="{% static 'web/images/icons/left-arrow.svg' %}" alt="Icon" />
+                    </a>
+                    <h5>Refund Request</h5>
+                </div>
+
+                <h6 class="order-id">Order ID #{{instance.order_item.order.order_id}}</h6>
+
+                <div class="re-body">
+                    
+                    <div class="re-product">
+                        <div class="left-box">
+                            {% if instance.order_item.product_variant.image %}
+                                <img src="{{instance.order_item.product_variant.image.url}}" alt="Images" />
+                            {% else %}
+                                <img src="{{instance.order_item.product_variant.product.image.url}}" alt="Images" />
+                            {% endif %}
+                        </div>
+                        <div class="right-box">
+                            <div class="top-card">
+                                <h6>{{instance.order_item.product_variant.product.name}} {{instance.order_item.product_variant.title}}</h6>
+                                <small>{{instance.order_item.product_variant.product.category}}</small>
+                            </div>
+                            <div class="price-p">
+                                <p>₹ {{instance.order_item.product_variant.mrp}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-track">
+                    <ul class="order-container">
+                        <li class="order-status">
+                            {% if 'Picked' in status %}
+                                <div class="tick-container">
+                                    <img src="{% static 'web/images/tick.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {% else %}
+                                <div class="tick-container white">
+                                    <img src="{% static 'web/images/tick-orange.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {%endif %}
+                            <div class="status">
+                                <h4>Order Pickup</h4>
+                                {% comment %} <p>10.00 ,March 3</p> {% endcomment %}
+                            </div>
+                        </li>
+
+                        <li class="order-status">
+                            {% if 'Initiated' in status %}
+                                <div class="tick-container">
+                                    <img src="{% static 'web/images/tick.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {% else %}
+                                <div class="tick-container white">
+                                    <img src="{% static 'web/images/tick-orange.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {%endif %}
+                            <div class="status">
+                                <h4>Refund Initiated</h4>
+                                {% comment %} <p>11.00 ,March 3</p> {% endcomment %}
+                            </div>
+                        </li>
+
+                        <li class="order-status">
+                            {% if 'Completed' in status %}
+                                <div class="tick-container">
+                                    <img src="{% static 'web/images/tick.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {% else %}
+                                <div class="tick-container white">
+                                    <img src="{% static 'web/images/tick-orange.svg' %}" alt="Image" class="tick" />
+                                </div>
+                            {%endif %}
+                            <div class="status">
+                                <h4>Cash Credited</h4>
+                                {% comment %} <p>Expected 10.00 ,March 4</p> {% endcomment %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #menu{
+            display: none;
+        }
+        .whatsappContainer {
+            display: none;
+        }
+
+        .wrapper {
+            margin: 40px auto 0;
+        }
+
+        #refund .wrapper .refund-main .re-body .re-product .right-box {
+            justify-content: space-evenly;
+        }
+
+        #refund .wrapper .refund-main .re-head {
+            margin-bottom: 30px;
+        }
+        @media all and (max-width: 768px) {
+            header {
+                height: 100px;
+            }
+            #refund .wrapper .refund-main {
+                padding-top: 0 !important;
+            }
+        }
+    </style>    
+
+{% endblock content %}
+
+{% block static %}
+{% endblock static %}

@@ -1,0 +1,194 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+<!-- time line -->
+<section id="rewards">
+    <div class="modal-content">
+        {% if auth_status %}
+        <div class="top-bton">
+          {% if customer_instance.image %}
+          <img alt="Image" src="{{ customer_instance.image.url }}" />
+          {% else %}
+          <img alt="Image" src="{% static 'web/images/profile-image.png' %}" />
+          {% endif %}
+        </div>
+        <h5>{{ customer_instance.name }}</h5>
+        {% endif %}
+
+        <!-- <div class="privilage">
+            <div class="left-wallet">
+                <h6>Previlage Points</h6>
+                <h3>{{ privilege_points|default:0.0 }}</h3>
+                <h5><span><span class="rupees-symbol">{% trans "₹" %}</span> {{ privilege_points_amt|default:0 }} </span> Value In Rupees</h5>
+            </div>
+            <div class="right-wallet">
+                <img alt="Image" src="{% static 'web/images/icons/coin.png' %}" />
+            </div>
+        </div> -->
+
+      </div>
+    <div class="container">
+        {% for instance in privilege_history %}
+        <div class="timeline-block timeline-block-right {% if instance.point_type == 10 %}active{% endif %}">
+        <div class="marker"></div>
+        <div class="timeline-content">
+            <h3>QAR : {{instance.value_in_amount}}</h3>
+            <span>{{instance.title}}</span>
+
+        </div>
+        </div>
+        {% endfor%}
+
+    </div>
+</section>
+
+
+   <style>
+        #rewards{
+            margin: 0 auto;
+            max-width: 768px;
+        }
+        #rewards .top-bton{
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+        }
+        #rewards .modal-content h5{
+            text-align: left;
+        }
+
+        .container {
+            width: 100%;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #rewards .privilage{
+            width: 340px;
+        }
+        .container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -1px;
+            width: 2px;
+            height: 100%;
+            background: #CCD1D9;
+            z-index: 1
+        }
+        .timeline-block:last-child{
+            margin-bottom: 0;
+        }
+        .timeline-block {
+            width: -webkit-calc(50% + 8px);
+            width: -moz-calc(50% + 8px);
+            width: calc(50% + 8px);
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -moz-box-pack: justify;
+            justify-content: space-between;
+            clear: both;
+        }
+
+        .timeline-block-right {
+            float: right;
+        }
+
+        .timeline-block-left {
+            float: left;
+            direction: rtl
+        }
+
+        .marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #F5F7FA;
+            background: #f5a641;
+            margin-top: 0;
+            z-index: 9999;
+            text-align:center;
+                position: relative;
+            left:4px;
+        }
+
+        .active .marker{
+            width: 20px;
+            height: 20px;
+            background:#5bd040;
+            left: 4px;
+        }
+        .timeline-content {
+            width: max-content;
+            padding: 10px;
+            color: #666;
+            border: 1px dashed #f06e38;
+            border-radius: 6px;
+            margin-left: 18px;
+        }
+        .active .timeline-content{
+            border: 1px dashed #5bd040;
+        }
+        i.fa.fa-check{
+            display:none;
+        }
+        i.fa.fa-check.active {
+            display:block !important;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+            height: 50%;
+            color:#fff;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 5px;
+            font-size: 17px;
+            font-weight: 500
+        }
+
+        .timeline-content span {
+            font-size: 15px;
+            color: #a4a4a4;
+        }
+
+        .timeline-content p {
+            font-size: 14px;
+            line-height: 1.5em;
+            word-spacing: 1px;
+            color: #888;
+        }
+
+        .container:before {
+            left: 14px;
+            width: 2px;
+        }
+        .timeline-block {
+            width: 100%;
+            margin-bottom: 30px;
+            justify-content: flex-start;
+        }
+        .timeline-block-right {
+            float: none;
+        }
+
+        .timeline-block-left {
+            float: none;
+            direction: ltr;
+        }
+
+
+   </style>
+
+{% endblock content %}

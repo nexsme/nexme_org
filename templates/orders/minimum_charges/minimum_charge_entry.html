@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <div class="radio-container">
+                        <div class="officeSection">
+                            <input class="input-hidden" id="warehouse" name="delivery_type" value="warehouse" type="radio" onclick="ShowWarehouseDiv()" checked="checked"/>
+                            <label for="warehouse">
+                               Warehouse
+                            </label>
+                        </div>
+                        <div class="homeSection" >
+                            <input class="input-hidden" id="vendor" name="delivery_type" value="vendor" type="radio" onclick="ShowVendorDiv()" />
+                            <label for="vendor">Vendor</label>
+                          </div>
+                    </div>
+
+                    <form action="{{url}}" class="ajax redirect" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8" id="warehouse-form" >
+                                <div class="form-group">
+                                    {{ form.warehouse }}
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="vendor-form" style="display:none">
+                                <div class="form-group">
+                                    {{ form.vendor }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="{{ form.no_delivery_charge_amount.id_for_label }}">
+                                {{ form.no_delivery_charge_amount.label }}
+                                {% if form.no_delivery_charge_amount.field.required %}
+                                <small class="star text-danger">*</small>
+                                {% endif %}
+                            </label>
+                            {{ form.no_delivery_charge_amount }}
+                            <p class="note text-secondary">
+                                Note: Delivery will be free if the total order amount is greater than {{ form.no_delivery_charge_amount.label }}
+                            </p>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="{{ form.no_free_delivery_amount.id_for_label }}">
+                                {{ form.no_free_delivery_amount.label }}
+                                {% if form.no_free_delivery_amount.field.required %}
+                                <small class="star text-danger">*</small>
+                                {% endif %}
+                            </label>
+                            {{ form.no_free_delivery_amount }}
+                            <p class="note text-secondary">
+                                Note: Please enter an amount greater than all delivery charges if delivery should not be affected by this eg; 1000
+                            </p>
+                        </div>
+
+                        <div class="text-left">
+                            <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+<style>
+    .radio-container{
+        display: flex;
+        justify-content:flex-start;
+    }
+    .homeSection{
+        margin-left: 20px;
+    }
+    .dynamic-formset1-add{
+        text-align: center;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+    $('.delivery_charge_formset table tr.form_set_row').formset({
+        prefix: '{{ delivery_charge_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+
+        'added' : function (row) {
+            row.find('select.selectpicker').each(function(){
+                $(this).selectpicker('refresh');
+            })
+        }
+    });
+});
+
+function ShowWarehouseDiv() {
+    var warehouse = document.getElementById("warehouse");
+    var FormArea = document.getElementById("warehouse-form");
+    FormArea.style.display = warehouse.checked ? "block" : "none";
+    var Hidden = document.getElementById("vendor-form");
+    Hidden.style.display = warehouse.checked ? "none" : "block";
+    document.getElementById('id_vendor').value = ''
+}
+
+function ShowVendorDiv() {
+    var vendor = document.getElementById("vendor");
+    var FormArea = document.getElementById("vendor-form");
+    FormArea.style.display = vendor.checked ? "block" : "none";
+    var Hidden = document.getElementById("warehouse-form");
+    Hidden.style.display = vendor.checked ? "none" : "block";
+    document.getElementById('id_warehouse').value = ''
+}
+
+</script>
+{{ delivery_charge_formset.media }}
+{% endblock %}

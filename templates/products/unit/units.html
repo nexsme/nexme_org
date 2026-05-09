@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'products:create_unit' %}" role="button"><i
+                                class="fas fa-plus mr-2"></i>New Unit</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+            <form class="search-filter" method="get" action="{% url 'products:units' %}">
+                <input placeholder="Search Units"  type="text" name="q" id="q">
+                <button class="btn btn-sm btn-soft-primary" type="submit">Search</button>
+            </form>
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Unit </th>
+                            <th>Unit Of Measurement </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% get_pages %}
+                        {% for unit in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ unit.unit }}</td>
+                            <td>{{ unit.unit_of_measurement }}</td>
+                            <td class="text-right">
+                                <a href="{% url 'products:unit' pk=unit.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                <a href="{% url 'products:edit_unit' pk=unit.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ unit.pk }}" class="reload action-button remove"
+                                    href="{% url 'products:delete_unit' pk=unit.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+<style>
+    input#q {
+    height: 33px;
+    margin-right: 6px;
+    border-radius: 6px;
+    width: 200px;
+    padding-left: 8px;
+    border: 1px solid #9e9e9e;
+}
+form.search-filter {
+    margin-bottom: 16px;
+}
+</style>
+{% endblock %}

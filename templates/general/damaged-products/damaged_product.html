@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">{{instance}}</h3>
+
+                <ul class="personal-info row">
+                    <li class="col">
+                        <a title="Create new product" href="{% url 'general:create_damaged_product' %}" class="btn btn-sm btn-soft-success">
+                           <i class="las la-plus"></i>
+                        </a>
+                     </li>
+                    {% if not instance.is_deleted %}
+                    <li class="col">
+                        <a title="Edit Entry" href="{% url 'general:edit_damaged_product' pk=instance.pk %}"
+                            class="btn btn-sm btn-soft-warning">
+                            <i class="las la-pen"></i>
+                        </a>
+                    </li>
+                    <li class="col">
+                        <a title="Cancel Entry" data-id="{{instance.pk}}"
+                            data-text="Are you sure you want to cancel this Entry?" data-title="Are you sure?"
+                            href="{% url 'general:delete_damaged_product' pk=instance.pk %}"
+                            class="action-button redirect btn btn-sm btn-soft-danger">
+                            <i class="las la-trash-alt"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="tab-content">
+        <!-- Profile Info Tab -->
+        <div id="c-grid" class="clearfix" data-columns="2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Damaged Product Info <small></small></h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="list-group lg-alt c-overflow col-sm-6">
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">ID</div>
+                                                <small class="lgi-text">{{instance.auto_id}}</small>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Date</div>
+                                                <small class="lgi-text">{{instance.date|date:'d/m/Y'}}</small>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Product</div>
+                                                <a href="{% url 'products:view_variant' pk=instance.product_variant.pk %}" class="text-primary lgi-text">{{instance.product_variant}}</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Damage Description</div>
+                                                <small class="lgi-text">{{instance.description|default:"-"}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Quantity</div>
+                                                <small class="lgi-text">{{instance.quantity}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Total Cost</div>
+                                                <small class="lgi-text">{{instance.amount}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Expiry Date</div>
+                                                <small class="lgi-text">{{instance.batch.expire_date|date:"d/m/Y"}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Cost</div>
+                                                <small class="lgi-text">{{instance.batch.cost}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Retail Price</div>
+                                                <small class="lgi-text">{{instance.batch.retail_price}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Whole Price</div>
+                                                <small class="lgi-text">{{instance.batch.whole_sale_price}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">MRP</div>
+                                                <small class="lgi-text">{{instance.batch.mrp}}</small>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="list-group-item media">
+                                            <div class="media-body">
+                                                <div class="lgi-heading">Total Cost</div>
+                                                <small class="lgi-text">{{instance.batch.cost}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="card">
+                                <div class="card-header">
+                                    <h4>Basic Info <small></small></h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="list-group lg-alt c-overflow">
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Creator </div>
+                                            <small class="lgi-text">{{instance.creator}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Date Added </div>
+                                            <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                                            </div>
+                                        </div>
+
+                                        {% if instance.is_deleted %}
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Deleted By </div>
+                                            <small class="lgi-text">{{instance.updater}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Deleted Date </div>
+                                            <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Deleted Reason </div>
+                                            <small class="lgi-text">{{instance.deleted_reason}}</small>
+                                            </div>
+                                        </div>
+
+                                        {% else %}
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Updater </div>
+                                            <small class="lgi-text">{{instance.updater}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item media ">
+                                            <div class="media-body">
+                                            <div class="lgi-heading">Date Updated </div>
+                                            <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Content -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static%}
+<style>
+   .col {
+      flex-grow: 0;
+   }
+  .row{
+   justify-content: flex-end;
+  }
+</style>
+{% endblock %}

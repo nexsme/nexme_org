@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load main_template_tags %}
+
+<head>
+    <meta charset="utf-8" />
+    <title>{{instance.sale_id}}</title>
+    <link rel="stylesheet" href="{% static 'css/invoice_css/style.css' %}" />
+    <!-- <meta name="viewport" content="width=device-width" initial-scale="1.0" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!--
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/script.js" type="text/javascript"></script> -->
+    <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/script.js' %}" type="text/javascript"></script> -->
+</head>
+
+<body onload="this.print()">
+    <section id="gst-tax-invoice">
+        <section class="outer-module">
+            <div class="top-module">
+                <div class="left" style="margin-left: 60px;">
+                    <h1 style="max-height: 50px;"><img src="{% static 'web/images/icons/nexsme-color-logo.png' %}" alt="Nexsme" style="width: 50px;" /></h1>
+                </div>
+                <div class="right">
+                    <div class="box">
+                        {% if is_credit %}
+                        <h1>Credit Invoice</h1>
+                        {% else %}
+                        <h1>Invoice</h1>
+                        {% endif %}
+                    </div>
+                </div>
+                <br class="clear" />
+            </div>
+            <div class="invoice">
+                <table>
+                    <tr class="head">
+                        {% if is_credit %}
+                        <th colspan="11">CREDIT INVOICE</th>
+                        {% else %}
+                        <th colspan="11">INVOICE</th>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td rowspan="4" colspan="6">
+                            <p class="bld">Sold By</p>
+                            <p style="margin-left: 10px;" class="bld">Arafa Traders Nexsme Bazzar</p>
+                            <p style="margin-left: 10px;" class="bld">India</p>
+                            <p style="margin-left: 10px;" class="bld">+91 9745212222</p>
+                            <p style="margin-left: 10px;" class="bld">nexsme@gmail.com</p>
+                        </td>
+                        <td>Order No.</td>
+                        <td colspan="2">{{instance.a_id}}</td>
+                        <td>Invoice No.</td>
+                        <td>{{instance.sale_id}}</td>
+                    </tr>
+                    <tr>
+                        <td>PO No.</td>
+                        <!-- <td colspan="2">695586</td> -->
+                        <td colspan="2">-</td>
+                        <td>Shipment Date</td>
+                        <td>{{instance.shipment_date|date:"d/m/Y"}}</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Date</td>
+                        <td colspan="2">{{instance.sale_date|date:"d/m/Y h:i A"}}</td>
+                        <td>Tracking Number</td>
+                        <td>{{instance.tracking_id|default:'-'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Payment Method</td>
+                        <td colspan="2">{{instance.payment_method}}</td>
+
+                        {% if is_credit %}
+                        <td class="bold">Credit Due date</td>
+                        <td class="bold">{{instance.credit_date|date:"d/m/Y"|default:'-'}}</td>
+                        {% else %}
+                        <td>Transporter</td>
+                        <td>{{instance.transporter|default:'-'}}</td>
+                        {% endif %}
+                    </tr>
+                    <tr class="head">
+                        <th colspan="6">Billing Address</th>
+                        <th colspan="5">Shipping Address</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="bb-none br-none">Customer Name</td>
+                        <td class="bb-none">{{instance.customer.name}}</td>
+                        <td class="bb-none br-none">Phone</td>
+                        <td class="bb-none">{{instance.customer.phone|default:'-'}}</td>
+
+                        <td colspan="2" class="bb-none br-none">Customer Name</td>
+                        <td class="bb-none">{{instance.customer.name}}</td>
+                        <td class="bb-none br-none">Phone</td>
+                        <td class="bb-none">{{instance.customer.phone|default:'-'}}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" class="bb-none br-none">House No/Name</td>
+                        <td class="bb-none">{{instance.customer.house|default:'-'}}</td>
+                        <td class="bb-none br-none">Street</td>
+                        <td class="bb-none">{{instance.customer.street|default:'-'}}</td>
+
+                        <td colspan="2" class="bb-none br-none">House No/Name</td>
+                        <td class="bb-none">{{instance.customer.house|default:'-'}}</td>
+                        <td class="bb-none br-none">Street</td>
+                        <td class="bb-none">{{instance.customer.street|default:'-'}}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" class="br-none">Building No/Name</td>
+                        <td>{{instance.customer.building|default:'-'}}</td>
+                        <td class="br-none"></td>
+                        <td></td>
+                        <td colspan="2" class="br-none">Building No/Name</td>
+                        <td>{{instance.customer.building|default:'-'}}</td>
+                        <td class="br-none"></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table>
+
+                    {% if sale_items %}
+                    <tr class="sub-title t-a-c">
+                        <th class="bld" rowspan="2">No.</th>
+                        <th {% if not is_need_warranty %}colspan="2"{% endif %} class="bld" rowspan="2">Items <br>Size/Model</th>
+                        <th class="bld" rowspan="2">Unit <br>Price</th>
+                        <th class="bld" rowspan="2">QTY</th>
+                        {% if is_need_warranty %}<th class="bld" rowspan="2">Warranty</th>{% endif %}
+                        <th class="bld" rowspan="2">Discount</th>
+                        {% if instance.customer.state == "Kerala"%} 
+                        <th class="bld" colspan="2">CGST</th>
+                        <th class="bld" colspan="2">SGST</th>
+                        {% else%}
+                        <th class="bld" colspan="2">IGST</th>
+                        {% endif %}
+                        <th class="bld" rowspan="2">Unit Price</th>
+                        <th class="bld" rowspan="2">Subtotal<br>(excluding GST)</th>
+                        <th class="bld" rowspan="2">Total<br>(including GST)</th>
+                    </tr>
+                    {% if instance.customer.state == "Kerala"%}
+                    <tr class="t-a-c">
+                        <td class="bld">Rate % </td>
+                        <td class="bld">Amt</td>
+                        <td class="bld">Rate % </td>
+                        <td class="bld">Amt</td>
+                    </tr>
+                    {% else %}
+                    <tr class="t-a-c">
+                        <td class="bld">Rate % </td>
+                        <td class="bld">Amt</td>
+                    </tr>
+                    {% endif %}
+                    {% for i in sale_items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td {% if not is_need_warranty %}colspan="2"{% endif %}>{{i.product_variant}}</td>
+                        <td class="text-right">{{i.mrp }}</td>
+                        <td class="text-right">{{i.quantity|floatformat:0}}</td>
+                        {% if is_need_warranty %}<td>{{i.product_variant.warranty|default:'-'}}</td>{% endif %}
+                        <td class="text-right">{{i.discount}}</td>
+                        {% if instance.customer.state == "Kerala"%}
+                        <td>{{i.cgst_rate}}%</td>
+                        <td>{{i.cgst_amount}}</td>
+                        <td>{{i.sgst_rate}}%</td>
+                        <td>{{i.sgst_amount}}</td>
+                        {% else %}
+                        <td>{{i.igst_rate}}</td>
+                        <td>{{i.igst_amount}}</td>
+                        {% endif %}
+                        <td class="text-right">{{i.unit_price}}</td>
+                        <td class="text-right">{{i.sub_total}}</td>
+                        <td class="text-right">{{i.total}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    {% comment %}
+                    {% if not is_iphone %}
+                    {% for i in rows_count %}
+                    <tr class="filling-rows">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    {% endcomment %}
+                    <tr>
+                        <td class="bld" colspan="3">Total:</td>
+                        <td class="text-right">{{total_qty|floatformat:0}}</td>
+                        <td>****</td>
+                        <td class="text-right bld">{{total_discount|default:0}}</td>
+                        <td class="text-right bld">****</td>
+                       {%if instance.customer.state == "Kerala"%}
+                       <td class="text-right bld">{{total_cgst_amount}}</td>
+                       <td class="text-right bld">****</td>
+                       <td class="text-right bld">{{total_sgst_amount}}</td>
+                       <td class="text-right bld">****</td>
+                       {%else%}
+                       <td class="text-right bld">{{total_igst_amount}}</td>
+                       <td class="text-right bld">****</td>
+                       {%endif%}
+                        <td class="text-right bld">{{total_subtotal|default:0}}</td>
+                        <td class="text-right bld">{{grant_total_value}}</td>
+                    </tr>
+                    <tr>
+                        {%if instance.customer.state == "Kerala" %}
+                        <td colspan="8"></td>
+                        {%else%}
+                        <td colspan="7"></td>
+                        {%endif%}
+                        <td class="t-a-r" colspan="3">Product Total:</td>
+                        <td colspan="2" class="text-right bld">{{ grant_total_value }}</td>
+                    </tr>
+                    <tr>
+                        {%if instance.customer.state == "Kerala" %}
+                        <td colspan="8"></td>
+                        {%else%}
+                        <td colspan="7"></td>
+                        {%endif%}
+                        <td class="t-a-r" colspan="3">Product Discount:</td>
+                        <td colspan="2" class="text-right" >{{total_discount|default:0}}</td>
+                    </tr>
+                    <tr>
+                        {%if instance.customer.state == "Kerala" %}
+                        <td colspan="8"></td>
+                        {%else%}
+                        <td colspan="7"></td>
+                        {%endif%}
+                        <td class="t-a-r" colspan="3">Other Discounts:</td>
+                        <td colspan="2" class="text-right" >{{instance.discount}}</td>
+                    </tr>
+                    {% if instance.use_privilege_point %}
+                    <tr>
+                        {%if instance.customer.state == "Kerala" %}
+                        <td colspan="8"></td>
+                        {%else%}
+                        <td colspan="7"></td>
+                        {%endif%}
+                        <td class="t-a-r" colspan="3">Privilege Points Discount:</td>
+                        <td colspan="2" class="text-right" >{{ instance.privilege_point_amnt }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                         {%if instance.customer.state == "Kerala" %}
+                         <td colspan="8"></td>
+                        {%else%}
+                        <td colspan="7"></td>
+                        {%endif%}
+                        <td class="t-a-r" colspan="3">Grand Total:</td>
+                        <td colspan="2" class="text-right" >{{instance.total}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lower-module">
+                <div class="inner-module one">  
+                    <div class="left">
+                        <p>Thank you</p>
+                        <p> It has been a pleasure doing business with you</p>
+                        <p> thank you for choosing <b>Nexsme</b></p>
+                    </div>
+                    <div class="right">
+                        <h3>Nexsme</h3>
+                        <div class="sign"></div>
+                        <p>(Authorized Signatory)</p>
+                    </div>
+                    <br class="clear" />
+
+                    <p>Customer Support Email: <span>info@Nexsme</span></p>
+                </div>
+                <div class="inner-module">
+                    <p><span>Cash on Delivery:</span> please pay remaining amount to the sales representative before
+                        unloading the materials.</p>
+                </div>
+            </div>
+            <div class="split">
+                <div class="eng">
+                    <p class="p">
+                        * Terms & Conditions apply <br>
+                        <b>Terms & Conditions for after sales service / repair:</b><br>
+                        1 - Warranty shall not be considered without proof of purchase le. Original invoice or till receipt.<br>
+                        2 - Maximum of 15 days are expected for repairs of the items under warranty and period may vary from 3-15 days depending on the product.<br>
+                        3 - Warranty does not cover abuse, dent, accidental damages liquid damages, corrosion, consumables and accessories (viz. batteries, chargers, brushes, hoses, mixer jars etc.)<br>
+                        4 - Nexsme shall not be deemed responsible for any loss of data for any items given for repair and customer are advised to BACKUP their data before giving for service.<br>
+                        5 - Please ensure the repaired unit is collected within maximum of 45 days of data of service and Nexsme shall not be responsible after that.<br>
+                        6 - Please check and preview the product after it is repaired, and Nexsme shall not be responsible after signing the receipt.<br>
+                        7 - Washing machines, Refigerators, cookng ranges. TVs etc may be enttled for on-site malintenance after informing Nexsme about it, and Nexsme will provide maintenance in cooperation with an authorized service center.<br>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+<style type="text/css">
+h1.shop_name {
+    font-size: 22pt;
+    text-transform: uppercase;
+    color: #622424;
+    text-align: center;
+    font-weight: bold;
+}
+.text-right{
+    text-align: right !important;
+}
+.bold{
+    font-weight: bold;
+}
+
+td.address p{
+    margin-left: 20px;
+}
+@page{
+    size:  auto;  /* auto is the initial value */
+    margin: 0mm;  /* this affects the margin in the printer settings */
+}
+@media only screen and (max-device-width: 480px) {
+    @page {
+        margin: 0;
+    }
+}
+</style>
+
+</html>
