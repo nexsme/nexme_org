@@ -1,30 +1,25 @@
-from django.utils.translation import ugettext_lazy as _
+import os
+import environ
 from datetime import timedelta
+
+import firebase_admin
 from pathlib import Path
 from decouple import config, Csv
-import environ
-import os
-import firebase_admin
 from firebase_admin import credentials
+
+from django.utils.translation import ugettext_lazy as _
 
 env = environ.Env()
 environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
-
-# Raises Django's ImproperlyConfigured
-# exception if SECRET_KEY not in os.environ
-SECRET_KEY = env('SECRET_KEY')
-
-# SECRET_KEY = 'django-insecure-6fgn@gaj_&_p3pnit#)3y--ud^@ry6$1hu^nl(wjkqrt!+ggx8'
-
 SERVER = env('SERVER')
+
+SECRET_KEY = env('SECRET_KEY')
 
 ALLOWED_HOSTS = ['nexsme.com']
 
@@ -328,3 +323,6 @@ RZP_SECRET_KEY= config('RZP_SECRET_KEY')
 
 cred = credentials.Certificate(BASE_DIR / 'ServiceAccount.json')
 default_app = firebase_admin.initialize_app(cred)
+
+
+FAST2SMS_API_KEY = 'vn6DOCyoxQwPbKWFV4GLXeH3Y2Z1SgBkTpm7iIUh5r0Asj8uaMegIWO9P3J65lfMw2AEahrxLdp0VHoZ'

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q, Max
 from django.shortcuts import get_object_or_404
 from general.models import Batch
-from main.functions import SendEmail, get_auto_id, sendSMS, create_or_get_location, sendOTP, create_notification, paginate
+from main.functions import SendEmail, get_auto_id, send_fast2sms, sendSMS, create_or_get_location, sendOTP, create_notification, paginate
 from offers.models import VoucherCode
 from orders.models import *
 from products.models import ProductVariant
@@ -60,7 +60,12 @@ def send_otp(request):
 
         if SETTINGS.SERVER == "on":
             if phone != '8765432100':
-                msg = sendOTP(phone, new_otp)
+                # msg = sendOTP(phone, new_otp)
+                msg = send_fast2sms(
+                    template_id="202565",
+                    phone_numbers=[phone],
+                    variables={"#VAR1#": new_otp}
+                )
 
         elif SETTINGS.SERVER == "off" :
             print('\n\n-------------', message, '-------------\n\n')
