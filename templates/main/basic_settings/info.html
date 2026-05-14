@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Company Details</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="btn-group">
+                    <a title="Edit Profile" href="{% url 'main:company_profile_edit' pk=instance.pk %}" class="btn btn-primary">
+                        <i class="las la-edit"></i> Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-auto">
+                            {% if instance.logo %}
+                                <img src="{{ instance.logo.url }}" class="img-thumbnail" style="max-height: 100px;" alt="Logo">
+                            {% else %}
+                                <div class="bg-soft-secondary p-4 rounded text-center">No Logo</div>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            <h2 class="mb-0">{{ instance.company_name }}</h2>
+                            <p class="text-muted italic">{{ instance.tagline|default:"" }}</p>
+                            <span class="badge {% if instance.is_active %}badge-success{% else %}badge-danger{% endif %}">
+                                {% if instance.is_active %}Active Business{% else %}Inactive{% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5><i class="las la-info-circle text-primary"></i> About Us</h5>
+                    <div class="company-description mt-3">
+                        {{ instance.about_us|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-soft-light">
+                    <h4 class="card-title mb-0">Contact & Location</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong>Email:</strong> <br><span class="text-muted">{{ instance.email }}</span></li>
+                                <li class="mb-2"><strong>Phone:</strong> <br><span class="text-muted">{{ instance.phone_number }}</span></li>
+                                <li class="mb-2"><strong>Website:</strong> <br><a href="{{ instance.website }}" target="_blank">{{ instance.website|default:"N/A" }}</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 border-left">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong>Address:</strong> <br>
+                                    <span class="text-muted">
+                                        {{ instance.address }}<br>
+                                        {{ instance.city }}, {{ instance.state }} - {{ instance.zip_code }}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0 text-white">Legal & Tax</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <small class="text-muted">Legal Name</small>
+                            <h6 class="mb-0">{{ instance.legal_name }}</h6>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <small class="text-muted">GST / Tax ID</small>
+                            <h6 class="mb-0">{{ instance.tax_id }}</h6>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <small class="text-muted">Reg. Number</small>
+                            <h6 class="mb-0">{{ instance.registration_number|default:"Not Provided" }}</h6>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <small class="text-muted">Date Established</small>
+                            <h6 class="mb-0">{{ instance.date_established|date:"d M, Y"|default:"N/A" }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">System Info</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted small">Auto ID:</span>
+                                <span class="small font-weight-bold">#{{ instance.auto_id }}</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted small">Created By:</span>
+                                <span class="small">{{ instance.creator }}</span>
+                            </div>
+                            <small class="text-muted font-italic">{{ instance.date_added|date:"d, M Y P" }}</small>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted small">Last Updated:</span>
+                                <span class="small">{{ instance.updater|default:"None" }}</span>
+                            </div>
+                            <small class="text-muted font-italic">{{ instance.date_updated|date:"d, M Y P" }}</small>
+                        </div>
+                        {% if instance.favicon %}
+                        <div class="list-group-item px-0 text-center">
+                            <small class="text-muted d-block mb-2">Favicon</small>
+                            <img src="{{ instance.favicon.url }}" style="width: 32px; height: 32px;" alt="Favicon">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block static %}
+<style>
+    .company-description img {
+        max-width: 100%;
+        height: auto;
+    }
+    .bg-soft-light { background-color: #f8f9fa; }
+    .bg-soft-primary { background-color: #e2eafc; }
+</style>
+{% endblock %}

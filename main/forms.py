@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationForm
 from django.contrib.auth.models import User
 
+from main.models import CompanyProfile
+
 
 class UserForm(RegistrationForm):
     
@@ -66,3 +68,26 @@ class UserForm(RegistrationForm):
             raise forms.ValidationError("Username must have at least %i characters" % self.min_password_length)
         else:
             return self.cleaned_data['username']  
+        
+class CompanyProfileForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["company_name","legal_name","tagline","about_us","email","phone_number","website","address","city","state","zip_code","logo","favicon","tax_id","registration_number","date_established"]
+        
+        widgets = {
+            "company_name": forms.TextInput(attrs={"class": "required form-control","placeholder": "Name"}),
+            "legal_name": forms.TextInput(attrs={"class": "required form-control","placeholder": "Legal Name"}),
+            "tagline": forms.TextInput(attrs={"class": "required form-control","placeholder": "Tagline"}),
+            "email": forms.TextInput(attrs={"class": "required form-control","placeholder": "Email"}),
+            "phone_number": forms.TextInput(attrs={"class": "required form-control","placeholder": "Phone Number"}),
+            "website": forms.TextInput(attrs={"class": "required form-control","placeholder": "Website"}),
+            "address": forms.Textarea(attrs={"class": "required form-control","placeholder": "Address"}),
+            "city": forms.TextInput(attrs={"class": "required form-control","placeholder": "City"}),
+            "state": forms.TextInput(attrs={"class": "required form-control","placeholder": "State"}),
+            "zip_code": forms.TextInput(attrs={"class": "required form-control","placeholder": "Zip Code"}),
+            # "logo": forms.FileInput(attrs={"class": "required form-control","placeholder": "Logo"}),
+            # "favicon": forms.FileInput(attrs={"class": "required form-control","placeholder": "Fav Icon"}),
+            "tax_id": forms.TextInput(attrs={"class": "required form-control","placeholder": "Tax ID"}),
+            "registration_number": forms.TextInput(attrs={"class": "required form-control","placeholder": "Registration No"}),
+            "date_established": forms.TextInput(attrs={"type": "date","class": "required form-control","placeholder": "Date Established"}),
+        }

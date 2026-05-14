@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+{% load users_template_tags %}
+
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button" class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+                <a class="btn btn-sm btn-soft-primary" href="{% url 'main:holiday_create' %}" role="button"><i class="fas fa-plus mr-2"></i>Add Holiday</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">Sl.No</th>
+                                <th>Staff Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Active Hour</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% load el_pagination_tags %}
+                            {% paginate 50 instances %}
+                            {% get_pages %}
+                            {% for instance in instances %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instance.staff.name }}</td>
+                                <td>{{ instance.start_time|date:"d M Y, h:i A" }}</td>
+                                <td>{{ instance.end_time|date:"d M Y, h:i A" }}</td>
+                                <td>{{ instance.active_hour }}</td>
+                                <td>{{ instance.status }}</td>
+                                <td>{{ instance.creator.username }}</td>
+                                <td class="text-right noExl">
+                                    <a href="{% url 'main:manual_dc_edit' pk=instance.pk %}"><i
+                                            class="las la-pen text-info font-18"></i></a>
+                                    <a data-id="{{ instance.pk }}" class="reload action-button remove"
+                                        href="{% url 'main:manual_dc_delete' pk=instance.pk %}"
+                                        data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                            class="las la-trash-alt text-danger font-18"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row pagi my-3">
+                <div class="col-sm-6 text-left">{% show_pages %}</div>
+                <div class="col-sm-6 text-right align-items-center">
+                    <div class="m-t-10 text-muted">
+                        Showing {{pages.current_start_index}} - {{pages.current_end_index}} of {{pages.total_count}} Holidays
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge-soft-success { background: #e6ffed; color: #28a745; border: 1px solid #28a745; }
+    .badge-soft-info { background: #e1f5fe; color: #0288d1; border: 1px solid #0288d1; }
+</style>
+{% endblock %}

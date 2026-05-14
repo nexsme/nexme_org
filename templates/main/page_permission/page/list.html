@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load main_template_tags %}
+{% load el_pagination_tags %}
+{% block content %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{ title|title }}</h3>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn btn-sm btn-primary" href="{% url 'task_manager:task_create' %}">
+                    <i class="fas fa-plus mr-2"></i>Add New Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Sl.No</th>
+                                <th>Page Name</th>
+                                <th>Params</th>
+                                <th>Position</th>
+                                <th>Sub Head</th>
+                                <th>App/Namespace</th>
+                                <th>URLs</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% paginate 100 instances as pages %}
+                            
+                            {# GROUP BY NAV HEAD #}
+                            {% regroup instances by nav_head as head_list %}
+
+                            {% for head in head_list %}
+                                {# HEADER ROW FOR THE NAV HEAD #}
+                                <tr class="bg-soft-primary">
+                                    <td colspan="7" class="font-weight-bold">
+                                        <i class="{{ head.grouper.head_icon }} mr-2"></i>
+                                        {{ head.grouper.head_name|upper|default:"NO ASSIGNED HEAD" }}
+                                    </td>
+                                </tr>
+
+                                {% for instance in head.list %}
+                                <tr>
+                                    <td>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</td>
+                                    <td>
+                                        <span class="font-weight-600">{{ instance.page_name }}</span>
+                                        <span class="font-weight-600">{{ instance.params }}</span>
+                                        <br><small class="text-muted">ID: {{ instance.auto_id }}</small>
+                                    </td>
+                                    <td><span class="badge badge-outline-primary">{{ instance.position }}</span></td>
+                                    <td>
+                                        {% if instance.nav_sub_head %}
+                                            <span class="text-info font-italic">{{ instance.nav_sub_head.sub_head_name }}</span>
+                                        {% else %}
+                                            <small class="text-muted">---</small>
+                                        {% endif %}
+                                    </td>
+                                    <td><code class="text-primary">{{ instance.app_name }}</code></td>
+                                    <td>
+                                        <div class="small">List: <code>{{ instance.list_url_name }}</code></div>
+                                        {% if instance.create_url_name %}
+                                        <div class="small">Add: <code>{{ instance.create_url_name }}</code></div>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <a href="{% url 'main:page_edit' pk=instance.pk %}" class="btn btn-sm btn-soft-primary"><i class="las la-pen"></i></a>
+                                            <a href="{% url 'main:page_delete' pk=instance.pk %}" class="btn btn-sm btn-soft-danger action-button reload"><i class="las la-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% empty %}
+                                <tr><td colspan="7" class="text-center">No Pages found.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

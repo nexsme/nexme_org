@@ -105,4 +105,28 @@ urlpatterns = [
     re_path(r'^web/create-social-link/$', views.create_social_link_view, name='create_social_link'),
     re_path(r'^web/edit-social-link/(?P<pk>.*)/$',views.edit_social_link_view, name='edit_social_link'),
     re_path(r'^web/delete-social-link/(?P<pk>.*)/$',views.delete_social_link_view, name='delete_social_link'),
+    
+    # about us section
+    re_path(r"^web/abountus-list/$", views.abountus_list, name="abountus_list"),
+    re_path(r"^web/abountus-edit/(?P<pk>.*)/$",views.abountus_edit,name="abountus_edit",),
+    
+    # privacy-policy section
+    re_path(r"^web/privacy-policy-list/$", views.privacy_policy_list, name="privacy_policy_list"),
+    re_path(r"^web/privacy-policy-edit/(?P<pk>.*)/$",views.privacy_policy_edit,name="privacy_policy_edit",),
+    
+    # terms and conditions section
+    re_path(r"^web/terms-and-conditions-list/$", views.terms_and_conditions_list, name="terms_and_conditions_list"),
+    re_path(r"^web/terms-and-conditions-edit/(?P<pk>.*)/$",views.terms_and_conditions_edit,name="terms_and_conditions_edit",),
+    
+    # our mission section
+    re_path(r"^web/our-mission-list/$", views.our_mission_list, name="our_mission_list"),
+    re_path(r"^web/our-mission-edit/(?P<pk>.*)/$",views.our_mission_edit,name="our_mission_edit",),
+    
+    # our vision section
+    re_path(r"^web/our-vision-list/$", views.our_vision_list, name="our_vision_list"),
+    re_path(r"^web/our-vision-edit/(?P<pk>.*)/$",views.our_vision_edit,name="our_vision_edit",),
+    
+    # our inspiration section
+    re_path(r"^web/our-inspiration-list/$", views.our_inspiration_list, name="our_inspiration_list"),
+    re_path(r"^web/our-inspiration-edit/(?P<pk>.*)/$",views.our_inspiration_edit,name="our_inspiration_edit",),
 ]

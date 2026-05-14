@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'main:holiday_list' %}">Holidays</a></li>
+                    <li class="breadcrumb-item active">Holiday Details</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="btn-group">
+                    <a title="Edit Holiday" href="{% url 'main:holiday_edit' pk=instance.pk %}" class="btn btn-primary rounded-pill px-4">
+                        <i class="las la-edit"></i> Edit Holiday
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="date-badge bg-soft-primary text-center rounded border p-2" style="width: 100px;">
+                                <h3 class="mb-0 font-weight-bold text-primary">{{ instance.holiday_date|date:"d" }}</h3>
+                                <small class="text-uppercase font-weight-bold text-primary">{{ instance.holiday_date|date:"M" }}</small>
+                                <div class="border-top mt-1">
+                                    <small class="text-muted">{{ instance.holiday_date|date:"Y" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col ml-3">
+                            <h2 class="font-weight-bold text-dark mb-1">{{ instance.name }}</h2>
+                            <p class="text-muted mb-2">
+                                <i class="las la-clock mr-1"></i> {{ instance.holiday_date|date:"l" }}
+                            </p>
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-pill {% if instance.holiday_type == 'public' %}badge-soft-success{% else %}badge-soft-info{% endif %} mr-2">
+                                    <i class="fa fa-tag mr-1"></i> {{ instance.get_holiday_type_display }}
+                                </span>
+                                {% if instance.is_recurring %}
+                                <span class="badge badge-pill badge-soft-warning">
+                                    <i class="las la-sync mr-1"></i> Recurring Yearly
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="section-title"><i class="las la-align-left text-primary mr-2"></i>Description / Notes</h5>
+                    <div class="holiday-description mt-3 text-secondary leading-relaxed">
+                        {{ instance.description|linebreaks|default:"No additional details provided for this holiday." }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom-0 pt-4">
+                    <h4 class="card-title mb-0"><i class="las la-map-marker text-info mr-2"></i>Applicability & Scope</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="contact-box p-3 rounded bg-light">
+                                <small class="text-uppercase text-muted font-weight-bold d-block mb-2">Target Locations</small>
+                                {% if instance.warehouse %}
+                                    <p class="mb-0 h6 text-dark">
+                                        <i class="las la-building mr-1 text-primary"></i> Specific Warehouse: 
+                                        <strong>{{ instance.warehouse.name }}</strong>
+                                    </p>
+                                    <small class="text-muted ml-4">This holiday applies only to staff at this location.</small>
+                                {% else %}
+                                    <p class="mb-0 h6 text-primary">
+                                        <i class="las la-globe mr-1"></i> General Holiday (All Locations)
+                                    </p>
+                                    <small class="text-muted ml-4">This holiday is recognized across the entire organization.</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h4 class="card-title text-white mb-4 border-bottom pb-2">Quick Summary</h4>
+                    <div class="legal-item mb-3">
+                        <small class="opacity-75 d-block">Status</small>
+                        <span class="h6 font-weight-bold">Upcoming</span> 
+                        </div>
+                    <div class="legal-item mb-3">
+                        <small class="opacity-75 d-block">Day of Week</small>
+                        <span class="h6 font-weight-bold">{{ instance.holiday_date|date:"l" }}</span>
+                    </div>
+                    <div class="legal-item">
+                        <small class="opacity-75 d-block">Category</small>
+                        <span class="h6 font-weight-bold">{{ instance.get_holiday_type_display }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0">Record Audit</h4>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 py-3">
+                            <span class="text-muted"><i class="las la-fingerprint mr-1"></i> System ID</span>
+                            <span class="badge badge-light px-3">#{{ instance.auto_id }}</span>
+                        </li>
+                        <li class="list-group-item border-0 py-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted"><i class="las la-user-plus mr-1"></i> Created By</span>
+                                <span class="font-weight-bold">{{ instance.creator.staff.name|default:instance.creator }}</span>
+                            </div>
+                            <small class="text-muted ml-4">{{ instance.date_added|date:"d M Y, h:i A" }}</small>
+                        </li>
+                        <li class="list-group-item border-0 py-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted"><i class="las la-history mr-1"></i> Last Update</span>
+                                <span class="font-weight-bold">{{ instance.updater.staff.name|default:instance.updater|default:"System" }}</span>
+                            </div>
+                            <small class="text-muted ml-4">{{ instance.date_updated|date:"d M Y, h:i A" }}</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block static %}
+<style>
+    .section-title { font-size: 1.1rem; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 8px; display: inline-block; margin-bottom: 15px; }
+    .leading-relaxed { line-height: 1.8; }
+    .badge-soft-success { background: #e6ffed; color: #28a745; border: 1px solid #c3e6cb; }
+    .badge-soft-info { background: #e1f5fe; color: #0288d1; border: 1px solid #b3e5fc; }
+    .badge-soft-warning { background: #fff9db; color: #f08c00; border: 1px solid #ffe066; }
+    .bg-soft-primary { background-color: #eef2ff; }
+    .contact-box { border-left: 4px solid #007bff; }
+    .opacity-75 { opacity: 0.75; }
+    .date-badge h3 { line-height: 1; }
+</style>
+{% endblock %}

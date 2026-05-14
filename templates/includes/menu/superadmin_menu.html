@@ -488,4 +488,42 @@
     </ul>
 </li>
 
+<li>
+    <a href="javascript: void(0);">
+        <i data--feather="settings" class="dripicons-gear align-self-center menu-icon"></i>
+        <span> Company Profile</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'main:company_profile_list' %}"><i class="ti-control-record"></i>Company Profile</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'main:abountus_list' %}"><i class="ti-control-record"></i>About Us</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'main:privacy_policy_list' %}"><i class="ti-control-record"></i>Privacy Policy</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'main:terms_and_conditions_list' %}"><i class="ti-control-record"></i>Terms And Conditions</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'web:our_mission_list' %}"><i class="ti-control-record"></i>Our Mission</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'web:our_vision_list' %}"><i class="ti-control-record"></i>Our Vision</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'web:our_inspiration_list' %}"><i class="ti-control-record"></i>Our Inspiration</a>
+        </li>
+
+    </ul>
+</li>
+
 {% endif %}

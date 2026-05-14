@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button" class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn btn-sm btn-soft-primary" href="{% url 'chicken_sales:timeslot_create' %}" role="button"><i
+                        class="fas fa-plus mr-2"></i>Add New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl.No</th>
+                            <th style="width: 30px;">ID</th>
+                            <th>Created Date</th>
+                            <th>Creator</th>
+                            <th>Company Name</th>
+                            <th>Legal Name</th>
+                            <th>Tagline</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 50 instances %}
+                        {% get_pages %}
+                        {% for instance in instances %} 
+                        <tr class="">
+                            <td>{{ forloop.counter0|add:pages.current_start_index }}</td>
+                            <td>{{ instance.auto_id }}</td>
+                            <td>{{ instance.date_added }}</td>
+                            <td>{{ instance.creator.staff.name }}</td>
+                            <td>{{ instance.name }}</td>
+                            <td>{{ instance.start_date }}</td>
+                            <td>{{ instance.end_date }}</td>
+                            <td>
+                                {% for staff in instance.members.all %}
+                                    {{ staff.name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    <span class="text-muted">No members</span>
+                                {% endfor %}
+                            </td>
+                            <td>{{ instance.get_status_display }}</td>
+                            <td class="text-right noExl">
+                                <a href="{% url 'chicken_sales:timeslot_edit' pk=instance.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ instance.pk }}" class="reload action-button remove"
+                                    href="{% url 'chicken_sales:timeslot_delete' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}  
+                        <tr>
+                            <td colspan="10" class="text-center">No order dispatch mappings found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+{% endblock %}

@@ -69,6 +69,7 @@ def about_us(request):
 
     context = {
         "title": title,
+        "instance": CompanyProfile.objects.filter(is_deleted=False).order_by("-date_added").first()
     }
 
     return render(request, 'web/informations/about-us.html', context)
@@ -3000,3 +3001,359 @@ def notification_page(request):
         "all_notifications": notifications
     }
     return render(request, 'web/notification.html', context)
+
+
+# ------------------------------------------------------------------------------------------
+# ---------------------------------------Admin panel section--------------------------------
+# ------------------------------------------------------------------------------------------
+# 🔹 About Us Views
+@login_required
+def abountus_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:abountus_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def abountus_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = AboutUsForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "About Us Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("main:abountus_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = AboutUsForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit About Us",
+            "instance": instance,
+            "url": reverse("web:abountus_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/abountus/create.html", context)
+    
+
+# 🔹 Privacy Policy Views
+@login_required
+def privacy_policy_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:privacy_policy_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def privacy_policy_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = PrivacyPolicyForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Privacy Policy Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("web:privacy_policy_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = PrivacyPolicyForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Privacy Policy",
+            "instance": instance,
+            "url": reverse("web:privacy_policy_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/privacy_policy/create.html", context)
+    
+# 🔹 Terms and Condition Views
+@login_required
+def terms_and_conditions_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:terms_and_conditions_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def terms_and_conditions_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = TermsConditionForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Terms and Condition Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("web:terms_and_conditions_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = TermsConditionForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Terms and Condition",
+            "instance": instance,
+            "url": reverse("web:terms_and_conditions_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/terms_and_conditions/create.html", context)
+    
+    
+# 🔹 Our Mission Views
+@login_required
+def our_mission_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:our_mission_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def our_mission_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = OurMissionForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Our Mission Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("web:our_mission_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = OurMissionForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Our Mission",
+            "instance": instance,
+            "url": reverse("web:our_mission_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/our_mission/create.html", context)
+    
+
+# 🔹 Our Vision Views
+@login_required
+def our_vision_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:our_vision_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def our_vision_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = OurVisionForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Our Vision Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("web:our_vision_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = OurVisionForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Our Vision",
+            "instance": instance,
+            "url": reverse("web:our_vision_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/our_vision/create.html", context)
+    
+    
+# 🔹 Our Inspiration Views
+@login_required
+def our_inspiration_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.latest("id")
+        return redirect('web:our_inspiration_edit', pk=instance.pk)
+    else:
+        return redirect('main:basic_settings_create')
+    
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def our_inspiration_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = OurInspirationForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Our Inspiration Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("web:our_inspiration_list"),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = OurInspirationForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Our Inspiration",
+            "instance": instance,
+            "url": reverse("web:our_inspiration_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "web/web_management/our_inspiration/create.html", context)

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -9,12 +9,15 @@ from django.db.models import Sum, Q, F
 from django.http import JsonResponse
 from django.utils.translation import activate
 from django.utils import translation
+from django.db import transaction, IntegrityError
 import datetime
 import json
 import re
 from customers.models import Customer
 from main.decorators import role_required
-from main.functions import get_current_role
+from main.forms import CompanyProfileForm
+from main.functions import generate_form_errors, get_auto_id, get_current_role
+from main.models import CompanyProfile
 from orders.models import Orders
 from sales.models import Sale, SaleItem
 from purchases.models import Purchase
@@ -200,3 +203,133 @@ def search(request):
         "search_filter_query": query,
     }
     return render(request, "reports/search.html", context)
+
+
+# ---------------------------------------------
+# 🔹 Company Profile Views
+# ---------------------------------------------
+@login_required
+def company_profile_info(request, pk):
+    instance = CompanyProfile.objects.get(pk=pk)
+    
+    context = {
+        "instance": instance,
+        "title": "Company Profile",
+    }
+    return render(request, "main/company_profile/info.html", context)
+
+@login_required
+def company_profile_list(request):
+    instances = CompanyProfile.objects.filter(is_deleted=False)
+    
+    if instances.exists():
+        instance = instances.first()
+        return redirect('main:company_profile_info', pk=instance.pk)
+    else:
+        return redirect('main:company_profile_create')
+        
+@login_required
+@transaction.atomic
+def company_profile_create(request):
+    if request.method == "POST":
+        form = CompanyProfileForm(request.POST)
+        
+        if form.is_valid():
+            
+            instance = form.save(commit=False)
+            instance.creator = request.user
+            instance.auto_id = get_auto_id(CompanyProfile)
+            instance.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Created",
+                "message": "Company Profile created successfully.",
+                "redirect": "true",
+                "redirect_url": reverse("main:company_profile_list"),
+            }
+        else:
+            response_data = {
+                "status": "false",
+                "title": "Form validation error",
+                "message": generate_form_errors(form),
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type="application/javascript")
+
+    form = CompanyProfileForm()
+    
+    context = {
+        "form": form,
+        "title": "Create Company Profile",
+    }
+    
+    return render(request, "main/company_profile/create.html", context)
+
+
+@login_required
+# @role_required(["superadmin", "staff", "warehouse_manager"])
+def company_profile_edit(request, pk):
+    instance = get_object_or_404(CompanyProfile.objects.filter(pk=pk, is_deleted=False))
+
+    if request.method == "POST":
+        response_data = {}
+        form = CompanyProfileForm(request.POST, request.FILES, instance=instance)
+
+        if form.is_valid():
+            # update category
+            data = form.save(commit=False)
+            data.updater = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "title": "Successfully Updated",
+                "message": "Company Profile Successfully Updated.",
+                "redirect": "true",
+                "redirect_url": reverse("main:company_profile_info", kwargs={"pk": data.pk}),
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form validation error",
+                "message": str(message),
+            }
+
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/javascript"
+        )
+
+    else:
+        form = CompanyProfileForm(instance=instance)
+
+        context = {
+            "form": form,
+            "title": "Edit Company Profile : " + instance.company_name,
+            "instance": instance,
+            "url": reverse("main:company_profile_edit", kwargs={"pk": instance.pk}),
+            "redirect": True,
+        }
+        
+        return render(request, "main/company_profile/create.html", context)
+
+
+@login_required
+def company_profile_delete(request, pk):
+    instance = get_object_or_404(CompanyProfile, pk=pk, is_deleted=False)
+    instance.is_deleted = True
+    instance.deleted_reason = request.GET.get("reason", "Deleted by user")
+    instance.save()
+
+    response_data = {
+        "status": "true",
+        "title": "Successfully Deleted",
+        "message": "Company Profile deleted successfully.",
+        "redirect": "true",
+        "redirect_url": reverse("main:company_profile_list"),
+    }
+    return HttpResponse(json.dumps(response_data), content_type="application/javascript")

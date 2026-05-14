@@ -2,71 +2,73 @@
 {% block content %}
 {% load static %}
 
-        <section id="privacy-policy">
-            <section class="wrapper">
-                <div class="head">
-                    <h2>About Us</h2>
-                    <p class="p-i">
-                        Nexsme Trading &amp; Contracting W.L.L (<a href="https://nexsme.qa/">nexsme.qa</a>), a Company registered in Qatar and promoting local/international
-                        products and services. it stands for ‘Online Trading’ and ‘Marketing Activities’ through our Multi-channel selling
-                        platform (Web, Mobile Apps).
-                        <br /><br />
-                        Nexsme.qa, Qatar's largest online marketplace, with the widest assortment of diverse product categories from national,
-                        international brands and with the support of thousands of users and sellers. Now <a href="https://nexsme.qa/">nexsme.qa</a> is the shopping
-                        destination for Internet users across the country and delivering the service everywhere in Qatar.
-                        <br /><br />
-                        Be it a manufacturer, vendor or supplier, simply sell your products online on <a href="https://nexsme.qa/">nexsme.qa</a> and become a top e-commerce
-                        player with us. Through a team of experts offering exclusive seller workshops, training, seller support
-                        and <a href="https://nexsme.qa/">nexsme.qa</a> focuses on educating and empowering sellers across Qatar. Selling on <a href="https://nexsme.qa/">nexsme.qa</a> is very easy. All you
-                        need is to register, list your catalogue and start selling your products.
-                    </p>
-                <div class="item b-i">
-                    <h3 class="p-h">Who We Serve :</h3>
-                    <p class="p-i">
-                        Congrats, you are one among them. We deliver your order at your door step. We do serve residences, Government entities, Offices, Schools, Hotels and Events and much more.
-                    </p>
-                </div>
-                <div class="item b-i">
-                    <h3 class="p-h">Our Inspiration</h3>
-                    <p class="p-i">
-                        The Internet is an amazing tool. It has the power to change the way we live, and we're <a href="https://Nexsme/">Nexsme</a> starting to see
-                        that potential. With only a few mouse clicks, we can follow the updates, look up facts, buy goods and services.
-                    </p>
-                </div>
-                <div class="item  b-i">
-                    <h3 class="p-h">Our vision</h3>
-                    <p class="p-i">
-                        Is to be kerala's most customer-centric online shopping portal, to build an online marketplace where people can meet their requirements.
-                    </p>
-                </div>
+<style>
+    .info-section { padding: 40px 0; }
+    .info-title { color: #d63384; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #f8f9fa; display: inline-block; }
+    .contact-card { background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 25px; margin-top: 30px; }
+    .mission-vision { background: #fff5f8; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+</style>
 
-                <div class="item  b-i">
-                    <h3 class="p-h">Our Mission</h3>
-                    <p class="p-i">
-                        Is to be a permanent service provider in your busy life and stay prominent through offering our quality products & services.
-                    </p>
-                </div>
-                <div class="item  b-i">
-                    <h3 class="p-h">Our Values</h3>
-                    <ul style="list-style: disc;margin-left: 30px;">
-                        <li class="p-i">Integrity</li>
-                        <li class="p-i">Teamwork</li>
-                        <li class="p-i">Accountability</li>
-                        <li class="p-i">Innovation</li>
-                        <li class="p-i">Commitment</li>
-                    </ul>
-                </div>
+<section id="company-profile" class="info-section">
+    <section class="wrapper">
+        
+        <div class="mb-5">
+            <h2 class="info-title">About {{ instance.company_name }}</h2>
+            {% if instance.tagline %}
+                <p class="text-muted"><em>{{ instance.tagline }}</em></p>
+            {% endif %}
+            <div class="mt-4">
+                {{ instance.about_us|safe }}
+            </div>
+        </div>
 
-                <div class="item  b-i">
-                    <h3 class="p-h">Contact Us</h3>
-                    <ul style="list-style: disc;margin-left: 30px;">
-                        <li class="p-i">Customer Support - <a href="mailto:info@Nexsme">info@Nexsme</a></li>
-                        <li class="p-i">CEO - <a href="mailto:fairoos@Nexsme">fairoos@Nexsme</a></li>
-                        <li class="p-i">Accounts - <a href="mailto:accounts@Nexsme">accounts@Nexsme</a></li>
-                        <li class="p-i">Careers - <a href="mailto:careers@Nexsme">careers@Nexsme</a></li>
-                        <li class="p-i">Marketing - <a href="mailto:marketing@Nexsme">marketing@Nexsme</a></li>
-                    </ul>
+        <div class="row">
+            {% if instance.our_mission %}
+            <div class="col-md-6 mb-4">
+                <div class="mission-vision">
+                    <h4 class="text-primary"><i class="fa fa-bullseye"></i> Our Mission</h4>
+                    <div class="mt-2">{{ instance.our_mission|safe }}</div>
                 </div>
-            </section>
-        </section>
+            </div>
+            {% endif %}
+
+            {% if instance.our_vision %}
+            <div class="col-md-6 mb-4">
+                <div class="mission-vision">
+                    <h4 class="text-success"><i class="fa fa-eye"></i> Our Vision</h4>
+                    <div class="mt-2">{{ instance.our_vision|safe }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if instance.our_inspiration %}
+        <div class="mb-5">
+            <h4 class="info-title">Our Inspiration</h4>
+            <div>{{ instance.our_inspiration|safe }}</div>
+        </div>
+        {% endif %}
+
+        <div class="contact-card">
+            <div class="row">
+                <div class="col-md-7">
+                    <h4 class="mb-3">Contact Information</h4>
+                    <p><strong>Address:</strong> {{ instance.address }}, {{ instance.city }}, {{ instance.state }} - {{ instance.zip_code }}</p>
+                    <p><strong>Phone:</strong> {{ instance.phone_number }}</p>
+                    <p><strong>Email:</strong> {{ instance.email }}</p>
+                </div>
+                <div class="col-md-5">
+                    <h4 class="mb-3">Legal Details</h4>
+                    <p><strong>Legal Name:</strong> {{ instance.legal_name }}</p>
+                    <p><strong>Tax ID (GST):</strong> {{ instance.tax_id }}</p>
+                    {% if instance.registration_number %}
+                        <p><strong>Reg. No:</strong> {{ instance.registration_number }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </section>
+</section>
+
 {% endblock %}

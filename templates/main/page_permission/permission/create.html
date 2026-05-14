@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 nav-group-section">
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department" id="id_department" 
+                                            class="form-control select2-autocomplete"
+                                            data-autocomplete-light-url="{% url 'staffs:department_autocomplete' %}">
+                                        <option value="">Search Department...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 nav-group-section">
+                                <div class="form-group">
+                                    <label>Sub Department</label>
+                                    <select name="sub_department" id="id_sub_department" 
+                                            class="form-control select2-autocomplete"
+                                            data-autocomplete-light-url="{% url 'staffs:sub_department_autocomplete' %}"
+                                            data-autocomplete-light-forward="id_department">
+                                        <option value="">Search Sub Department...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 nav-group-section">
+                                <div class="form-group">
+                                    <label>Designation</label>
+                                    <select name="designation" id="id_designation" 
+                                            class="form-control select2-autocomplete"
+                                            data-autocomplete-light-url="{% url 'staffs:designation_autocomplete' %}"
+                                            data-autocomplete-light-forward="id_department,id_sub_department">
+                                        <option value="">Search/Create Designation...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card ordinary-variant-card">
+                                    <div class="table-responsive card-body add_item_container items_formset">
+                                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                            <thead>
+                                                <tr>
+                                                    <th style="min-width: 140px;">Page</th>
+                                                    <th class="text-center" style="min-width: 140px;">Can View</th>
+                                                    <th class="text-center" style="min-width: 140px;">Can Add</th>
+                                                    <th class="text-center" style="min-width: 140px;">Can Edit</th>
+                                                    <th class="text-center" style="min-width: 140px;">Can Delete</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in items_formset.forms %}
+                                                <tr class="form_set_row">
+                                                    {{ item.id }}
+                                                    <td class="page">
+                                                        <span class="page">
+                                                            {{ item.page }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="can_view text-center">
+                                                        <label class="switch">
+                                                            {{ item.can_view }}
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>
+                                                    
+                                                    <td class="can_add text-center">
+                                                        <label class="switch">
+                                                            {{ item.can_add }}
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>
+
+                                                    <td class="can_edit text-center">
+                                                        <label class="switch">
+                                                            {{ item.can_edit }}
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>
+
+                                                    <td class="can_delete text-center">
+                                                        <label class="switch">
+                                                            {{ item.can_delete }}
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>
+
+                                                    <td class="delete">{% if item.instance.pk %}{{ item.DELETE }}{% endif %}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {{ items_formset.management_form }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.items_formset table tr.form_set_row').formset({
+            prefix: '{{ items_formset.prefix }}',
+            formCssClass: 'dynamic-formset',
+
+            'added': function (row) {
+            },
+            removed: function (row) {
+            },
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Initialize the Select2 logic for DAL
+        $('.select2-autocomplete').each(function() {
+            var element = $(this);
+            element.select2({
+                ajax: {
+                    url: element.attr('data-autocomplete-light-url'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        var forwarded = {};
+                        // Logic to get forwarded field values
+                        var forward_ids = element.attr('data-autocomplete-light-forward');
+                        if (forward_ids) {
+                            $.each(forward_ids.split(','), function(index, id) {
+                                forwarded[id.replace('id_', '')] = $('#' + id).val();
+                            });
+                        }
+                        return {
+                            q: params.term,
+                            forward: JSON.stringify(forwarded)
+                        };
+                    },
+                    processResults: function (data) {
+                        return { results: data.results };
+                    }
+                },
+                placeholder: element.find('option:first').text(),
+                allowClear: true,
+                width: '100%',
+                tags: element.attr('name') === 'designation' // Allows creating new designations
+            });
+        });
+
+        // Reset children if parent changes
+        $('#id_department').on('change', function() {
+            $('#id_sub_department, #id_designation').val(null).trigger('change');
+        });
+
+        $('#id_sub_department').on('change', function() {
+            $('#id_designation').val(null).trigger('change');
+        });
+    });
+</script>
+{% endblock %}

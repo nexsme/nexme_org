@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="row">
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <div class="">
+                                        <label>
+                                            {{ form.is_direct_link }} <strong>Direct Sidebar Page?</strong> (Hides menu grouping)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 nav-group-section">
+                                <div class="form-group">
+                                    <label>{{ form.nav_head.label }}</label>
+                                    {{ form.nav_head }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 nav-group-section">
+                                <div class="form-group">
+                                    <label>{{ form.nav_sub_head.label }}</label>
+                                    {{ form.nav_sub_head }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 icon-section">
+                                <div class="form-group">
+                                    <label>{{ form.head_icon.label }}</label>
+                                    {{ form.head_icon }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.page_name.id_for_label }}">
+                                        {{ form.page_name.label }}
+                                        {% if form.page_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.page_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.app_name.id_for_label }}">
+                                        {{ form.app_name.label }}
+                                        {% if form.app_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.app_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.list_url_name.id_for_label }}">
+                                        {{ form.list_url_name.label }}
+                                        {% if form.list_url_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.list_url_name }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.create_url_name.id_for_label }}">
+                                        {{ form.create_url_name.label }}
+                                        {% if form.create_url_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.create_url_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.params.id_for_label }}">
+                                        {{ form.params.label }}
+                                        {% if form.params.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.params }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.position.id_for_label }}">
+                                        {{ form.position.label }}
+                                        {% if form.position.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.position }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        function formatIcon (icon) {
+            if (!icon.id) { return icon.text; }
+            // Use the ID (the class name) to render the icon
+            var $icon = $(
+                '<span><i class="' + icon.id + ' mr-2"></i> ' + icon.text + '</span>'
+            );
+            return $icon;
+        };
+
+        $('.select2').select2({
+            templateResult: formatIcon,
+            templateSelection: formatIcon,
+            escapeMarkup: function(m) { return m; }
+        });
+    });
+
+    $(document).ready(function () {
+        $('.sub_head_formsetset table tr.form_set_row').formset({
+            prefix: '{{ sub_head_formsetset.prefix }}',
+            formCssClass: 'dynamic-formset',
+
+            'added': function (row) {
+            },
+            removed: function (row) {
+            },
+        });
+    });
+
+    $(document).ready(function () {
+        function subHeadMenuForm() {
+            var have_sub_head = $("#id_have_sub_head").prop('checked');
+            if (have_sub_head === true) {
+                $(".sub_nav_menu_section").removeClass('d-none');
+            } else {
+                $(".sub_nav_menu_section").addClass('d-none');
+            }
+        }
+        $("#id_have_sub_head").change(function() {
+            subHeadMenuForm();
+        });
+        subHeadMenuForm();
+    });
+
+    $(document).ready(function () {
+        function toggleSidebarLogic() {
+            var isDirect = $("#id_is_direct_link").is(':checked');
+
+            if (isDirect) {
+                // When Checked:
+                $(".nav-group-section").hide(); // Hides Nav Head and Sub Head
+                $(".icon-section").show();     // Shows the Head Icon field
+                
+                // Optional: Clear the hidden values so they don't submit
+                $("#id_nav_head, #id_nav_sub_head").val(null).trigger('change');
+            } else {
+                // When Unchecked:
+                $(".nav-group-section").show(); // Shows Nav Head and Sub Head
+                $(".icon-section").hide();      // Hides the Icon (assuming it's inherited from Head)
+            }
+        }
+
+        // Trigger on change
+        $("#id_is_direct_link").on('change', function() {
+            toggleSidebarLogic();
+        });
+
+        // Run on page load (for Edit mode)
+        toggleSidebarLogic();
+    });
+</script>
+{% endblock %}

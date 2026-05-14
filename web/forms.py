@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.widgets import TextInput, Textarea, HiddenInput, Select, FileInput, RadioSelect
+from main.models import CompanyProfile
 from products.models import Category
 from dal import autocomplete
 from django.utils.translation import ugettext_lazy as _
@@ -158,3 +159,34 @@ class CustomerPincodeForm(forms.Form):
     pincode = forms.ModelChoiceField(queryset=Zone.objects.all(), 
         widget=autocomplete.ModelSelect2(url='warehouses:zone_autocomplete', 
             attrs={'class': 'required', 'data-placeholder': 'Pincode', 'data-minimum-input-length': 0}),)
+
+
+class AboutUsForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["about_us"]
+        
+class PrivacyPolicyForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["privacy_policy"]
+        
+class TermsConditionForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["terms_and_conditions"]
+        
+class OurMissionForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["our_mission"]
+        
+class OurVisionForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["our_vision"]
+        
+class OurInspirationForm(forms.ModelForm):
+    class Meta:
+        model = CompanyProfile
+        fields = ["our_inspiration"]

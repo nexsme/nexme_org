@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 nav-group-section">
+                                <div class="form-group">
+                                    <label>{{ form.department.label }}</label>
+                                    {{ form.department }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 nav-group-section">
+                                <div class="form-group">
+                                    <label>{{ form.sub_department.label }}</label>
+                                    {{ form.sub_department }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 icon-section">
+                                <div class="form-group">
+                                    <label>{{ form.designation.label }}</label>
+                                    {{ form.designation }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.page.id_for_label }}">
+                                        {{ form.page.label }}
+                                        {% if form.page.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.page }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.can_view.id_for_label }}">
+                                        {{ form.can_view.label }}
+                                        {% if form.can_view.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.can_view }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.can_add.id_for_label }}">
+                                        {{ form.can_add.label }}
+                                        {% if form.can_add.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.can_add }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.can_edit.id_for_label }}">
+                                        {{ form.can_edit.label }}
+                                        {% if form.can_edit.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.can_edit }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.can_delete.id_for_label }}">
+                                        {{ form.can_delete.label }}
+                                        {% if form.can_delete.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.can_delete }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+
+{% endblock %}
