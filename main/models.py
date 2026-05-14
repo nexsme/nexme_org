@@ -3,7 +3,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator
 from decimal import Decimal
+
 from ckeditor_uploader.fields import RichTextUploadingField
+from versatileimagefield.fields import VersatileImageField
 
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
