@@ -6,16 +6,27 @@ function remove_popup(){
 	$('.popup-box,.popup-bg').remove();
 }
 
+let submit_content = 'Submit'
+
+function button_loader($this){
+	submit_content = $this.find('button[type="submit"]').text()
+	$this.find('button[type="submit"]').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`)
+}
+
+function remove_button_loader($this){
+	$this.find('button[type="submit"]').html(submit_content)
+}
+
 $(document).ready(function () {
 	$(document).on('click','.action-button',function(e){
-    	e.preventDefault();
-    	$this = $(this);
-    	var text = $this.attr('data-text');
+		e.preventDefault();
+		$this = $(this);
+		var text = $this.attr('data-text');
 		var delete_input = $this.attr('data-reason');
-    	var type = "warning";
-    	var confirmButtonText = "Yes";
-    	var confirmButtonColor = "#DD6B55";
-    	var id = $this.attr('data-id');
+		var type = "warning";
+		var confirmButtonText = "Yes";
+		var confirmButtonColor = "#DD6B55";
+		var id = $this.attr('data-id');
 		var url = $this.attr('href');
 		var title = $this.attr('data-title');
 		if(!title){
@@ -54,7 +65,7 @@ $(document).ready(function () {
 			}
 		}
 
-        swal(dic).then((isConfirm) => {
+		swal(dic).then((isConfirm) => {
 			if (isConfirm) {
 				show_loader();
 
@@ -65,7 +76,7 @@ $(document).ready(function () {
 						dataType : 'json',
 						data : {
 							pk : id,
-                            reason : isConfirm,
+							reason : isConfirm,
 						},
 						success : function(data) {
 							var message = data['message'];
@@ -148,11 +159,11 @@ $(document).ready(function () {
 				$(this).click();
 			}
 		});
-    });
+	});
 
-    $(document).on('change','.change_select',function(e){
-    	e.preventDefault();
-    	$this = $(this);
+	$(document).on('change','.change_select',function(e){
+		e.preventDefault();
+		$this = $(this);
 		var isReload = $this.hasClass('reload');
 		var isRedirect = $this.hasClass('redirect');
 		var showAlert = $this.hasClass('with_alert');
@@ -224,7 +235,7 @@ $(document).ready(function () {
 				swal(title, message, "error");
 			}
 		});
-    });
+	});
 
 	var $s = $('.form_set_row .check_empty input');
 	var e = $s.val();
@@ -241,44 +252,44 @@ $(document).ready(function () {
 
 		var row_count = $this.find('tr.form_set_row').length;
 
-		if(skip_empty_row){
-			var er = 0;
-			$this.find('tr.form_set_row').each(function(){
-				$t = $(this);
-				var value = $t.find('.check_empty input').val();
-				if(!value){
-					if(er == 0){
-						$t.addClass('first');
-					}
-					er++;
-					$t.addClass('delete_row');
-				}
-			});
+		// if(skip_empty_row){
+		// 	var er = 0;
+		// 	$this.find('tr.form_set_row').each(function(){
+		// 		$t = $(this);
+		// 		var value = $t.find('.check_empty input').val();
+		// 		if(!value){
+		// 			if(er == 0){
+		// 				$t.addClass('first');
+		// 			}
+		// 			er++;
+		// 			$t.addClass('delete_row');
+		// 		}
+		// 	});
 
 
-			$f = $this.find('tr.form_set_row:first-child');
-			if($f.hasClass('first') && not_allowed_without_formset){
-				$('tr.form_set_row.delete_row').not($f).find('a.icon-trash').click();
-			}else{
-				$('tr.form_set_row.delete_row').find('a.icon-trash').click();
-			}
+		// 	$f = $this.find('tr.form_set_row:first-child');
+		// 	if($f.hasClass('first') && not_allowed_without_formset){
+		// 		$('tr.form_set_row.delete_row').not($f).find('a.icon-trash').click();
+		// 	}else{
+		// 		$('tr.form_set_row.delete_row').find('a.icon-trash').click();
+		// 	}
 
-		}
+		// }
 
 		$this.validate({
 			rules : {
 				required_field : "required",
 				password1: "required",
-			    password2: {
-			    	equalTo: "#id_password1"
-			    }
+				password2: {
+					equalTo: "#id_password1"
+				}
 			}
 		});
 		var valid = $this.valid();
 		if (valid){
 
 			document.onkeydown = function(evt) {
-			    return false;
+				return false;
 			};
 
 			var url = $this.attr('action');
@@ -292,8 +303,12 @@ $(document).ready(function () {
 			var function_name = $this.attr('data-function');
 			var selector_class = $this.attr('data-after-function-selector-parent-class');
 			var isCategoryClose = $this.hasClass('cat_close');
-    		var isBrandClose = $this.hasClass('brand_close');
-    		var isUOMClose = $this.hasClass('uom_close');
+			var isBrandClose = $this.hasClass('brand_close');
+			var isUOMClose = $this.hasClass('uom_close');
+			var $submitButton = $this.find(':submit');
+
+			$submitButton.addClass("d-none");
+
 			var $after_selector = '';
 			if(selector_class){
 				$after_selector = $('.' + selector_class);
@@ -303,6 +318,7 @@ $(document).ready(function () {
 
 			if (!noLoader) {
 				show_loader();
+				button_loader($this)
 			}
 
 			jQuery.ajax({
@@ -317,6 +333,7 @@ $(document).ready(function () {
 
 					if (!noLoader) {
 						remove_popup();
+						remove_button_loader($this);
 					}
 
 					var message = data['message'];
@@ -381,18 +398,25 @@ $(document).ready(function () {
 							doAfter();
 						}else{
 							swal({
-							  title: title,
-							  text: message,
-							  type: "success"
-							}).then((res) => {
-								doAfter();
-							})
+								title: title,
+								text: message,
+								type: "success",
+								showConfirmButton: false,
+								timer: 1500
+								});
+
+								setTimeout(function () {
+								swal.close();  // Force close
+								window.location.href = redirect_url; // Redirect
+								}, 1000);
 						}
 						document.onkeydown = function(evt) {
-						    return true;
+							return true;
 						};
 
 					}else{
+
+						$submitButton.removeClass("d-none");
 						if (title){
 							title = title;
 						}else{
@@ -406,18 +430,21 @@ $(document).ready(function () {
 							}, 2000);
 						}
 						document.onkeydown = function(evt) {
-						    return true;
+							return true;
 						};
 					}
 
 				},
 				error : function(data) {
 					remove_popup();
+					remove_button_loader($this);
+
+					$submitButton.removeClass("d-none");
 
 					var title = "An error occurred";
 					var message = "An error occurred. Please try again later.";
 					document.onkeydown = function(evt) {
-					    return true;
+						return true;
 					};
 					swal(title, message, "error");
 				}
@@ -518,17 +545,22 @@ $(document).ready(function () {
 						doAfter();
 					}else{
 						swal({
-						  title: title,
-						  text: message,
-						  type: "success"
-						}).then((res) => {
-							doAfter();
-						})
+							title: title,
+							text: message,
+							type: "success",
+							showConfirmButton: false,
+							timer: 1500
+							});
+
+							setTimeout(function () {
+							swal.close();  // Force close
+							window.location.href = redirect_url; // Redirect
+							}, 1500);
+
 					}
 					document.onkeydown = function(evt) {
-					    return true;
+						return true;
 					};
-
 				}else{
 					if (title){
 						title = title;
@@ -543,7 +575,7 @@ $(document).ready(function () {
 						}, 2000);
 					}
 					document.onkeydown = function(evt) {
-					    return true;
+						return true;
 					};
 				}
 
@@ -554,7 +586,7 @@ $(document).ready(function () {
 				var title = "An error occurred";
 				var message = "An error occurred. Please try again later.";
 				document.onkeydown = function(evt) {
-				    return true;
+					return true;
 				};
 				swal(title, message, "error");
 			}
@@ -563,135 +595,135 @@ $(document).ready(function () {
 
 
 	$('body').on("focus","input.datepickerold", function(){
-	    $(this).datepicker({
-	    	dateFormat : 'mm/dd/yy',
-	    	inline: true,
-            showOtherMonths: true,
-            changeMonth : true,
+		$(this).datepicker({
+			dateFormat : 'mm/dd/yy',
+			inline: true,
+			showOtherMonths: true,
+			changeMonth : true,
 			changeYear : true,
-            dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-	    });
+			dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		});
 	});
 
-    $('body').on('click', '[data-ma-action]', function (e) {
-        e.preventDefault();
+	$('body').on('click', '[data-ma-action]', function (e) {
+		e.preventDefault();
 
-        var action = $(this).data('ma-action');
-        var $this = $(this);
+		var action = $(this).data('ma-action');
+		var $this = $(this);
 
-        switch (action) {
+		switch (action) {
 
-            /*-------------------------------------------
-                Mainmenu and Notifications open/close
-            ---------------------------------------------*/
+			/*-------------------------------------------
+				Mainmenu and Notifications open/close
+			---------------------------------------------*/
 
-            /* Open Sidebar */
-            case 'sidebar-open':
+			/* Open Sidebar */
+			case 'sidebar-open':
 
-                var target = $(this).data('ma-target');
+				var target = $(this).data('ma-target');
 
-                $this.addClass('toggled');
-                $('#main').append('<div data-ma-action="sidebar-close" class="sidebar-backdrop animated fadeIn" />')
+				$this.addClass('toggled');
+				$('#main').append('<div data-ma-action="sidebar-close" class="sidebar-backdrop animated fadeIn" />')
 
-                if (target == 'main-menu') {
-                    $('#s-main-menu').addClass('toggled');
-                }
-                if (target == 'user-alerts') {
-                    $('#s-user-alerts').addClass('toggled');
-                }
+				if (target == 'main-menu') {
+					$('#s-main-menu').addClass('toggled');
+				}
+				if (target == 'user-alerts') {
+					$('#s-user-alerts').addClass('toggled');
+				}
 
-                $('body').addClass('o-hidden');
+				$('body').addClass('o-hidden');
 
-                break;
+				break;
 
-            /* Close Sidebar */
-            case 'sidebar-close':
+			/* Close Sidebar */
+			case 'sidebar-close':
 
-                $('[data-ma-action="sidebar-open"]').removeClass('toggled');
-                $('.sidebar').removeClass('toggled');
-                $('.sidebar-backdrop').remove();
-                $('body').removeClass('o-hidden');
+				$('[data-ma-action="sidebar-open"]').removeClass('toggled');
+				$('.sidebar').removeClass('toggled');
+				$('.sidebar-backdrop').remove();
+				$('body').removeClass('o-hidden');
 
-                break;
-
-
-
-            /*----------------------------------
-                Header Search
-            -----------------------------------*/
-
-            /* Clear Search */
-            case 'search-clear':
-
-                /* For mobile only */
-                $('.h-search').removeClass('toggled');
-
-                /* For all */
-                $('.hs-input').val('');
-                $('.h-search').removeClass('focused');
-
-                break;
-
-            /* Open search */
-            case 'search-open':
-
-                $('.h-search').addClass('toggled');
-                $('.hs-input').focus();
-
-                break;
+				break;
 
 
 
-            /*----------------------------------
-                Main menu
-            -----------------------------------*/
+			/*----------------------------------
+				Header Search
+			-----------------------------------*/
 
-            /* Toggle Sub menu */
-            case 'submenu-toggle':
+			/* Clear Search */
+			case 'search-clear':
 
-                $this.next().slideToggle(200);
-                $this.parent().toggleClass('toggled');
+				/* For mobile only */
+				$('.h-search').removeClass('toggled');
 
-                break;
+				/* For all */
+				$('.hs-input').val('');
+				$('.h-search').removeClass('focused');
+
+				break;
+
+			/* Open search */
+			case 'search-open':
+
+				$('.h-search').addClass('toggled');
+				$('.hs-input').focus();
+
+				break;
 
 
 
-            /*----------------------------------
-                 Messages
-            -----------------------------------*/
-            case 'message-toggle':
+			/*----------------------------------
+				Main menu
+			-----------------------------------*/
 
-                $('.ms-menu').toggleClass('toggled');
-                $this.toggleClass('toggled');
+			/* Toggle Sub menu */
+			case 'submenu-toggle':
 
-                break;
+				$this.next().slideToggle(200);
+				$this.parent().toggleClass('toggled');
+
+				break;
 
 
 
-            /*-------------------------------------------------
-                Action Header Search (used in listview.html)
-             -------------------------------------------------*/
+			/*----------------------------------
+				 Messages
+			-----------------------------------*/
+			case 'message-toggle':
 
-            //Open action header search
-            case 'ah-search-open':
-                x = $(this).closest('.action-header').find('.ah-search');
+				$('.ms-menu').toggleClass('toggled');
+				$this.toggleClass('toggled');
 
-                x.fadeIn(300);
-                x.find('.ahs-input').focus();
+				break;
 
-                break;
 
-            //Close action header search
-            case 'ah-search-close':
-                    x.fadeOut(300);
-                    setTimeout(function(){
-                        x.find('.ahs-input').val('');
-                    }, 350);
 
-                break;
+			/*-------------------------------------------------
+				Action Header Search (used in listview.html)
+			 -------------------------------------------------*/
 
-        }
-    });
+			//Open action header search
+			case 'ah-search-open':
+				x = $(this).closest('.action-header').find('.ah-search');
+
+				x.fadeIn(300);
+				x.find('.ahs-input').focus();
+
+				break;
+
+			//Close action header search
+			case 'ah-search-close':
+					x.fadeOut(300);
+					setTimeout(function(){
+						x.find('.ahs-input').val('');
+					}, 350);
+
+				break;
+
+		}
+	});
 });
 $('input.check_all').click(function (e) {
 

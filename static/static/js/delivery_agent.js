@@ -50,7 +50,7 @@ $(".assign-delivery-agent-return").click(function (e) {
     assignAgentForReturn(url,agent_pk,return_pk);
 });
 
-$("#onaiza-return-accept-button").click(function (e) {
+$("#nexsme-return-accept-button").click(function (e) {
     e.preventDefault();
     var url = $(this).attr('data-url');
     var return_pk = $(this).attr('data-pk');

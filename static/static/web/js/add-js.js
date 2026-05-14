@@ -3,7 +3,7 @@ $(document).on("click", 'button[data-id="add-to-wishlist"]', function() {
 
     let id = $(this).attr("data-pk");
     var url = $(this).attr("href");
-    $parent = $(this).parents('div[data-class="product"]');    
+    $parent = $(this).parents('div[data-class="product"]');
     $wishlist = $(this).parents("#best-seller.whishlist-item");
 //    var wishEmpty = $(this).('#wish-empty');
 //    var wishFilled = $(this).('#wish-filled');
@@ -96,9 +96,9 @@ $(document).on("click", '.add-to-cart', function() {
 
             success: function (data) {
 
-                let status = data['status'];
+                let statusCode = data['status'];
 
-                if(status=='not_in_batch'){
+                if(statusCode=='not_in_batch'){
                     var title = "Product not available";
                     var message = "Product is not available in your area!";
                     swal(title, message, "error");
@@ -108,7 +108,7 @@ $(document).on("click", '.add-to-cart', function() {
                     var message = data["message"];
                     swal(title, message, "error");
 
-                } else if (status == 'added'){
+                } else if (statusCode == 'added'){
                     $('#single-product div.apply-cart:not(.wholesale-cart)').attr('style', 'display: none !important');
                     $('#single-product div.my-cart').attr('style', 'display: block !important');
 
@@ -286,7 +286,7 @@ $(".ProductDeliveryDetails .leftSide a ").click(function (e) {
     $('.'+pk+'review').show();
     $('.hide-products').each(function() {
         $(this).hide();
-    });    
+    });
     $('.'+product_pk+'product-review').show();
 });
 
@@ -326,7 +326,6 @@ $(document).on("click", '.bookNowButton', function(e) {
 
 });
 
-// $(".add-to-cart-button").click(function (e)
 $(document).on("click", '.add-to-cart-button', function(e   ){
     e.preventDefault();
     var url = $(this).attr('href');
@@ -420,7 +419,7 @@ function DeliveryDateChecker(){
         if (date && timeslot) {
             $('.tab2').removeClass('disabled-tab'); //if the time slot is selected removed .disabled-tab
         } else {
-            $('.tab2').addClass('disabled-tab'); 
+            $('.tab2').addClass('disabled-tab');
         }
     }else{
         let date = new Date();
@@ -441,7 +440,7 @@ function DeliveryDateChecker(){
 $("#payment .heading li.tab2").click(function () {
     // Check if the date and time slots are selected using DeliveryDateChecker
     if (DeliveryDateChecker()) {
-        
+
         $("#payment .heading li").removeClass("active");
         $(this).addClass("active");
         $("#payment .tab-click").show();
@@ -458,7 +457,7 @@ $("#validate").click(function(){
     if (DeliveryDateChecker()) {
         var $this = $(this);
         validateOrder($this);
-    } 
+    }
 });
 
 
@@ -537,7 +536,7 @@ $(document).on("change", '#checkOutproduct .container-side .checkOutContainer .t
 $(document).on("click", '.rating-product-submit', function(e) {
    e.preventDefault();
    url = $(this).attr('data-url');
- 
+
    productId = $(this).attr('data-product-id');
 
 
@@ -596,6 +595,7 @@ $(document).on("click", '.return-product-button', function(e) {
 $(document).on("click", '.cancel-order-buttton', function(e) {
    e.preventDefault();
 
+
     var pk = $(this).attr('data-pk');
     var url = $(this).attr('data-url');
 
@@ -603,10 +603,10 @@ $(document).on("click", '.cancel-order-buttton', function(e) {
 });
 $(document).on("click", '.cancel-order-item-button', function(e) {
     e.preventDefault();
- 
+
      var pk = $(this).attr('data-pk');
      var url = $(this).attr('data-url');
- 
+
      cancelOrderItem(url,pk);
  });
 
@@ -633,9 +633,9 @@ function decrement_cart($selector, val) {
                 $(`li.${id}`).remove();
             }
             if ($('#payment').length > 0){
-                
+
             }
-            
+
             // updating cart overlay
             var total = data['total'];
             if(total == 0){
@@ -737,9 +737,9 @@ function set_adress_and_proceed(url,pk){
         },
 
         success: function (data) {
-              let status = data['status'];
+              let statusCode = data['status'];
 
-              if(status == 'true'){
+              if(statusCode == 'true'){
                 $('#payment .heading li').removeClass('active')
                 $('.tab3').addClass('active')
 
@@ -788,7 +788,7 @@ function remove_cart($selector,section) {
               if(result=='true'){
                 parent.css({"display":"none"});
                 if(total == 0){
-                    $(".price-details-new, .cart-list").css("display", "none");
+                    $("#MyCart, #popupBackground").css("display", "none");
                     window.location.reload()
                 }
                 $(".cart-icon a span").remove();
@@ -826,9 +826,9 @@ function setPincode(url,value){
         },
 
         success: function (data) {
-              let status = data['status'];
+              let statusCode = data['status'];
 
-              if(status == 'true'){
+              if(statusCode == 'true'){
                    $('#id01').css({"display":"none"});
                    window.location.reload();
               } else {
@@ -856,9 +856,9 @@ function bookProduct(url,product_pk){
         },
 
         success: function (data) {
-              status = data['status'];
+              statusCode = data['status'];
 
-              if(status == 'true'){
+              if(statusCode == 'true'){
                 $(".bookNowButton").html('Booked !');
               } else {
 
@@ -893,6 +893,7 @@ function addToCart(url,product,$this){
                     'display':'flex'
                 });
 
+
             } else if(data['status']=='not_in_batch'){
                 var title = "Not Available";
                 var message = "Product is not available in selected Zone";
@@ -901,7 +902,13 @@ function addToCart(url,product,$this){
                 var title = "Not Available";
                 var message = data["message"];
                 swal(title, message, "error");
-            } else{
+            }
+            else if(data['status']=='delivery_not_available'){
+                var title = "Not Available";
+                var message = "Product is not available in selected Zone";
+                swal(title, message, "error");
+            }
+            else{
                 $this.find('img').attr('src',image);
                 var pageURL = $(location).attr("href");
                 $(".cart-icon a span").remove();
@@ -910,7 +917,7 @@ function addToCart(url,product,$this){
                 // $('#MyCart').load(pageURL + );
                 $("#MyCart").load(location.href + " div#myCartChildren");
 
-                
+
 
               }
             $("header div.right ul li.my-cart span ").text(data["cart_count"])
@@ -1100,9 +1107,9 @@ function newIssue(url,value){
         },
 
         success: function (data) {
-              status = data['status']
+            statusCode = data['status']
 
-              if(status=='true'){
+              if(statusCode=='true'){
                  var title = "Submitted Successfully";
                 var message = "Ticket Submitted Successfully";
                 swal(title, message, "success");
@@ -1128,7 +1135,7 @@ function applyWalletAmount(url,button,point){
         },
         success: function (data) {
 
-            status = data['status']
+            statusCode = data['status']
 
               $('.wallet-error-text').attr('style','display: none !important');
 
@@ -1137,7 +1144,7 @@ function applyWalletAmount(url,button,point){
                 $('.wallet-error-text').attr('style','display: block !important');
               }
 
-              if(status=='true'){
+              if(statusCode=='true'){
                 $('.total-amt .total-td').html(data['total']);
                 // $(button).addClass("applied");
                 $('#wallet-amount').html(data['value']);
@@ -1245,11 +1252,11 @@ function postRating(url,productId,review,rating){
         },
 
         success: function (data) {
-              status = data['status']
+            statusCode = data['status']
               message = data['message']
               title = data['title']
 
-              if(status=='true'){
+              if(statusCode=='true'){
                 //  var title = "Rated Successfully";
                 // var message = "Ratings Submitted Successfully";
                 swal({
@@ -1282,9 +1289,9 @@ function search(url,query){
         },
 
         success: function (data) {
-              status = data['status']
+              statusCode = data['status']
 
-              if(status=='true'){
+              if(statusCode=='true'){
                  var title = "Rated Successfully";
                 var message = "Ratings Submitted Successfully";
                 swal(title, message, "success");
@@ -1310,9 +1317,9 @@ function getProductDetails(url,order_item_pk){
         },
 
         success: function (data) {
-              status = data['status']
+              statusCode = data['status']
 
-              if(status=='true'){
+              if(statusCode=='true'){
                    $('.product_name').text(data['product_name']);
                     $('.product_category').text(data['product_category']);
                    $('.product-mrp').text(data['product_mrp']);
@@ -1350,9 +1357,9 @@ function returnProduct(url,order_item_pk){
         },
 
         success: function (data) {
-              status = data['status']
+              statusCode = data['status']
 
-              if(status=='accepted'){
+              if(statusCode=='accepted'){
                     var title = "Return Submitted";
                     var message = "Product return successfully submitted";
                     swal(title, message, "success");
@@ -1380,25 +1387,22 @@ function cancelOrder(url, order_pk) {
             order_pk: order_pk,
         },
         success: function (data) {
-            status = data['status'];
+            statusCode = data['status'];
+            message = data['message'];
 
-            if (status === "cancelled") {
-                var title = "Order Cancelled";
-                var message = "Successfully cancelled";
+            if (statusCode === "cancelled") {
+                var title = title || "Order Cancelled";
+                var message = message || "Order Cancelled Successfully";
                 swal(title, message, "success");
                 window.location.reload();
-            } else if (status === "not_eligible") {
+            } else if (statusCode === "not_eligible") {
                 var title = "Not Eligible for Cancellation";
                 var message = "Order Cancellation period is over";
                 swal(title, message, "error");
-            } else if (status == "failed"){
-                var title = "failed";
-                var message = "Already Cancelled";
-                swal(title, message, "error");
             }
             else {
-                var title = "An error occurred";
-                var message = "Unexpected response from the server";
+                var title = "Cancellation Failed";
+                var message = "Unable to cancel the order at this time";
                 swal(title, message, "error");
             }
         },
@@ -1418,32 +1422,34 @@ function cancelOrderItem(url, order_pk) {
             order_pk: order_pk,
         },
         success: function (data) {
-            status = data['status'];
+            statusCode = data['status'];
+            message = data['message'];
 
-            if (status === "cancelled") {
+            if (statusCode === "cancelled") {
                 var title = "Order Item Cancelled";
-                var message = "Successfully Cancelled";
+                var message = message || "Successfully Cancelled";
                 swal(title, message, "success");
                 $(`.Delivery-Status-${order_pk}`).html('<p style="color: #9f0525;">Item Cancelled</p>')
-            } 
-            else if (status === "order_cancelled") {
+            }
+            else if (statusCode === "order_cancelled") {
                 var title = "Order has been cancelled";
-                var message = "Order Cancelled";
+                var message = message || "Order cancelled successfully";
                 swal(title, message, "success");
                 window.location.reload();
             }
-            else if (status === "not_eligible") {
+            else if (statusCode === "not_eligible") {
                 var title = "Not Eligible for Cancellation";
-                var message = "Order Cancellation period is over";
+                var message = message || "Cancellation period is over";
                 swal(title, message, "error");
-            } else if (status == "failed"){
-                var title = "failed";
-                var message = "Already Cancelled";
+            }
+            else if (statusCode === "failed") {
+                var title = "Cancellation Failed";
+                var message = message || "Unable to cancel the order at this time";
                 swal(title, message, "error");
             }
             else {
                 var title = "An error occurred";
-                var message = "Unexpected response from the server";
+                var message = message || "Unexpected response from the server";
                 swal(title, message, "error");
             }
         },
@@ -1455,14 +1461,14 @@ function cancelOrderItem(url, order_pk) {
     });
 }
 
-  
+
   function validateOrder($selector) {
     var parent = $selector.parents('#checkOutproduct');
     var url = parent.find('#validate').attr('data-url');
     var delivery_type = $('[name="delivery_type"]').val();
     let is_express = $("#express").is(":checked")
     delivery_type = is_express?"express":"normal";
-  
+
     $.ajax({
       url: url,
       type: "GET",
@@ -1471,10 +1477,10 @@ function cancelOrderItem(url, order_pk) {
         delivery_type: delivery_type,
       },
       success: function(data) {
-        var status = data["status"]
+        var statusCode = data["status"]
         var redirect = data["redirect"]
         var redirect_url = data["redirect_url"]
-        if (status === "true") {
+        if (statusCode === "true") {
             if (DeliveryDateChecker()){
                 $('.tab3').removeClass('active')
                 $('.tab2').addClass('active')
