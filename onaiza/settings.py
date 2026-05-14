@@ -245,6 +245,7 @@ STATICFILES_DIRS = (
     Path(BASE_DIR, "static"),
 )
 
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
 
 # PWA_SERVICE_WORKER_PATH = Path(BASE_DIR, 'static/js', 'serviceworker.js')
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
