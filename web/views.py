@@ -3015,7 +3015,7 @@ def abountus_list(request):
         instance = instances.latest("id")
         return redirect('web:abountus_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
@@ -3074,7 +3074,7 @@ def privacy_policy_list(request):
         instance = instances.latest("id")
         return redirect('web:privacy_policy_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
@@ -3132,7 +3132,7 @@ def terms_and_conditions_list(request):
         instance = instances.latest("id")
         return redirect('web:terms_and_conditions_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
@@ -3191,7 +3191,7 @@ def our_mission_list(request):
         instance = instances.latest("id")
         return redirect('web:our_mission_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
@@ -3250,7 +3250,7 @@ def our_vision_list(request):
         instance = instances.latest("id")
         return redirect('web:our_vision_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
@@ -3309,7 +3309,7 @@ def our_inspiration_list(request):
         instance = instances.latest("id")
         return redirect('web:our_inspiration_edit', pk=instance.pk)
     else:
-        return redirect('main:basic_settings_create')
+        return redirect('main:company_profile_list')
     
 @login_required
 # @role_required(["superadmin", "staff", "warehouse_manager"])
